@@ -72,7 +72,16 @@
   },
   "jobs": {
     "nearby_one": "{{count}} job near you",
-    "nearby_other": "{{count}} jobs near you"
+    "nearby_other": "{{count}} jobs near you",
+    "apply": "Apply",
+    "pass": "Pass",
+    "posted": "Posted {{time}}",
+    "emptyTitle": "No more jobs within {{distance}}",
+    "emptyBody": "You have seen every job in your area. New ones will show up here as they are posted.",
+    "noHomeTitle": "Where do you start from?",
+    "noHomeBody": "Choose a starting point to see the jobs near it. It can be your home or any place nearby.",
+    "devHome": "Use central Hammamet (testing only)",
+    "swipeFailed": "Your choice was not saved. Check your connection."
   },
   "distance": {
     "m": "{{value}} m",
@@ -87,5 +96,51 @@
   "errors": {
     "generic": "Something went wrong. Try again.",
     "offline": "No connection."
+  },
+  "contracts": {
+    "full_time": "Full-time",
+    "part_time": "Part-time",
+    "seasonal": "Seasonal",
+    "temporary": "Temporary",
+    "internship": "Internship"
+  },
+  "categories": {
+    "hospitality": "Hotels",
+    "restaurant": "Restaurants and cafés",
+    "retail": "Shops",
+    "logistics": "Delivery and transport",
+    "construction": "Construction",
+    "health": "Health",
+    "office": "Office work",
+    "education": "Education",
+    "agriculture": "Farming",
+    "other": "Other"
+  },
+  "employer": {
+    "title": "Your jobs",
+    "newJob": "Post a job",
+    "noCompanyTitle": "Tell us about your business",
+    "noCompanyBody": "Add your business once. We check it before your first job goes live.",
+    "addCompany": "Add my business",
+    "pending": "Your business is being checked. You can prepare a job now; it goes live once you are approved.",
+    "rejected": "Your business was not approved.",
+    "noJobsTitle": "No jobs yet",
+    "noJobsBody": "Post your first job and people nearby will see it.",
+    "statusDraft": "Draft",
+    "statusOpen": "Live",
+    "statusClosed": "Closed",
+    "publish": "Publish",
+    "close": "Close job",
+    "applicants_one": "{{count}} applicant",
+    "applicants_other": "{{count}} applicants"
+  },
+  "preview": {
+    "title": "Preview",
+    "note": "Sample data. This page exists only in development builds.",
+    "stack": "Job stack",
+    "components": "Components",
+    "empty": "Empty state",
+    "reset": "Start again",
+    "last": "Last swipe: {{direction}} on {{title}}"
   }
 }

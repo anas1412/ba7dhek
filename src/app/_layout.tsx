@@ -3,6 +3,7 @@ import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { initI18n } from '@/i18n';
 import { AppProviders } from '@/providers/AppProviders';
@@ -29,14 +30,17 @@ export default function RootLayout() {
   if (!ready) return null;
 
   return (
-    <AppProviders>
-      <StatusBar style={theme.dark ? 'light' : 'dark'} />
-      <Stack
-        screenOptions={{
-          headerShown: false,
-          contentStyle: { backgroundColor: theme.colors.surface },
-        }}
-      />
-    </AppProviders>
+    // Needed once at the root for swipe gestures to work anywhere in the app.
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <AppProviders>
+        <StatusBar style={theme.dark ? 'light' : 'dark'} />
+        <Stack
+          screenOptions={{
+            headerShown: false,
+            contentStyle: { backgroundColor: theme.colors.surface },
+          }}
+        />
+      </AppProviders>
+    </GestureHandlerRootView>
   );
 }

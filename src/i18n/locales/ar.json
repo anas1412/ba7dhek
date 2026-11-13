@@ -76,7 +76,16 @@
     "nearby_two": "زوز خدم بحذاك",
     "nearby_few": "{{count}} خدم بحذاك",
     "nearby_many": "{{count}} خدمة بحذاك",
-    "nearby_other": "{{count}} خدمة بحذاك"
+    "nearby_other": "{{count}} خدمة بحذاك",
+    "apply": "قدّم",
+    "pass": "فوّت",
+    "posted": "تنشر {{time}}",
+    "emptyTitle": "ما عادش فمّا خدم في {{distance}}",
+    "emptyBody": "شفت الخدم الكل اللي في جيهتك. الجدد يظهرو هوني كي يتنشرو.",
+    "noHomeTitle": "منين تبدا؟",
+    "noHomeBody": "اختار نقطة انطلاق باش تشوف الخدم اللي بحذاها. تنجّم تكون دارك ولا بلاصة قريبة.",
+    "devHome": "استعمل وسط الحمامات (للتجربة برك)",
+    "swipeFailed": "الاختيار متاعك ما تسجّلش. ثبّت في الكونكسيون."
   },
   "distance": {
     "m": "{{value}} م",
@@ -91,5 +100,55 @@
   "errors": {
     "generic": "صار مشكل. عاود جرّب.",
     "offline": "ما فمّاش كونكسيون."
+  },
+  "contracts": {
+    "full_time": "وقت كامل",
+    "part_time": "نص وقت",
+    "seasonal": "موسمي",
+    "temporary": "وقتي",
+    "internship": "تربّص"
+  },
+  "categories": {
+    "hospitality": "فندقة",
+    "restaurant": "مطاعم و قهاوي",
+    "retail": "تجارة",
+    "logistics": "توصيل و نقل",
+    "construction": "بناء",
+    "health": "صحّة",
+    "office": "خدمة مكتب",
+    "education": "تعليم",
+    "agriculture": "فلاحة",
+    "other": "حاجة أخرى"
+  },
+  "employer": {
+    "title": "العروض متاعك",
+    "newJob": "انشر عرض خدمة",
+    "noCompanyTitle": "عرّفنا بالمحل متاعك",
+    "noCompanyBody": "زيد المحل متاعك مرّة وحدة. نثبّتو فيه قبل ما يتنشر أول عرض.",
+    "addCompany": "زيد المحل متاعي",
+    "pending": "المحل متاعك قاعدين نثبّتو فيه. تنجّم تحضّر عرض توّا؛ يتنشر كي نوافقو.",
+    "rejected": "المحل متاعك ما تقبلش.",
+    "noJobsTitle": "مازال ما فمّا حتى عرض",
+    "noJobsBody": "انشر أول عرض و الناس اللي بحذاك يشوفوه.",
+    "statusDraft": "مسودّة",
+    "statusOpen": "منشور",
+    "statusClosed": "مسكّر",
+    "publish": "انشر",
+    "close": "سكّر العرض",
+    "applicants_zero": "حتى مترشّح",
+    "applicants_one": "مترشّح واحد",
+    "applicants_two": "زوز مترشّحين",
+    "applicants_few": "{{count}} مترشّحين",
+    "applicants_many": "{{count}} مترشّح",
+    "applicants_other": "{{count}} مترشّح"
+  },
+  "preview": {
+    "title": "معاينة",
+    "note": "معطيات للتجربة. الصفحة هذي موجودة كان في نسخ التطوير.",
+    "stack": "قايمة الخدم",
+    "components": "المكوّنات",
+    "empty": "حالة فارغة",
+    "reset": "عاود من الأول",
+    "last": "آخر حركة: {{direction}} على {{title}}"
   }
 }

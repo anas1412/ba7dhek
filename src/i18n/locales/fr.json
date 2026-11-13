@@ -73,7 +73,16 @@
   "jobs": {
     "nearby_one": "{{count}} emploi près de vous",
     "nearby_many": "{{count}} d'emplois près de vous",
-    "nearby_other": "{{count}} emplois près de vous"
+    "nearby_other": "{{count}} emplois près de vous",
+    "apply": "Postuler",
+    "pass": "Passer",
+    "posted": "Publié {{time}}",
+    "emptyTitle": "Plus d'offres dans un rayon de {{distance}}",
+    "emptyBody": "Vous avez vu toutes les offres de votre zone. Les nouvelles apparaîtront ici dès leur publication.",
+    "noHomeTitle": "D'où partez-vous ?",
+    "noHomeBody": "Choisissez un point de départ pour voir les offres autour. Ce peut être chez vous ou un lieu proche.",
+    "devHome": "Utiliser le centre de Hammamet (test uniquement)",
+    "swipeFailed": "Votre choix n'a pas été enregistré. Vérifiez votre connexion."
   },
   "distance": {
     "m": "{{value}} m",
@@ -88,5 +97,52 @@
   "errors": {
     "generic": "Une erreur s'est produite. Réessayez.",
     "offline": "Pas de connexion."
+  },
+  "contracts": {
+    "full_time": "Temps plein",
+    "part_time": "Temps partiel",
+    "seasonal": "Saisonnier",
+    "temporary": "Temporaire",
+    "internship": "Stage"
+  },
+  "categories": {
+    "hospitality": "Hôtellerie",
+    "restaurant": "Restaurants et cafés",
+    "retail": "Commerce",
+    "logistics": "Livraison et transport",
+    "construction": "Bâtiment",
+    "health": "Santé",
+    "office": "Travail de bureau",
+    "education": "Enseignement",
+    "agriculture": "Agriculture",
+    "other": "Autre"
+  },
+  "employer": {
+    "title": "Vos offres",
+    "newJob": "Publier une offre",
+    "noCompanyTitle": "Parlez-nous de votre établissement",
+    "noCompanyBody": "Ajoutez votre établissement une seule fois. Nous le vérifions avant la mise en ligne de votre première offre.",
+    "addCompany": "Ajouter mon établissement",
+    "pending": "Votre établissement est en cours de vérification. Vous pouvez préparer une offre dès maintenant ; elle sera en ligne après validation.",
+    "rejected": "Votre établissement n'a pas été validé.",
+    "noJobsTitle": "Pas encore d'offre",
+    "noJobsBody": "Publiez votre première offre et les personnes à proximité la verront.",
+    "statusDraft": "Brouillon",
+    "statusOpen": "En ligne",
+    "statusClosed": "Clôturée",
+    "publish": "Publier",
+    "close": "Clôturer l'offre",
+    "applicants_one": "{{count}} candidat",
+    "applicants_many": "{{count}} de candidats",
+    "applicants_other": "{{count}} candidats"
+  },
+  "preview": {
+    "title": "Aperçu",
+    "note": "Données d'exemple. Cette page n'existe que dans les versions de développement.",
+    "stack": "Pile d'offres",
+    "components": "Composants",
+    "empty": "État vide",
+    "reset": "Recommencer",
+    "last": "Dernier geste : {{direction}} sur {{title}}"
   }
 }

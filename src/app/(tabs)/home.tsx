@@ -1,31 +1,13 @@
 import { api } from '@convex/_generated/api';
 import { useQuery } from 'convex/react';
-import { useTranslation } from 'react-i18next';
-import { View } from 'react-native';
 
-import { AppText } from '@/components/AppText';
-import { LoadingScreen, Screen } from '@/components/Screen';
-import { useTheme } from '@/theme';
+import { LoadingScreen } from '@/components/Screen';
+import { EmployerHome } from '@/features/employer/EmployerHome';
+import { CandidateHome } from '@/features/jobs/CandidateHome';
 
-/** Placeholder home. The job stack and the employer's job list replace it in the next milestones. */
+/** Home depends on the role: the job stack for a candidate, their jobs for an employer. */
 export default function Home() {
-  const { t } = useTranslation();
-  const theme = useTheme();
   const me = useQuery(api.users.me);
-
   if (!me) return <LoadingScreen />;
-  const employer = me.role === 'employer';
-
-  return (
-    <Screen>
-      <View style={{ flex: 1, justifyContent: 'center', gap: theme.space[2] }}>
-        <AppText variant="display">
-          {t(employer ? 'home.employerTitle' : 'home.candidateTitle')}
-        </AppText>
-        <AppText color="inkMuted">
-          {t(employer ? 'home.employerBody' : 'home.candidateBody')}
-        </AppText>
-      </View>
-    </Screen>
-  );
+  return me.role === 'employer' ? <EmployerHome /> : <CandidateHome radiusM={me.radiusM} />;
 }
