@@ -81,13 +81,25 @@ npx expo start --dev-client
 
 If the build has no Convex address, it shows a "Setup is not finished" screen instead of crashing.
 
-## What is already set on the dev deployment
-| Variable | Purpose |
-|---|---|
-| `JWT_PRIVATE_KEY` | Signs session tokens |
-| `JWKS` | The matching public key |
+## What is set on the deployments
+| Variable | Purpose | Dev `patient-mouse-884` | Production `tame-goldfinch-711` |
+|---|---|---|---|
+| `JWT_PRIVATE_KEY` | Signs session tokens | Set | Set (its own key) |
+| `JWKS` | The matching public key | Set | Set |
+| `AUTH_GOOGLE_ID` | Google OAuth client ID | Set | Set |
+| `AUTH_GOOGLE_SECRET` | Google OAuth client secret | Set | **Not set** |
 
-These were generated for this deployment and exist nowhere else. A production deployment needs its own pair.
+Each deployment has its own signing key pair; the keys exist nowhere else.
+
+**Checked on dev (2026-11-13):** starting a Google sign-in returns a redirect to `accounts.google.com` with the right client ID and the callback address above. The sign-in itself has not been completed.
+
+**Production is not ready to use.** No functions have been deployed to it, its secret is missing, and its callback address is not registered with Google:
+
+```
+https://tame-goldfinch-711.convex.site/api/auth/callback/google
+```
+
+Its region has not been checked. The plan calls for Ireland ([data-protection.md](../04-launch/data-protection.md)); confirm the region in the Convex dashboard before any real data goes there.
 
 ## Approving a company during development
 Company approval is an admin function. To make yourself an admin, open the `users` table in the Convex dashboard and set `isAdmin` to `true` on your own row. Then run `companies:approve` from the dashboard's function runner with the company's id.
