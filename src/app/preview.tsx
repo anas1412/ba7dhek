@@ -1,5 +1,5 @@
 import { changeLanguage } from 'i18next';
-import { Redirect } from 'expo-router';
+import { Redirect, useLocalSearchParams, useRouter } from 'expo-router';
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, View } from 'react-native';
@@ -12,10 +12,23 @@ import { EmptyState } from '@/components/EmptyState';
 import { RoundButton } from '@/components/RoundButton';
 import { CardStack, type CardStackHandle } from '@/features/jobs/CardStack';
 import { sampleJobs } from '@/features/jobs/sampleJobs';
+import { PREVIEW_VIEWS, PreviewViewScreen, type PreviewView } from '@/features/preview/PreviewViews';
 import { LANGUAGES, formatLocale } from '@/i18n/languages';
 import { formatDistance } from '@/lib/format';
 import { currentLanguage } from '@/i18n';
 import { useTheme } from '@/theme';
+
+const VIEW_TITLE = {
+  setup: 'setup.title',
+  company: 'company.title',
+  job: 'job.title',
+  applicants: 'applicants.title',
+  applications: 'applications.title',
+} as const;
+
+function isPreviewView(value: unknown): value is PreviewView {
+  return typeof value === 'string' && (PREVIEW_VIEWS as readonly string[]).includes(value);
+}
 
 /**
  * A development-only page that shows the interface pieces with sample data, so
@@ -29,8 +42,13 @@ export default function Preview() {
   const [round, setRound] = useState(0);
   const [last, setLast] = useState<string | null>(null);
   const [left, setLeft] = useState(() => sampleJobs(now).length);
+  const router = useRouter();
+  const { view } = useLocalSearchParams<{ view?: string }>();
 
   if (!__DEV__) return <Redirect href="/" />;
+
+  // "/preview?view=job" shows one whole screen instead of the gallery.
+  if (isPreviewView(view)) return <PreviewViewScreen view={view} />;
 
   const jobs = sampleJobs(now);
   const language = currentLanguage();
@@ -121,6 +139,18 @@ export default function Preview() {
           <Button label={t('common.cancel')} variant="neutral" onPress={() => {}} />
           <Button label={t('employer.close')} variant="danger" onPress={() => {}} />
           <Button label={t('common.loading')} loading onPress={() => {}} />
+        </View>
+
+        <View style={{ gap: theme.space[2] }}>
+          <AppText variant="heading">{t('preview.forms')}</AppText>
+          {PREVIEW_VIEWS.map((name) => (
+            <Button
+              key={name}
+              label={t(VIEW_TITLE[name])}
+              variant="neutral"
+              onPress={() => router.push({ pathname: '/preview', params: { view: name } })}
+            />
+          ))}
         </View>
 
         <View style={{ gap: theme.space[4], minHeight: 320 }}>

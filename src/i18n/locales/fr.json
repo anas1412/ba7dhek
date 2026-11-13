@@ -4,7 +4,10 @@
     "loading": "Chargement",
     "retry": "Réessayer",
     "cancel": "Annuler",
-    "continue": "Continuer"
+    "continue": "Continuer",
+    "save": "Enregistrer",
+    "back": "Retour",
+    "optional": "Facultatif"
   },
   "welcome": {
     "tagline": "Des emplois près de chez vous.",
@@ -49,7 +52,8 @@
   },
   "tabs": {
     "home": "Accueil",
-    "settings": "Paramètres"
+    "settings": "Paramètres",
+    "applications": "Candidatures"
   },
   "settings": {
     "title": "Paramètres",
@@ -66,9 +70,18 @@
     "en": "English"
   },
   "setup": {
-    "title": "La configuration n'est pas terminée",
+    "title": "Réglez votre recherche",
     "body": "Il manque des réglages à cette version : elle ne peut encore connecter personne.",
-    "convex": "Manquant : adresse du déploiement Convex"
+    "convex": "Manquant : adresse du déploiement Convex",
+    "aboutLabel": "À propos de vous",
+    "aboutHint": "Deux lignes qu'un employeur lira quand vous postulez. N'indiquez ni votre santé, ni votre religion, ni vos numéros de pièces d'identité.",
+    "aboutPlaceholder": "Par exemple : trois ans comme serveur, disponible le soir.",
+    "locationTitle": "Votre point de départ",
+    "locationBody": "Les offres sont classées par distance depuis ce point. Ce peut être chez vous ou un lieu proche.",
+    "radiusTitle": "Jusqu'où irez-vous ?",
+    "save": "Voir les offres",
+    "needLocation": "Choisissez d'abord un point de départ.",
+    "failed": "Ce n'a pas été enregistré. Vérifiez votre connexion et réessayez."
   },
   "jobs": {
     "nearby_one": "{{count}} emploi près de vous",
@@ -96,7 +109,10 @@
   },
   "errors": {
     "generic": "Une erreur s'est produite. Réessayez.",
-    "offline": "Pas de connexion."
+    "offline": "Pas de connexion.",
+    "blockedText": "Ce texte contient un élément interdit, comme demander de l'argent aux candidats ou un casier judiciaire.",
+    "tooShort": "Certains champs sont trop courts.",
+    "tooLong": "Un texte est trop long."
   },
   "contracts": {
     "full_time": "Temps plein",
@@ -143,6 +159,81 @@
     "components": "Composants",
     "empty": "État vide",
     "reset": "Recommencer",
-    "last": "Dernier geste : {{direction}} sur {{title}}"
+    "last": "Dernier geste : {{direction}} sur {{title}}",
+    "forms": "Formulaires",
+    "lists": "Listes"
+  },
+  "location": {
+    "useCurrent": "Utiliser ma position actuelle",
+    "locating": "Recherche de votre position",
+    "set": "Point de départ enregistré",
+    "change": "Le modifier",
+    "denied": "L'accès à la position a été refusé. Vous pouvez l'autoriser dans les réglages du téléphone.",
+    "failed": "Votre position n'a pas pu être lue. Réessayez dehors ou près d'une fenêtre.",
+    "outsideTunisia": "Ce point est hors de Tunisie. Ba7dhek ne couvre que la Tunisie.",
+    "privacy": "Lue une seule fois, quand vous appuyez. Personne d'autre ne voit jamais ce point."
+  },
+  "company": {
+    "title": "Votre établissement",
+    "name": "Nom de l'établissement",
+    "category": "Quel type d'établissement ?",
+    "address": "Adresse",
+    "addressHint": "Rue et quartier, comme le diraient les gens du coin.",
+    "locationTitle": "Où se trouve-t-il ?",
+    "locationBody": "Placez-vous dans l'établissement et appuyez sur le bouton. Vos offres sont montrées aux personnes proches de ce point.",
+    "rulesTitle": "Avant de publier",
+    "rule1": "Vous êtes l'établissement qui emploiera la personne.",
+    "rule2": "Le poste est en Tunisie, à l'endroit indiqué.",
+    "rule3": "Le salaire annoncé est réel.",
+    "rule4": "On ne demande jamais d'argent aux candidats.",
+    "submit": "Ajouter mon établissement",
+    "needLocation": "Indiquez d'abord où se trouve l'établissement.",
+    "failed": "Votre établissement n'a pas été enregistré. Vérifiez les champs et réessayez."
+  },
+  "job": {
+    "title": "Publier une offre",
+    "jobTitle": "Intitulé du poste",
+    "jobTitlePlaceholder": "Par exemple : réceptionniste de nuit",
+    "category": "Catégorie",
+    "contract": "Contrat",
+    "pay": "Salaire en dinars",
+    "payPeriod": "Payé",
+    "periodHour": "à l'heure",
+    "periodDay": "à la journée",
+    "periodMonth": "au mois",
+    "description": "Description",
+    "descriptionHint": "Horaires, tâches, attentes. Écrivez dans la langue que lisent vos candidats.",
+    "locationNote": "L'offre utilise l'emplacement de votre établissement.",
+    "submit": "Enregistrer en brouillon",
+    "needPay": "Indiquez le salaire, un nombre supérieur à zéro.",
+    "failed": "L'offre n'a pas été enregistrée. Vérifiez les champs et réessayez."
+  },
+  "applicants": {
+    "title": "Candidats",
+    "empty": "Personne n'a encore postulé.",
+    "emptyBody": "Les personnes à proximité voient cette offre dans leur pile. Les candidats apparaissent ici dans l'ordre de leur candidature.",
+    "accept": "Ouvrir une discussion",
+    "reject": "Pas cette fois",
+    "accepted": "Accepté",
+    "rejected": "Non retenu",
+    "view": "Voir les candidats",
+    "noAbout": "Aucune description.",
+    "bucket_lt1": "À moins d'1 km",
+    "bucket_1to3": "Entre 1 et 3 km",
+    "bucket_3to5": "Entre 3 et 5 km",
+    "bucket_5to10": "Entre 5 et 10 km",
+    "bucket_gt10": "À plus de 10 km",
+    "applied": "A postulé {{time}}",
+    "failed": "Votre décision n'a pas été enregistrée. Réessayez."
+  },
+  "applications": {
+    "title": "Vos candidatures",
+    "empty": "Pas encore de candidature",
+    "emptyBody": "Balayez une offre vers la droite pour postuler. Vos candidatures et leurs réponses apparaissent ici.",
+    "pending": "En attente d'une réponse",
+    "accepted": "Acceptée",
+    "rejected": "Non retenue",
+    "closed": "Poste clôturé",
+    "applied": "Envoyée {{time}}"
   }
 }

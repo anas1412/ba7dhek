@@ -4,7 +4,10 @@
     "loading": "Loading",
     "retry": "Try again",
     "cancel": "Cancel",
-    "continue": "Continue"
+    "continue": "Continue",
+    "save": "Save",
+    "back": "Back",
+    "optional": "Optional"
   },
   "welcome": {
     "tagline": "Jobs next to you.",
@@ -49,7 +52,8 @@
   },
   "tabs": {
     "home": "Home",
-    "settings": "Settings"
+    "settings": "Settings",
+    "applications": "Applications"
   },
   "settings": {
     "title": "Settings",
@@ -66,9 +70,18 @@
     "en": "English"
   },
   "setup": {
-    "title": "Setup is not finished",
+    "title": "Set up your search",
     "body": "This build is missing configuration, so it cannot sign anyone in yet.",
-    "convex": "Missing: Convex deployment address"
+    "convex": "Missing: Convex deployment address",
+    "aboutLabel": "About you",
+    "aboutHint": "Two lines an employer will read when you apply. Do not include your health, religion or ID numbers.",
+    "aboutPlaceholder": "For example: three years as a waiter, free in the evenings.",
+    "locationTitle": "Your starting point",
+    "locationBody": "Jobs are shown by distance from this point. It can be your home or a place close to it.",
+    "radiusTitle": "How far will you go?",
+    "save": "Show me jobs",
+    "needLocation": "Choose a starting point first.",
+    "failed": "This was not saved. Check your connection and try again."
   },
   "jobs": {
     "nearby_one": "{{count}} job near you",
@@ -95,7 +108,10 @@
   },
   "errors": {
     "generic": "Something went wrong. Try again.",
-    "offline": "No connection."
+    "offline": "No connection.",
+    "blockedText": "This text contains something that is not allowed, such as asking candidates for money or for a criminal record.",
+    "tooShort": "Some fields are too short.",
+    "tooLong": "Some text is too long."
   },
   "contracts": {
     "full_time": "Full-time",
@@ -141,6 +157,81 @@
     "components": "Components",
     "empty": "Empty state",
     "reset": "Start again",
-    "last": "Last swipe: {{direction}} on {{title}}"
+    "last": "Last swipe: {{direction}} on {{title}}",
+    "forms": "Forms",
+    "lists": "Lists"
+  },
+  "location": {
+    "useCurrent": "Use my current location",
+    "locating": "Finding your location",
+    "set": "Starting point saved",
+    "change": "Change it",
+    "denied": "Location access was refused. You can allow it in your phone settings.",
+    "failed": "Your location could not be read. Try again outside or near a window.",
+    "outsideTunisia": "That point is outside Tunisia. Ba7dhek only covers Tunisia.",
+    "privacy": "Read once, when you tap. Nobody else ever sees this point."
+  },
+  "company": {
+    "title": "Your business",
+    "name": "Business name",
+    "category": "What kind of business?",
+    "address": "Address",
+    "addressHint": "Street and area, as people nearby would say it.",
+    "locationTitle": "Where is it?",
+    "locationBody": "Stand at the business and tap the button. Jobs you post are shown to people near this point.",
+    "rulesTitle": "Before you post",
+    "rule1": "You are the business that will employ the person.",
+    "rule2": "The job is in Tunisia, at the place you pin.",
+    "rule3": "The pay you state is real.",
+    "rule4": "Candidates are never asked to pay anything.",
+    "submit": "Add my business",
+    "needLocation": "Set where the business is first.",
+    "failed": "Your business was not saved. Check the fields and try again."
+  },
+  "job": {
+    "title": "Post a job",
+    "jobTitle": "Job title",
+    "jobTitlePlaceholder": "For example: night receptionist",
+    "category": "Category",
+    "contract": "Contract",
+    "pay": "Pay in dinars",
+    "payPeriod": "Paid",
+    "periodHour": "per hour",
+    "periodDay": "per day",
+    "periodMonth": "per month",
+    "description": "Description",
+    "descriptionHint": "Hours, tasks, what you expect. Write in the language your candidates read.",
+    "locationNote": "The job uses your business location.",
+    "submit": "Save as draft",
+    "needPay": "Enter the pay as a number above zero.",
+    "failed": "The job was not saved. Check the fields and try again."
+  },
+  "applicants": {
+    "title": "Applicants",
+    "empty": "Nobody has applied yet.",
+    "emptyBody": "People nearby see this job in their stack. Applicants appear here in the order they apply.",
+    "accept": "Open a chat",
+    "reject": "Not this time",
+    "accepted": "Accepted",
+    "rejected": "Not selected",
+    "view": "See applicants",
+    "noAbout": "No description given.",
+    "bucket_lt1": "Under 1 km away",
+    "bucket_1to3": "1 to 3 km away",
+    "bucket_3to5": "3 to 5 km away",
+    "bucket_5to10": "5 to 10 km away",
+    "bucket_gt10": "More than 10 km away",
+    "applied": "Applied {{time}}",
+    "failed": "Your decision was not saved. Try again."
+  },
+  "applications": {
+    "title": "Your applications",
+    "empty": "No applications yet",
+    "emptyBody": "Swipe right on a job to apply. Your applications and their answers show up here.",
+    "pending": "Waiting for an answer",
+    "accepted": "Accepted",
+    "rejected": "Not selected",
+    "closed": "Position closed",
+    "applied": "Applied {{time}}"
   }
 }

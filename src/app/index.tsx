@@ -27,5 +27,7 @@ export default function Gate() {
   if (!me) return <LoadingScreen />;
   if (!me.hasConsented || me.needsNewConsent) return <Redirect href="/consent" />;
   if (!me.role) return <Redirect href="/role" />;
+  // A candidate needs a starting point before the job stack can show anything.
+  if (me.role === 'candidate' && !me.home) return <Redirect href="/setup/candidate" />;
   return <Redirect href="/home" />;
 }

@@ -1,5 +1,6 @@
 import { api } from '@convex/_generated/api';
 import { useMutation, useQuery } from 'convex/react';
+import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
@@ -15,14 +16,11 @@ import { useTheme } from '@/theme';
 
 const STATUS_KEY = { draft: 'employer.statusDraft', open: 'employer.statusOpen', closed: 'employer.statusClosed' } as const;
 
-/**
- * The employer's home: their jobs, each with its state and how many people
- * applied. The forms for adding a business and posting a job come next; until
- * then this screen shows what the backend already holds.
- */
+/** The employer's home: their jobs, each with its state and how many people applied. */
 export function EmployerHome() {
   const { t } = useTranslation();
   const theme = useTheme();
+  const router = useRouter();
   const language = currentLanguage();
   const company = useQuery(api.companies.mine);
   const jobs = useQuery(api.jobs.mine);
@@ -35,7 +33,9 @@ export function EmployerHome() {
   if (company === null) {
     return (
       <Screen>
-        <EmptyState icon="briefcase" title={t('employer.noCompanyTitle')} body={t('employer.noCompanyBody')} />
+        <EmptyState icon="briefcase" title={t('employer.noCompanyTitle')} body={t('employer.noCompanyBody')}>
+          <Button label={t('employer.addCompany')} onPress={() => router.push('/setup/company')} />
+        </EmptyState>
       </Screen>
     );
   }
@@ -52,7 +52,9 @@ export function EmployerHome() {
   }
 
   return (
-    <Screen scroll>
+    <Screen
+      scroll
+      footer={<Button label={t('employer.newJob')} onPress={() => router.push('/job/new')} />}>
       <AppText variant="display">{t('employer.title')}</AppText>
 
       {company.approval !== 'approved' ? (
@@ -97,7 +99,13 @@ export function EmployerHome() {
                 disabled={company.approval !== 'approved'}
                 onPress={() => run(job._id, () => publish({ jobId: job._id }))}
               />
-            ) : null}
+            ) : (
+              <Button
+                label={t('applicants.view')}
+                variant="neutral"
+                onPress={() => router.push({ pathname: '/job/[jobId]/applicants', params: { jobId: job._id } })}
+              />
+            )}
             {job.status === 'open' ? (
               <Button
                 label={t('employer.close')}

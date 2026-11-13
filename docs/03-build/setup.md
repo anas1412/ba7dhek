@@ -13,8 +13,17 @@ How to run what exists, and the steps that only the developer can do.
 | `users` functions: ensure, consent, role, language, profile, starting point | Done, tested |
 | Backend for Milestones 2 to 4: companies with manual approval, jobs (draft, publish, close), the nearby feed, swipes, applicants, accept and reject | Done, tested; no screens yet |
 | Word filter, Tunisia-only locations, role and ownership checks | Done, tested |
-| Screens: welcome, consent, role, home placeholder, settings | Written; not yet run on a phone |
+| Screens: welcome, consent, role, settings | Written; seen in a browser, not yet on a phone |
+| Job card and swipe stack, with apply and pass buttons | Built; swipe checked in a browser with simulated touches |
+| Candidate: one-time setup (starting point, radius, description), job stack, applications | Built; checked in the browser preview with sample data |
+| Employer: add a business, post a job, jobs list with publish and close, applicants with accept and reject | Built; checked in the browser preview with sample data |
+| Preview page at `/preview` (development builds only) | Shows every piece above with sample data, in the three languages |
+| Map to place a point by hand | Not built. Location comes from "Use my current location" only |
 | Push fan-out, chat messages, reports, retention job, account deletion | Not started |
+
+**A new development build is needed.** `expo-location` was added after the first EAS build, and it contains native code. Until the app is rebuilt, "Use my current location" will fail on the phone. In development builds, a "Use central Hammamet (testing only)" button sets a fixed point instead, so the rest can be tested on the old build.
+
+**The browser preview.** Signed-in screens cannot be opened in a browser, because Google sign-in only returns to the phone app. The forms and lists are therefore split into display components, which the preview page renders with sample data and a pretend backend. What the preview does not prove: that each screen is wired to the right backend function. The backend functions themselves are covered by tests.
 
 **Not verified:** nothing has run on a device. The code typechecks, lints, passes its tests and bundles for Android, and Expo's health check passes, but no screen has been seen and no sign-in has been completed. That is Spike 1.
 
