@@ -1,0 +1,93 @@
+{
+  "common": {
+    "appName": "Ba7dhek",
+    "loading": "Chargement",
+    "retry": "Réessayer",
+    "cancel": "Annuler",
+    "continue": "Continuer"
+  },
+  "welcome": {
+    "tagline": "Des emplois près de chez vous.",
+    "pitch": "Voyez les emplois les plus proches de chez vous et postulez d'un geste.",
+    "google": "Continuer avec Google",
+    "apple": "Continuer avec Apple",
+    "failed": "La connexion n'a pas abouti. Réessayez."
+  },
+  "consent": {
+    "title": "Avant de commencer",
+    "intro": "Ba7dhek a besoin de votre accord pour utiliser vos données. Voici ce qu'elles deviennent.",
+    "collectTitle": "Ce que nous conservons",
+    "collect": "Votre nom et votre photo issus de votre compte, ce que vous écrivez dans votre profil, un point de départ que vous choisissez sur la carte, vos candidatures et vos messages.",
+    "shareTitle": "Qui les voit",
+    "share": "Quand vous balayez une offre vers la droite, cet employeur voit votre nom, votre photo, le texte de votre profil et une tranche de distance. Personne ne voit jamais votre point de départ.",
+    "whereTitle": "Où elles sont stockées",
+    "where": "Sur des serveurs situés hors de Tunisie, dans l'Union européenne et aux États-Unis.",
+    "rightsTitle": "Vos droits",
+    "rights": "Vous pouvez corriger vos données, en demander une copie ou supprimer votre compte à tout moment depuis les Paramètres.",
+    "adult": "J'ai 18 ans ou plus",
+    "accept": "J'accepte",
+    "decline": "Je n'accepte pas",
+    "declinedTitle": "Vous n'avez pas accepté",
+    "declinedBody": "Ba7dhek ne peut pas fonctionner sans cet accord. Rien n'a été enregistré à votre sujet en dehors de votre connexion.",
+    "back": "Relire",
+    "failed": "Votre accord n'a pas été enregistré. Réessayez."
+  },
+  "role": {
+    "title": "Qu'est-ce qui vous amène ?",
+    "candidate": "Je cherche un emploi",
+    "candidateHint": "Voyez les offres près de chez vous et postulez.",
+    "employer": "Je recrute",
+    "employerHint": "Publiez une offre et touchez les personnes à proximité.",
+    "note": "Ce choix se fait une seule fois. Il ne peut pas être modifié ensuite.",
+    "failed": "Votre choix n'a pas été enregistré. Réessayez."
+  },
+  "home": {
+    "candidateTitle": "Emplois près de vous",
+    "candidateBody": "La pile d'offres n'est pas encore construite. Elle arrive à la prochaine étape.",
+    "employerTitle": "Vos offres",
+    "employerBody": "La publication d'une offre n'est pas encore construite. Elle arrive à la prochaine étape."
+  },
+  "tabs": {
+    "home": "Accueil",
+    "settings": "Paramètres"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "language": "Langue",
+    "reloadTitle": "L'application va redémarrer",
+    "reloadBody": "Passer à l'arabe ou le quitter inverse la mise en page : l'application redémarre.",
+    "reload": "Changer et redémarrer",
+    "account": "Compte",
+    "signOut": "Se déconnecter"
+  },
+  "languages": {
+    "ar": "العربية",
+    "fr": "Français",
+    "en": "English"
+  },
+  "setup": {
+    "title": "La configuration n'est pas terminée",
+    "body": "Il manque des réglages à cette version : elle ne peut encore connecter personne.",
+    "clerk": "Manquant : clé publique Clerk",
+    "convex": "Manquant : adresse du déploiement Convex"
+  },
+  "jobs": {
+    "nearby_one": "{{count}} emploi près de vous",
+    "nearby_many": "{{count}} d'emplois près de vous",
+    "nearby_other": "{{count}} emplois près de vous"
+  },
+  "distance": {
+    "m": "{{value}} m",
+    "km": "{{value}} km",
+    "fromYou": "à {{distance}} de vous"
+  },
+  "pay": {
+    "hour": "{{amount}} TND par heure",
+    "day": "{{amount}} TND par jour",
+    "month": "{{amount}} TND par mois"
+  },
+  "errors": {
+    "generic": "Une erreur s'est produite. Réessayez.",
+    "offline": "Pas de connexion."
+  }
+}

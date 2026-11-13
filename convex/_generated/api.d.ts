@@ -8,13 +8,23 @@
  * @module
  */
 
+import type * as lib_auth from "../lib/auth.js";
+import type * as lib_geo from "../lib/geo.js";
+import type * as lib_geoMath from "../lib/geoMath.js";
+import type * as users from "../users.js";
+
 import type {
   ApiFromModules,
   FilterApi,
   FunctionReference,
 } from "convex/server";
 
-declare const fullApi: ApiFromModules<{}>;
+declare const fullApi: ApiFromModules<{
+  "lib/auth": typeof lib_auth;
+  "lib/geo": typeof lib_geo;
+  "lib/geoMath": typeof lib_geoMath;
+  users: typeof users;
+}>;
 
 /**
  * A utility for referencing Convex functions in your app's public API.
@@ -42,4 +52,8 @@ export declare const internal: FilterApi<
   FunctionReference<any, "internal">
 >;
 
-export declare const components: {};
+export declare const components: {
+  jobsGeo: import("@convex-dev/geospatial/_generated/component.js").ComponentApi<"jobsGeo">;
+  candidatesGeo: import("@convex-dev/geospatial/_generated/component.js").ComponentApi<"candidatesGeo">;
+  pushNotifications: import("@convex-dev/expo-push-notifications/_generated/component.js").ComponentApi<"pushNotifications">;
+};

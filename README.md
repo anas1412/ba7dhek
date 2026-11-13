@@ -4,7 +4,7 @@
 
 A mobile app for Tunisia that shows people the jobs closest to where they live, lets them apply with one swipe, and notifies them the moment a new job opens nearby.
 
-**Status:** planning. No app code yet. This repository holds the plan, the design tokens and the Convex project link.
+**Status:** building. The foundation is in place: app scaffold, theme, three languages, Convex schema, and the sign-in, consent and role screens. It has not run on a phone yet; see [setup.md](docs/03-build/setup.md) for what is built and the account steps still needed.
 
 ## Decisions made
 | Topic | Decision |
@@ -40,7 +40,7 @@ See [data-protection.md](docs/04-launch/data-protection.md).
 | Convex dev deployment | `patient-mouse-884`, cloud. Its name and URLs are in `.env.local`, which is not committed. |
 | Design system | https://claude.ai/artifact/3AGaUmF3s117jSo7AUHZrZ (private until shared) |
 
-The `convex/` folder holds only what `npx convex dev` generated. There are no functions yet. To reconnect on another machine, run `npx convex dev` and pick the existing `ba7dhek` project.
+To reconnect on another machine, run `npx convex dev` and pick the existing `ba7dhek` project.
 
 ## Read in this order
 1. [Vision](docs/00-overview/vision.md): what it is and why.
@@ -76,6 +76,7 @@ The `convex/` folder holds only what `npx convex dev` generated. There are no fu
 - [i18n.md](docs/02-architecture/i18n.md): three languages and right-to-left
 
 ### 03 Build
+- [setup.md](docs/03-build/setup.md): what is built, how to run it, and the account steps
 - [spikes.md](docs/03-build/spikes.md): proofs to run first
 - [roadmap.md](docs/03-build/roadmap.md): milestones with done checks
 - [project-structure.md](docs/03-build/project-structure.md): planned repository layout

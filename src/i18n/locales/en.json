@@ -1,0 +1,92 @@
+{
+  "common": {
+    "appName": "Ba7dhek",
+    "loading": "Loading",
+    "retry": "Try again",
+    "cancel": "Cancel",
+    "continue": "Continue"
+  },
+  "welcome": {
+    "tagline": "Jobs next to you.",
+    "pitch": "See the jobs closest to your home and apply with one swipe.",
+    "google": "Continue with Google",
+    "apple": "Continue with Apple",
+    "failed": "Sign-in did not complete. Try again."
+  },
+  "consent": {
+    "title": "Before you start",
+    "intro": "Ba7dhek needs your agreement to use your data. Here is what happens to it.",
+    "collectTitle": "What we keep",
+    "collect": "Your name and photo from your account, what you write in your profile, a starting point you choose on the map, your applications and your messages.",
+    "shareTitle": "Who sees it",
+    "share": "When you swipe right on a job, that employer sees your name, your photo, your profile text and a distance range. Nobody ever sees your starting point.",
+    "whereTitle": "Where it is stored",
+    "where": "On servers outside Tunisia, in the European Union and the United States.",
+    "rightsTitle": "Your rights",
+    "rights": "You can correct your data, ask for a copy, or delete your account at any time from Settings.",
+    "adult": "I am 18 or older",
+    "accept": "I agree",
+    "decline": "I do not agree",
+    "declinedTitle": "You did not agree",
+    "declinedBody": "Ba7dhek cannot work without this agreement. Nothing about you has been saved beyond your sign-in.",
+    "back": "Read it again",
+    "failed": "Your agreement was not saved. Try again."
+  },
+  "role": {
+    "title": "What brings you here?",
+    "candidate": "I am looking for work",
+    "candidateHint": "See jobs near you and apply.",
+    "employer": "I am hiring",
+    "employerHint": "Post a job and reach people nearby.",
+    "note": "You choose once. This cannot be changed later.",
+    "failed": "Your choice was not saved. Try again."
+  },
+  "home": {
+    "candidateTitle": "Jobs near you",
+    "candidateBody": "The job stack is not built yet. It arrives in the next milestone.",
+    "employerTitle": "Your jobs",
+    "employerBody": "Posting a job is not built yet. It arrives in the next milestone."
+  },
+  "tabs": {
+    "home": "Home",
+    "settings": "Settings"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "reloadTitle": "The app will reload",
+    "reloadBody": "Changing to or from Arabic flips the layout, so the app restarts.",
+    "reload": "Change and reload",
+    "account": "Account",
+    "signOut": "Sign out"
+  },
+  "languages": {
+    "ar": "العربية",
+    "fr": "Français",
+    "en": "English"
+  },
+  "setup": {
+    "title": "Setup is not finished",
+    "body": "This build is missing configuration, so it cannot sign anyone in yet.",
+    "clerk": "Missing: Clerk publishable key",
+    "convex": "Missing: Convex deployment address"
+  },
+  "jobs": {
+    "nearby_one": "{{count}} job near you",
+    "nearby_other": "{{count}} jobs near you"
+  },
+  "distance": {
+    "m": "{{value}} m",
+    "km": "{{value}} km",
+    "fromYou": "{{distance}} from you"
+  },
+  "pay": {
+    "hour": "{{amount}} TND per hour",
+    "day": "{{amount}} TND per day",
+    "month": "{{amount}} TND per month"
+  },
+  "errors": {
+    "generic": "Something went wrong. Try again.",
+    "offline": "No connection."
+  }
+}

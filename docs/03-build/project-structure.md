@@ -1,6 +1,8 @@
 # Project structure
 
-The planned layout of the repository once the app is scaffolded. One repository holds the app and the Convex backend, which is how Convex projects are normally arranged.
+The planned layout of the repository. One repository holds the app and the Convex backend, which is how Convex projects are normally arranged.
+
+**One difference from the tree below:** the Expo SDK 58 template puts routes in `src/app/`, not `app/` at the root, and the scaffold follows the template. Read `app/` below as `src/app/`. What exists so far is listed in [setup.md](setup.md).
 
 ```
 ba7dhek/

@@ -1,0 +1,57 @@
+{
+  "expo": {
+    "name": "Ba7dhek",
+    "slug": "ba7dhek",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "ba7dhek",
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "icon": "./assets/expo.icon",
+      "bundleIdentifier": "tn.ba7dhek.app"
+    },
+    "android": {
+      "package": "tn.ba7dhek.app",
+      "adaptiveIcon": {
+        "backgroundColor": "#DCE8FA",
+        "foregroundImage": "./assets/images/android-icon-foreground.png",
+        "backgroundImage": "./assets/images/android-icon-background.png",
+        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#1557B8",
+          "image": "./assets/images/splash-icon.png",
+          "imageWidth": 76
+        }
+      ],
+      [
+        "expo-localization",
+        {
+          "supportsRTL": true,
+          "supportedLocales": [
+            "ar",
+            "fr",
+            "en"
+          ]
+        }
+      ],
+      "expo-secure-store",
+      "@clerk/expo",
+      "@clerk/expo-google-signin"
+    ],
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    }
+  }
+}
