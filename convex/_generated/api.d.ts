@@ -8,9 +8,14 @@
  * @module
  */
 
+import type * as companies from "../companies.js";
+import type * as jobs from "../jobs.js";
 import type * as lib_auth from "../lib/auth.js";
 import type * as lib_geo from "../lib/geo.js";
 import type * as lib_geoMath from "../lib/geoMath.js";
+import type * as lib_validate from "../lib/validate.js";
+import type * as lib_wordFilter from "../lib/wordFilter.js";
+import type * as swipes from "../swipes.js";
 import type * as users from "../users.js";
 
 import type {
@@ -20,9 +25,14 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
+  companies: typeof companies;
+  jobs: typeof jobs;
   "lib/auth": typeof lib_auth;
   "lib/geo": typeof lib_geo;
   "lib/geoMath": typeof lib_geoMath;
+  "lib/validate": typeof lib_validate;
+  "lib/wordFilter": typeof lib_wordFilter;
+  swipes: typeof swipes;
   users: typeof users;
 }>;
 

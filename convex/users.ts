@@ -1,7 +1,10 @@
 import { ConvexError, v } from "convex/values";
 import { mutation, query } from "./_generated/server";
-import { getUserOrNull, requireConsentedUser, requireUser } from "./lib/auth";
-import { language, role } from "./schema";
+import { getUserOrNull, requireConsentedUser, requireRole, requireUser } from "./lib/auth";
+import { indexCandidate } from "./lib/geo";
+import { clampRadiusM } from "./lib/geoMath";
+import { cleanText, requireTunisianPoint } from "./lib/validate";
+import { language, point, role } from "./schema";
 
 /** The version of the privacy notice and terms a user accepts. Bump when either changes. */
 export const CONSENT_VERSION = "2026-11-13";
@@ -82,6 +85,35 @@ export const setRole = mutation({
       throw new ConvexError({ code: "role_already_set" });
     }
     await ctx.db.patch(user._id, { role: args.role });
+  },
+});
+
+/** The candidate's short profile text, shown to employers they apply to. */
+export const updateProfile = mutation({
+  args: { about: v.string() },
+  handler: async (ctx, args) => {
+    const user = await requireRole(ctx, "candidate");
+    await ctx.db.patch(user._id, { about: cleanText(args.about, "about", { max: 280 }) });
+  },
+});
+
+/**
+ * The candidate's starting point and search radius. One point, not a trail:
+ * the app never tracks movement. Saving it also updates the spatial index.
+ */
+export const setHome = mutation({
+  args: { home: point, radiusM: v.number() },
+  handler: async (ctx, args) => {
+    const user = await requireRole(ctx, "candidate");
+    const home = requireTunisianPoint(args.home, "home");
+    const notify = user.notifyNewJobs ?? "all";
+    await ctx.db.patch(user._id, {
+      home,
+      radiusM: clampRadiusM(args.radiusM),
+      notifyNewJobs: notify,
+      onboardedAt: user.onboardedAt ?? Date.now(),
+    });
+    await indexCandidate(ctx, user._id, home, notify);
   },
 });
 

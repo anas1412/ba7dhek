@@ -11,7 +11,10 @@ Milestone 1, without the parts that need outside accounts.
 | Theme from the design tokens, light and dark, Readex Pro | Done |
 | Arabic (Tunisian dialect), French, English; right-to-left switching | Done; the Arabic text needs a native read-through |
 | Convex schema, both spatial indexes, push component | Deployed to the dev deployment |
-| `users` functions: ensure, consent, role, language | Done, tested |
+| `users` functions: ensure, consent, role, language, profile, starting point | Done, tested |
+| Backend for Milestones 2 to 4: companies with manual approval, jobs (draft, publish, close), the nearby feed, swipes, applicants, accept and reject | Done, tested; no screens yet |
+| Word filter, Tunisia-only locations, role and ownership checks | Done, tested |
+| Push fan-out, chat messages, reports, retention job | Not started |
 | Screens: welcome, consent, role, home placeholder, settings | Written; not yet run on a phone |
 | Google sign-in through Clerk | Wired in code; needs the Clerk steps below |
 
@@ -85,6 +88,9 @@ npx expo start --dev-client
 5. In Settings, switching to Arabic warns that the app will reload, then comes back mirrored.
 
 If the build has no Clerk key, it shows a "Setup is not finished" screen instead of crashing.
+
+## Approving a company during development
+Company approval is an admin function. To make yourself an admin, open the `users` table in the Convex dashboard and set `isAdmin` to `true` on your own row. Then run `companies:approve` from the dashboard's function runner with the company's id.
 
 ## Findings so far
 - **Spike 2, partly answered.** In the test backend, the geospatial component's `nearest` returns results closest first and reports a distance for each. The rectangle query with a filter works for the fan-out. Not yet measured: speed on thousands of points on the real deployment.
