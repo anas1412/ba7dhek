@@ -5,7 +5,11 @@ A two-sided marketplace is worthless until both sides are present. A candidate w
 ## Strategy: small and dense
 Launch in one district of one city, and make that district feel full before going anywhere else. Density matters more than reach, because the product only works within a few kilometres.
 
-**The pilot area is the district around the hotel that prompted the idea.** A willing first employer is already there. The name of the city is the one fact these documents do not hold; see [open-questions.md](../00-overview/open-questions.md).
+**The pilot city is Hammamet** (Anas, 2026-11-13). Within it, the pilot starts in the district around the hotel that prompted the idea, where a willing first employer already exists. Which part of Hammamet that is has not been written down yet.
+
+Hammamet is a hotel town, so the anchor vertical and the city fit each other. Two things to plan for, both assumptions until checked on the ground:
+- **Seasonality.** Hotel hiring is expected to peak before and during the summer season. A launch timed ahead of that peak gets the most posts; a winter launch gets fewer hotel jobs and leans on the year-round businesses.
+- **Where candidates live.** Hotel staff may live outside the hotel zones, in the town or in neighbouring towns. Recruit candidates where they live, and expect search radii above the 5 km default.
 
 ## Before anyone is invited
 Two gates come first, and both take weeks:

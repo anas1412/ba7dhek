@@ -17,6 +17,7 @@ A mobile app for Tunisia that shows people the jobs closest to where they live, 
 | Maps | MapLibre with OpenFreeMap; no Google Maps |
 | Job types | All, ranked by distance |
 | Release order | Android first, iOS after the pilot |
+| Pilot city | Hammamet |
 | Payments | None. Local methods later if businesses are ever charged |
 | Users | Adults only |
 | Team | One developer |

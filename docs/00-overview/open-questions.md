@@ -20,13 +20,13 @@ Most earlier questions are now settled; see [decisions.md](decisions.md). What r
 
 ## Needs to be tried
 
-### Does the international tech card pay the Google Play fee?
-- **Why it matters:** Google's help says prepaid cards are not accepted for the 25 USD registration, and the card is prepaid. No report was found either way.
-- **How to settle it:** try it. This is the first task of Milestone 0.
+### The Google Play fee
+- **Settled by Anas (2026-11-13):** a friend abroad pays the 25 USD registration, so the tech card question no longer blocks anything.
+- **One thing to check when registering:** the developer account and its identity verification are in Anas's name while the card is someone else's. Whether Google accepts that combination is unverified.
 
-### Can an individual in Tunisia enrol in the Apple Developer Program?
-- **Why it matters:** iOS depends on it entirely.
-- **How to settle it:** attempt enrolment when iOS work is about to start. Not needed for the Android pilot.
+### iOS
+- **Deferred by Anas (2026-11-13):** enrolment, payment and timing for iOS are his to decide later. Nothing in the Android plan depends on them.
+- The one fixed point is Apple's rule that Google cannot be the only login on iOS; see [decisions.md](decisions.md).
 
 ### Is `ba7dhek.tn` available, and is the name free on the stores?
 - **How to settle it:** search a Tunisian registrar, Google Play and the App Store. A trademark search with the Tunisian institute (INNORPI) is the thorough version.
@@ -36,9 +36,9 @@ See [spikes.md](../03-build/spikes.md): sign-in through Clerk into Convex on a d
 
 ## Needs a fact only the developer has
 
-### Which city and district?
-- The pilot starts around the hotel that prompted the idea. Its location is not written anywhere in these documents.
-- It sets the default map position, the seeding plan and the tester recruitment.
+### Which part of Hammamet?
+- **Settled:** the pilot city is Hammamet.
+- **Still needed:** the district, meaning where the anchor hotel is. It sets the default map position and where the first employers are recruited.
 
 ### Who writes the Tunisian dialect copy?
 - The Arabic interface is in dialect and should be written by a native speaker, with a consistent spelling list. The developer may be that person.

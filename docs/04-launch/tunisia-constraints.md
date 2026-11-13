@@ -24,7 +24,9 @@ The only standard way for an individual resident to pay a foreign website is the
 
 **Decision: build on free tiers that need no card, and pay only the two store fees.**
 
-**First action of the project:** try to pay the Google Play fee with the CTI. If it is refused, the options are a bank-issued international card if one can be obtained, or registering through a company. Find this out before writing the app, not after.
+**The Google Play fee is handled:** a friend abroad pays it (Anas, 2026-11-13). When registering, check that Google accepts a card in another person's name on an account verified in the developer's; that is unverified.
+
+**iOS payments and enrolment** are deferred; Anas decides them later.
 
 ### Payments inside the app
 **None.** The app is free for candidates and employers in the MVP.

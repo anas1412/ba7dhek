@@ -12,7 +12,7 @@ Three things that can each stop the project, started in this order because the f
 - The declaration takes a month of silence to be accepted. The authorisation needs an explicit yes. The build proceeds meanwhile, on test data only.
 
 **Payment and accounts**
-- Obtain the international tech card and try to pay the Google Play registration fee. See [tunisia-constraints.md](../04-launch/tunisia-constraints.md).
+- Register the Google Play developer account; a friend abroad pays the fee. See [tunisia-constraints.md](../04-launch/tunisia-constraints.md).
 - Register `ba7dhek.tn`.
 - Check the name on Google Play and the App Store.
 

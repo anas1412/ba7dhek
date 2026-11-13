@@ -57,8 +57,11 @@ Retention periods are in [data-protection.md](../04-launch/data-protection.md).
 ## Launch
 | Decision | By | Why |
 |---|---|---|
+| Pilot city: Hammamet | Anas | |
 | One district first, dense before wide | delegated | The product only works within a few kilometres |
 | Pilot area: the district around the hotel that prompted the idea | delegated | A willing first employer already exists there |
+| The Google Play fee is paid by a friend abroad | Anas | Avoids the tech card question |
+| iOS enrolment, payment and timing | Anas, deferred | He decides these later |
 | Employers recruited in person and approved by hand | delegated | Solves the empty-feed problem and the fake-job problem together |
 | Candidates recruited through Facebook | delegated | Facebook reaches 63% of the population |
 | The Play closed test doubles as the pilot | delegated | 12 testers for 14 days are needed anyway |
