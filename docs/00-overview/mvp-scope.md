@@ -5,7 +5,7 @@ The MVP proves one loop: an employer posts a job, nearby candidates are notified
 ## In scope
 
 ### Account
-- Sign in with Google (through Clerk). On iOS, Sign in with Apple as well, because Apple requires a second option.
+- Sign in with Google (through Convex Auth). On iOS, Sign in with Apple as well, because Apple requires a second option.
 - A consent screen: privacy notice, terms of use, and a declaration of being 18 or over.
 - Choose a role once: candidate or employer.
 - Delete account from inside the app, and request a copy of your data.
@@ -49,7 +49,7 @@ The MVP proves one loop: an employer posts a job, nearby candidates are notified
 ## Out of scope
 | Item | Why it waits |
 |---|---|
-| Email or phone sign-in | Phone codes need Clerk's paid plan, and support for Tunisian numbers is unpublished |
+| Email or phone sign-in | Phone codes need a paid SMS provider abroad; Google covers the launch platform |
 | Payments of any kind | The app is free. Local payment methods come later, if businesses are ever charged |
 | Users under 18 | Tunisian law requires a judge's authorisation to process a minor's data |
 | Scoring or recommending candidates | The app is an advertising medium, not a placement service |

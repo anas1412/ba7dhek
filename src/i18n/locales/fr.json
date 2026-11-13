@@ -68,7 +68,6 @@
   "setup": {
     "title": "La configuration n'est pas terminée",
     "body": "Il manque des réglages à cette version : elle ne peut encore connecter personne.",
-    "clerk": "Manquant : clé publique Clerk",
     "convex": "Manquant : adresse du déploiement Convex"
   },
   "jobs": {

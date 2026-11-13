@@ -8,7 +8,7 @@ How these are paid from Tunisia is in [tunisia-constraints.md](tunisia-constrain
 | Item | Pilot cost | Card needed |
 |---|---|---|
 | Convex | Free | No |
-| Clerk | Free | No |
+| Convex Auth | Free, open source, runs inside Convex | No |
 | Expo and EAS | Free | No |
 | Push (Expo, FCM) | Free | No |
 | Maps (MapLibre, OpenFreeMap) | Free | No |
@@ -38,15 +38,10 @@ How these are paid from Tunisia is in [tunisia-constraints.md](tunisia-constrain
 - The fan-out is one run per published job, plus component calls.
 - As an estimate only: 500 daily users making 100 calls each is 1.5 million calls a month, slightly past the free allowance.
 
-## Clerk
-**Free Hobby plan**
-- 50,000 monthly retained users per app. A user counts only if they return a day or more after signing up.
-- Up to 3 social connections. The app uses Google, and Apple on iOS.
-- A fixed 7-day session.
+## Sign-in
+Convex Auth is open source and runs inside the Convex deployment, so it adds no cost of its own; its work counts toward Convex's function calls and storage.
 
-**Not on the free plan:** SMS codes and multi-factor authentication. The Pro plan is 25 USD a month.
-
-**Production needs your own OAuth credentials** for Google and Apple. Creating Google OAuth clients is not known to cost anything; whether the Google Cloud project needs billing enabled for it is not confirmed.
+Google sign-in needs a Google Cloud OAuth client. Creating one is not known to cost anything; whether the project needs billing enabled for it is not confirmed.
 
 ## Expo and EAS
 **Free plan**
@@ -83,7 +78,7 @@ How these are paid from Tunisia is in [tunisia-constraints.md](tunisia-constrain
 | Past 1 million Convex calls a month | Pay-as-you-go, which needs a card |
 | Past 1,000 update users | A paid EAS plan, or fewer updates |
 | Starting iOS | 99 USD a year |
-| Needing longer sessions or SMS in Clerk | 25 USD a month |
+| Adding phone sign-in | An SMS provider, priced per message |
 
 **The first paid service will strain the tech card.** Its ceiling is 1,000 TND a year for an individual. One 25 USD monthly plan is 300 USD a year, which is most of it. Reaching that point is a reason to register a company, whose ceiling is 10,000 TND.
 

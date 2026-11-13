@@ -216,6 +216,27 @@ Source: Code du travail, 2010 consolidated edition (https://a-mla.org/sites/defa
 - Components are registered in `convex/convex.config.ts` with `app.use(...)`.
 - Push component: `sendPushNotification(ctx, { userId, notification })`, `sendPushNotificationBatch`, `removePushNotificationToken`. Its source keeps one token per user; the README does not say so.
 
+## Convex Auth
+Read from the installed packages on 2026-11-13, and from https://docs.convex.dev/auth/convex-auth and https://github.com/get-convex/convex-auth.
+
+**The app uses Convex Auth, not Clerk.** The Clerk sections above are kept as a record of what was checked before the switch.
+
+- `@convex-dev/auth` 2.0.0 was published on 12 November 2026 and is the `latest` tag. Its type definitions say: "React Native isn't supported yet", the return address "must be an http or https URL", and "custom schemes like `myapp://` are not supported yet".
+- The 2.x docs list React web apps and Next.js only, and call 2.x "the current stable release". The repository has no React Native example.
+- The 0.x line: latest is 0.0.98, with peer dependency `@auth/core` ^0.41.1. Its README-level status: "no longer the recommended auth solution, but it will be receiving security updates for the time being".
+- In 0.0.98, `signIn` returns `redirect?: URL`, described as "useful in RN for opening the in-app browser", and accepts `code`, "used only in RN" for "the code from an OAuth flow". `ConvexAuthProvider` takes a `storage`, and "you must set this for React Native".
+- By default only relative paths and addresses starting with `SITE_URL` are accepted as `redirectTo`; a `redirect` callback overrides that.
+- Its setup tool says "React Native projects don't require a SITE_URL".
+- The user id is the first part of the token subject, split on `|`.
+- `authTables.users` has optional `name`, `image`, `email`, `emailVerificationTime`, `phone`, `phoneVerificationTime`, `isAnonymous`, with indexes `email` and `phone`.
+- "All the data in Convex Auth is stored inside of your app's database."
+
+**Checked on the live dev deployment**
+- `GET /.well-known/openid-configuration` returns 200.
+- `GET /.well-known/jwks.json` returns 200 with one RSA signing key.
+
+**Not verified:** a completed sign-in on a device; the return from the in-app browser into the app; that the stored private key is well-formed.
+
 ## Still NOT verified
 Collected here so they are easy to find and check off.
 
@@ -230,7 +251,7 @@ Collected here so they are easy to find and check off.
 | Free allowance in Convex's EU region | costs |
 | Whether Convex's self-hosted version runs the components used here | data-protection |
 | Whether Google OAuth clients need a billing-enabled project | auth, costs |
-| Whether a Clerk production instance needs an owned domain | auth |
+| A completed Google sign-in through Convex Auth on a device | auth, setup, spikes |
 | Whether `convex-test` runs components | testing |
 | `nearest` result order and `limit` ceiling in the geospatial component | geo-matching, spikes |
 | `ba7dhek.tn` availability; the name on the stores; trademark | open-questions |

@@ -21,3 +21,14 @@ export function setupBackend() {
 }
 
 export const HAMMAMET = { latitude: 36.4, longitude: 10.6167 };
+
+/**
+ * Stands in for a Google sign-in: Convex Auth creates the user row, then
+ * issues a token whose subject is "<user id>|<session id>".
+ */
+export async function signedIn(t: ReturnType<typeof setupBackend>, name: string) {
+  const id = await t.run((ctx) =>
+    ctx.db.insert("users", { name, email: `${name.toLowerCase()}@example.test` }),
+  );
+  return { id, as: t.withIdentity({ subject: `${id}|test-session` }) };
+}

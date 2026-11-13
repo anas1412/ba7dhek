@@ -8,7 +8,9 @@
  * @module
  */
 
+import type * as auth from "../auth.js";
 import type * as companies from "../companies.js";
+import type * as http from "../http.js";
 import type * as jobs from "../jobs.js";
 import type * as lib_auth from "../lib/auth.js";
 import type * as lib_geo from "../lib/geo.js";
@@ -25,7 +27,9 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
+  auth: typeof auth;
   companies: typeof companies;
+  http: typeof http;
   jobs: typeof jobs;
   "lib/auth": typeof lib_auth;
   "lib/geo": typeof lib_geo;

@@ -22,14 +22,14 @@ Every decision taken so far, with who took it and why. Decisions marked "Anas" w
 |---|---|---|
 | React Native, Expo, EAS | Anas | |
 | Convex backend | Anas | More practical for one developer |
-| Clerk for sign-in | Anas | |
+| Convex Auth for sign-in, on the 0.x line | Anas | He has used it before; it removes a US-only service. Version 2.0 does not support React Native yet |
 | Google sign-in on Android and iOS | Anas | |
 | Sign in with Apple beside Google, on iOS only | delegated | Apple guideline 4.8 rejects an app whose only login is a third-party one |
 | Android first, iOS after the pilot | delegated | Android has 83% of the Tunisian market; iOS needs a paid account whose availability from Tunisia is unconfirmed |
 | Personal Google Play account | delegated | An organisation account needs a registered company |
 | Geo matching on the server; no background location | delegated | Simpler, private, and passes store review more easily |
 | MapLibre with OpenFreeMap, not Google Maps | delegated | Google Maps needs a billing account, and Google refuses prepaid cards |
-| No phone sign-in | delegated | Needs a paid Clerk plan; Tunisian SMS support and price are unpublished |
+| No phone sign-in | delegated | Needs a paid SMS provider abroad |
 | i18next with Intl polyfills | delegated | React Native's engine lacks parts of `Intl` that Arabic plurals need |
 | One device per user for push | delegated | The push component stores one token per user |
 | Convex production deployment in Ireland | delegated | The easiest destination to defend under the transfer-abroad rule |
@@ -71,6 +71,7 @@ Retention periods are in [data-protection.md](../04-launch/data-protection.md).
 | Earlier position | Now | Reason |
 |---|---|---|
 | Supabase | Convex | Anas's preference |
+| Clerk | Convex Auth | Anas's decision, after the code was first wired for Clerk |
 | Working name "Bahdhek" | Ba7dhek | Anas's choice |
 | Google sign-in alone on iOS | Google and Apple on iOS | Apple guideline 4.8 |
 | `react-native-maps` | MapLibre | Billing risk with Google from Tunisia |

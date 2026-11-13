@@ -7,7 +7,7 @@ One row per signed-in person.
 
 | Field | Type | Notes |
 |---|---|---|
-| `tokenIdentifier` | string | From the Clerk identity. The lookup key. |
+| `name`, `image`, `email` | string, optional | Written by Convex Auth at sign-in, from Google |
 | `role` | `"candidate"` \| `"employer"` \| unset | Chosen once after first sign-in |
 | `name` | string | Prefilled from Google |
 | `photoUrl` | string, optional | |
@@ -25,9 +25,11 @@ One row per signed-in person.
 | `lastSeenAt` | number | Updated on sign-in; drives the 24-month retention rule |
 | `onboardedAt` | number, optional | |
 
-No date of birth is stored; age is a declaration. No email is stored in Convex; it stays in Clerk.
+No date of birth is stored; age is a declaration. The email from Google is stored on the row and never returned to any client.
 
-Indexes: `by_token` on `tokenIdentifier`.
+The row is created by Convex Auth at first sign-in, so every field the app adds is optional. Convex Auth also adds its own tables for accounts, sessions and tokens.
+
+Indexes: `email` and `phone`, which Convex Auth requires. Users are looked up by id, taken from the session.
 
 ## companies
 | Field | Type | Notes |

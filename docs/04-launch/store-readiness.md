@@ -95,7 +95,7 @@ See [data-protection.md](data-protection.md).
 ## Before pressing submit
 - [ ] The manual pass in [testing.md](../03-build/testing.md) completed on a release build.
 - [ ] Production Convex deployment holds no test data except the flagged demo jobs.
-- [ ] Production Clerk instance uses its own Google OAuth credentials; Clerk requires custom credentials in production.
+- [ ] Production Convex deployment has its own signing keys and Google OAuth client, with the production callback address registered in Google Cloud.
 - [ ] Push works on the release build.
 - [ ] Every screen checked in Arabic.
 

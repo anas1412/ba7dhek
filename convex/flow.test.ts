@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { api } from "./_generated/api";
-import { HAMMAMET, setupBackend } from "./test.setup";
+import { HAMMAMET, setupBackend, signedIn } from "./test.setup";
 
 type Backend = ReturnType<typeof setupBackend>;
 
@@ -12,7 +12,7 @@ const PARIS = { latitude: 48.8566, longitude: 2.3522 };
 
 /** A signed-in user who has accepted consent and picked a role. */
 async function person(t: Backend, name: string, role: "candidate" | "employer") {
-  const as = t.withIdentity({ tokenIdentifier: `test|${name}`, name });
+  const { as } = await signedIn(t, name);
   await as.mutation(api.users.ensure, { language: "fr" });
   await as.mutation(api.users.acceptConsent, { adult: true });
   await as.mutation(api.users.setRole, { role });
@@ -20,8 +20,8 @@ async function person(t: Backend, name: string, role: "candidate" | "employer") 
 }
 
 async function admin(t: Backend) {
-  const as = t.withIdentity({ tokenIdentifier: "test|admin", name: "Admin" });
-  const id = await as.mutation(api.users.ensure, { language: "fr" });
+  const { as, id } = await signedIn(t, "Admin");
+  await as.mutation(api.users.ensure, { language: "fr" });
   await t.run((ctx) => ctx.db.patch(id, { isAdmin: true }));
   return as;
 }

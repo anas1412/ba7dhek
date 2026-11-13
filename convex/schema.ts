@@ -1,3 +1,4 @@
+import { authTables } from "@convex-dev/auth/server";
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 
@@ -20,12 +21,23 @@ export const contractType = v.union(
 export const payPeriod = v.union(v.literal("hour"), v.literal("day"), v.literal("month"));
 
 export default defineSchema({
+  // Sessions, accounts and tokens for Convex Auth.
+  ...authTables,
+
+  // Replaces authTables.users: the same sign-in fields, plus the app's own.
   users: defineTable({
-    tokenIdentifier: v.string(),
-    name: v.string(),
-    photoUrl: v.optional(v.string()),
-    language,
-    lastSeenAt: v.number(),
+    // Written by Convex Auth when someone signs in with Google.
+    name: v.optional(v.string()),
+    image: v.optional(v.string()),
+    email: v.optional(v.string()),
+    emailVerificationTime: v.optional(v.number()),
+    phone: v.optional(v.string()),
+    phoneVerificationTime: v.optional(v.number()),
+    isAnonymous: v.optional(v.boolean()),
+
+    // Set by `users.ensure` right after sign-in.
+    language: v.optional(language),
+    lastSeenAt: v.optional(v.number()),
 
     // Consent comes before any profile data. See docs/04-launch/data-protection.md.
     consentAt: v.optional(v.number()),
@@ -44,7 +56,10 @@ export default defineSchema({
     isAdmin: v.optional(v.boolean()),
     banned: v.optional(v.boolean()),
     onboardedAt: v.optional(v.number()),
-  }).index("by_token", ["tokenIdentifier"]),
+  })
+    // Convex Auth looks users up through these two indexes.
+    .index("email", ["email"])
+    .index("phone", ["phone"]),
 
   companies: defineTable({
     ownerId: v.id("users"),

@@ -92,7 +92,7 @@ export const forJob = query({
           appliedAt: swipe._creationTime,
           decision: swipe.decision ?? "pending",
           name: candidate?.name ?? "",
-          photoUrl: candidate?.photoUrl ?? null,
+          photoUrl: candidate?.image ?? null,
           about: candidate?.about ?? null,
           distanceBucket: distanceBucket(swipe.distanceM),
         };

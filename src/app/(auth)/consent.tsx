@@ -1,4 +1,4 @@
-import { useAuth } from '@clerk/expo';
+import { useAuthActions } from '@convex-dev/auth/react';
 import { api } from '@convex/_generated/api';
 import { useMutation } from 'convex/react';
 import { useRouter } from 'expo-router';
@@ -19,7 +19,7 @@ export default function Consent() {
   const { t } = useTranslation();
   const theme = useTheme();
   const router = useRouter();
-  const { signOut } = useAuth();
+  const { signOut } = useAuthActions();
   const acceptConsent = useMutation(api.users.acceptConsent);
 
   const [adult, setAdult] = useState(false);

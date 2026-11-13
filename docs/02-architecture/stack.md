@@ -9,7 +9,7 @@ Facts marked "verified" are listed with sources in [verified-facts.md](../05-ref
 | Navigation | Expo Router |
 | Backend | Convex |
 | Geo queries | Convex geospatial component |
-| Auth | Clerk: Google sign-in, plus Sign in with Apple on iOS |
+| Auth | Convex Auth (0.x): Google sign-in, plus Sign in with Apple on iOS |
 | Push | Expo push notifications, through the Convex Expo push component |
 | Location | `expo-location`, foreground only |
 | Maps | MapLibre React Native with OpenFreeMap tiles |
@@ -22,7 +22,7 @@ Facts marked "verified" are listed with sources in [verified-facts.md](../05-ref
 - One codebase for Android and iOS.
 - The latest release is Expo SDK 58 (15 October 2026), which ships React Native 0.88 (verified). Use whichever SDK `create-expo-app` installs on the day; it may still be SDK 57.
 - EAS builds iOS in the cloud, so a Windows machine is enough for Android and for producing iOS builds. Installing an iOS build on a phone through EAS needs the paid Apple Developer account (verified).
-- Development builds from day one, not Expo Go. Three things in this app cannot run in Expo Go (all verified): native Google sign-in through Clerk, remote push on Android (since SDK 53), and MapLibre.
+- Development builds from day one, not Expo Go. Three things in this app cannot run in Expo Go (all verified): switching layout direction for Arabic, remote push on Android (since SDK 53), and MapLibre.
 
 ## Backend: Convex
 **Why Convex**
@@ -39,15 +39,15 @@ Facts marked "verified" are listed with sources in [verified-facts.md](../05-ref
 **The alternative that was considered: Supabase**
 Postgres with PostGIS would make the feed a single SQL query and keep the data portable. Convex was chosen because it is more practical for one developer: less wiring for realtime, and one language everywhere. The geo component covers what the MVP needs; see [geo-matching.md](geo-matching.md) for its limits.
 
-## Auth: Clerk
-- Convex documents Clerk integration and says it works with Clerk's Expo SDK (verified). It shows no Expo example, so the integration is the first spike.
-- Clerk's Expo package is `@clerk/expo` (verified).
-- Free Hobby plan: up to 50,000 monthly retained users and up to 3 social connections (verified).
-- Convex Auth was ruled out: its stable v2 docs list only React web apps and Next.js, with no mention of React Native (verified).
+## Auth: Convex Auth
+- Runs inside the Convex backend; no separate identity service, and nothing extra to pay for.
+- On the 0.x line (0.0.98), which supports the React Native sign-in flow. Version 2.0.0, published 12 November 2026, says in its own types that React Native is not supported yet (verified in the installed packages).
+- Google sign-in opens in an in-app browser, not Google's native sheet.
+- Clerk was the first choice and was replaced: it would have added a US-only service to the data protection filing.
 
 Google sign-in on both platforms, by decision. On iOS a second option, Sign in with Apple, sits beside it, because Apple's guideline 4.8 does not allow Google as the only login (verified). Details in [auth.md](auth.md).
 
-Email and phone codes can be added later. SMS codes need Clerk's paid plan, and only the US and Canada are enabled by default; whether Tunisian numbers are supported, and at what price, is not published (verified that it is not published).
+Email and phone codes can be added later through Convex Auth, each with its own sending service.
 
 ## Push: Expo push with the Convex component
 - The component stores tokens, batches sends, and retries failures with exponential backoff (verified).

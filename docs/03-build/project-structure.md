@@ -9,7 +9,7 @@ ba7dhek/
 ├── README.md
 ├── docs/                         planning documents (this set)
 ├── app/                          Expo Router routes: screens only, thin
-│   ├── _layout.tsx               providers: Clerk, Convex, i18n, theme
+│   ├── _layout.tsx               providers: Convex Auth, i18n, theme
 │   ├── index.tsx                 decides where to send the user
 │   ├── (auth)/
 │   │   ├── welcome.tsx
@@ -47,7 +47,9 @@ ba7dhek/
 ├── convex/
 │   ├── schema.ts
 │   ├── convex.config.ts          registers the geospatial and push components
-│   ├── auth.config.ts            Clerk issuer
+│   ├── auth.ts                   Convex Auth: Google provider, return-address check
+│   ├── auth.config.ts            trusts tokens from the deployment itself
+│   ├── http.ts                   sign-in routes
 │   ├── users.ts
 │   ├── companies.ts
 │   ├── jobs.ts                   feed, publish, close
@@ -83,11 +85,13 @@ ba7dhek/
 - **Logical layout properties only** (`start`, `end`), for right-to-left.
 
 ## Environments
-| Environment | Convex deployment | Clerk instance | Build profile |
-|---|---|---|---|
-| Development | dev deployment (personal) | development | `development` |
-| Testers | production deployment | production | `preview` |
-| Stores | production deployment | production | `production` |
+| Environment | Convex deployment | Build profile |
+|---|---|---|
+| Development | dev deployment (personal) | `development` |
+| Testers | production deployment | `preview` |
+| Stores | production deployment | `production` |
+
+Each Convex deployment has its own signing keys and its own Google OAuth redirect address.
 
 Testers and store builds share one backend in the MVP. A separate staging backend is not worth its cost for one developer before launch.
 

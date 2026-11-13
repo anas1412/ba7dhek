@@ -68,7 +68,6 @@
   "setup": {
     "title": "Setup is not finished",
     "body": "This build is missing configuration, so it cannot sign anyone in yet.",
-    "clerk": "Missing: Clerk publishable key",
     "convex": "Missing: Convex deployment address"
   },
   "jobs": {

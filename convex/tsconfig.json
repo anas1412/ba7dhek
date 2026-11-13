@@ -11,6 +11,8 @@
     "jsx": "react-jsx",
     "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
+    /* auth.config.ts reads process.env. */
+    "types": ["node"],
 
     /* These compiler options are required by Convex */
     "target": "ESNext",
@@ -21,5 +23,6 @@
     "noEmit": true
   },
   "include": ["./**/*"],
-  "exclude": ["./_generated"]
+  /* Tests are typechecked by the root tsconfig and never deployed. */
+  "exclude": ["./_generated", "./**/*.test.ts", "./test.setup.ts"]
 }

@@ -20,7 +20,7 @@ The only standard way for an individual resident to pay a foreign website is the
 | Apple Developer Program | 99 USD a year | Apple asks for a credit card in the developer's own name that can be charged in USD. Whether a CTI is accepted is not confirmed. Apple publishes no list of countries where enrolment is possible. |
 | Both together | 124 USD in year one | Should fit within 1,000 TND, leaving little for anything else that year. The exchange rate was not checked. |
 | Google Cloud billing (for Google Maps) | None if unused | Avoided entirely; see Maps below. |
-| Convex, Clerk, Expo | Zero on free plans | No card needed. |
+| Convex, Expo | Zero on free plans | No card needed. |
 
 **Decision: build on free tiers that need no card, and pay only the two store fees.**
 
@@ -60,9 +60,9 @@ Google Maps on Android needs a Google Cloud billing account with a payment metho
 The cost: no address search. Users place a pin.
 
 ## Phone sign-in
-- SMS codes through Clerk need the paid plan (25 USD a month).
-- Only the US and Canada are enabled by default; other countries are switched on in the dashboard.
-- Whether Tunisian numbers are supported, and the price per message, is not published.
+- Convex Auth can send codes by SMS, but only through an SMS provider that the developer signs up for and pays.
+- That means another foreign service, another payment from the tech card, and another entry in the data protection filing.
+- No provider or price for Tunisian numbers has been checked.
 
 **Decision: no phone sign-in.** Google accounts are near-universal on Android, which is the launch platform; that is an inference from Android's design, not a measured figure. Revisit only if the welcome screen shows people dropping off.
 
@@ -71,7 +71,7 @@ The cost: no address search. Users place a pin.
 - Price at OVH Tunisia: about 9.7 TND for the first year, 14.3 TND a year after. Paid locally in dinars, so the CTI is not needed.
 - Registrars are listed at registre.tn.
 
-**Decision: register `ba7dhek.tn`**, if it is free; availability was not checked. It is needed for the privacy notice, the account deletion page Google requires, the support email, and probably the Clerk production instance. The Android package name follows: `tn.ba7dhek.app`.
+**Decision: register `ba7dhek.tn`**, if it is free; availability was not checked. It is needed for the privacy notice, the account deletion page Google requires, and the support email. The Android package name follows: `tn.ba7dhek.app`.
 
 ## Hosting data abroad
 Tunisian law requires an authorisation from the data protection authority before personal data is sent abroad. All of this app's hosting is abroad.

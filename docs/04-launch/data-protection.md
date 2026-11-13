@@ -34,12 +34,12 @@ Whether there is a fee and whether filing can be done online are unverified; the
 - The destination must offer "un niveau de protection adéquat" (art. 51).
 - The same art. 90 penalty applies to transferring without authorisation.
 
-**This is the hardest constraint in the whole project.** The app's data lives with Convex and Clerk, both outside Tunisia.
+**This is the hardest constraint in the whole project.** The app's data lives with Convex, outside Tunisia.
 
 | Service | Where data is stored | Choice |
 |---|---|---|
 | Convex | US by default; Ireland, Sydney and Canada also offered | Ireland, for production |
-| Clerk | United States only; no region selection | No choice available |
+| Google (sign-in) | The person signs in with their own Google account; Google sends back name, email and photo | Disclosed in the notice |
 | Expo push, FCM, APNs | Outside Tunisia | Push tokens and notification text |
 
 **App response**

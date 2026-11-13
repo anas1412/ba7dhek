@@ -38,16 +38,10 @@
         "expo-localization",
         {
           "supportsRTL": true,
-          "supportedLocales": [
-            "ar",
-            "fr",
-            "en"
-          ]
+          "supportedLocales": ["ar", "fr", "en"]
         }
       ],
-      "expo-secure-store",
-      "@clerk/expo",
-      "@clerk/expo-google-signin"
+      "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true,

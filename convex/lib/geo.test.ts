@@ -12,12 +12,7 @@ const northOf = (meters: number) => ({
 
 async function seedJobs(t: ReturnType<typeof setupBackend>, distances: number[]) {
   return await t.run(async (ctx) => {
-    const owner = await ctx.db.insert("users", {
-      tokenIdentifier: "test|owner",
-      name: "Owner",
-      language: "fr",
-      lastSeenAt: 0,
-    });
+    const owner = await ctx.db.insert("users", { name: "Owner", language: "fr" });
     const company = await ctx.db.insert("companies", {
       ownerId: owner,
       name: "Hotel",
@@ -97,12 +92,7 @@ describe("candidates index", () => {
     const t = setupBackend();
     const ids = await t.run(async (ctx) => {
       const make = async (name: string, meters: number, notify: "all" | "off") => {
-        const id = await ctx.db.insert("users", {
-          tokenIdentifier: `test|${name}`,
-          name,
-          language: "ar",
-          lastSeenAt: 0,
-        });
+        const id = await ctx.db.insert("users", { name, language: "ar" });
         await indexCandidate(ctx, id, northOf(meters), notify);
         return id;
       };

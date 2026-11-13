@@ -7,7 +7,7 @@ The app's core data is where people live. That makes privacy a design constraint
 ## What is collected
 | Data | Source | Purpose |
 |---|---|---|
-| Name, photo, Google account identifier, email | Google sign-in through Clerk | Account and profile |
+| Name, photo, Google account identifier, email | Google sign-in, through Convex Auth | Account and profile |
 | Role | User | Which side of the app they see |
 | About text, experience tags | Candidate | Shown to employers they apply to |
 | Home point (coordinates) | Candidate: GPS once, or a map pin | Feed and notifications |
@@ -46,7 +46,7 @@ There is no way to browse or search candidates.
 ## Third parties
 | Service | Receives | Where |
 |---|---|---|
-| Clerk | Google or Apple identity, email, session data | United States; no other region offered |
+| Google | The sign-in itself; Google learns that the person uses the app | Outside Tunisia |
 | Convex | All app data | Ireland for production (US, Sydney and Canada also offered) |
 | Expo Push, then Google (FCM) and Apple (APNs) | Push tokens and notification content | Outside Tunisia |
 | OpenFreeMap | Requests for map tiles of the areas viewed, with the device's IP address | Outside Tunisia; no account or identifier |
@@ -65,7 +65,7 @@ The map never sends a candidate's home point to the tile service. It sends which
 - The privacy policy is linked from the welcome screen and from Settings, in three languages.
 
 ## Retention and deletion
-- **Account deletion** is in the app and immediate: profile, home point, swipes and push tokens are removed; the employer's jobs are closed; the Clerk user is deleted.
+- **Account deletion** is in the app and immediate: profile, home point, swipes and push tokens are removed; the employer's jobs are closed; the sign-in records are deleted with the rest.
 - Messages a deleted user sent remain in the other person's chat, attributed to "Deleted user", until the chat's own retention period ends.
 - Reports are kept after deletion of the reported account, without the profile data, to prevent re-registration abuse.
 - **Retention periods** for everything else are in [data-protection.md](data-protection.md): accounts unused for 24 months, and swipes, chats and closed jobs after 12 months. A scheduled job enforces them.

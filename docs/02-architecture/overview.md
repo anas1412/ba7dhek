@@ -8,9 +8,7 @@ flowchart LR
     App[Expo app<br/>React Native + Expo Router]
   end
 
-  subgraph Clerk
-    Auth[Google sign-in<br/>session tokens]
-  end
+  Google[Google sign-in]
 
   subgraph Convex
     Fn[Queries, mutations, actions]
@@ -23,8 +21,9 @@ flowchart LR
   Expo[Expo Push Service]
   Stores[FCM / APNs]
 
-  App -- sign in --> Auth
-  App -- live queries + mutations, with Clerk token --> Fn
+  App -- sign in, in an in-app browser --> Google
+  Google -- result --> Fn
+  App -- live queries + mutations, with session token --> Fn
   Fn --> DB
   Fn --> Geo
   Fn --> Sched
@@ -33,7 +32,7 @@ flowchart LR
 ```
 
 - **Expo app:** all UI. Holds no business rules beyond input validation.
-- **Clerk:** identity only. It proves who the user is; everything about the user lives in Convex.
+- **Google:** proves who the person is. Convex Auth, running inside Convex, turns that into a session; no separate identity service is involved.
 - **Convex:** the whole backend. Functions, database, live subscriptions, scheduling.
 - **Geospatial component:** a spatial index beside the tables. It answers "what is near this point".
 - **Expo push component:** stores device tokens and delivers notifications with batching and retries.

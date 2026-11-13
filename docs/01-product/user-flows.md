@@ -4,7 +4,7 @@ Screen names refer to [screens.md](screens.md).
 
 ## 1. First launch (both roles)
 1. Welcome screen → "Continue with Google". On iOS, "Continue with Apple" is offered too.
-2. Sign-in completes through Clerk.
+2. Google opens in an in-app browser; sign-in completes through Convex Auth.
 3. **Consent screen.** The privacy notice and terms of use, a declaration of being 18 or over, and an explicit accept button. Nothing is pre-ticked. It states that swiping right on a job shows that employer your name, photo, "about" text and a distance range. Accepting stores the time and the notice version.
 4. Role choice: "I'm looking for work" or "I'm hiring". Stored once on the user record.
 5. Branch to candidate onboarding or employer onboarding.
@@ -74,5 +74,5 @@ If permission for location or push is refused, onboarding still completes. The m
 
 ## 11. Delete account
 1. Settings → Delete account → confirm.
-2. Server removes the user's profile, swipes, geo entry and push tokens, closes their jobs if they are an employer, and removes the Clerk user.
+2. Server removes the user's profile, swipes, geo entry and push tokens, closes their jobs if they are an employer, and removes the sign-in records.
 3. Messages they sent remain in the other party's chat, attributed to "Deleted user".

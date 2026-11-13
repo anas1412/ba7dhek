@@ -32,7 +32,7 @@ Most earlier questions are now settled; see [decisions.md](decisions.md). What r
 - **How to settle it:** search a Tunisian registrar, Google Play and the App Store. A trademark search with the Tunisian institute (INNORPI) is the thorough version.
 
 ### The three technical spikes
-See [spikes.md](../03-build/spikes.md): sign-in through Clerk into Convex on a development build, the feed query on seeded data, and a real push from the fan-out.
+See [spikes.md](../03-build/spikes.md): Google sign-in through Convex Auth on a development build, the feed query on seeded data, and a real push from the fan-out.
 
 ## Needs a fact only the developer has
 
@@ -44,4 +44,4 @@ See [spikes.md](../03-build/spikes.md): sign-in through Clerk into Convex on a d
 - The Arabic interface is in dialect and should be written by a native speaker, with a consistent spelling list. The developer may be that person.
 
 ### Is there a registered company, or will there be one?
-- A company would change three things: the tech card ceiling (10,000 TND), the Play account type (no 12-tester test), and the Clerk and store identities. The plan assumes there is none.
+- A company would change three things: the tech card ceiling (10,000 TND), the Play account type (no 12-tester test), and the store identity. The plan assumes there is none.

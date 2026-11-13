@@ -1,24 +1,22 @@
 # Setup
 
-How to run what exists, and the account steps that only the developer can do.
+How to run what exists, and the steps that only the developer can do.
 
 ## What is built
-Milestone 1, without the parts that need outside accounts.
-
 | Part | State |
 |---|---|
 | Expo SDK 58 app, Expo Router, TypeScript | Scaffolded |
 | Theme from the design tokens, light and dark, Readex Pro | Done |
 | Arabic (Tunisian dialect), French, English; right-to-left switching | Done; the Arabic text needs a native read-through |
 | Convex schema, both spatial indexes, push component | Deployed to the dev deployment |
+| Sign-in with Convex Auth and Google | Backend deployed and its routes verified; needs the Google steps below |
 | `users` functions: ensure, consent, role, language, profile, starting point | Done, tested |
 | Backend for Milestones 2 to 4: companies with manual approval, jobs (draft, publish, close), the nearby feed, swipes, applicants, accept and reject | Done, tested; no screens yet |
 | Word filter, Tunisia-only locations, role and ownership checks | Done, tested |
-| Push fan-out, chat messages, reports, retention job | Not started |
 | Screens: welcome, consent, role, home placeholder, settings | Written; not yet run on a phone |
-| Google sign-in through Clerk | Wired in code; needs the Clerk steps below |
+| Push fan-out, chat messages, reports, retention job, account deletion | Not started |
 
-**Not verified:** nothing has run on a device. The code typechecks, lints, passes its tests and bundles for Android, but no screen has been seen and sign-in has not been exercised. That is Spike 1.
+**Not verified:** nothing has run on a device. The code typechecks, lints, passes its tests and bundles for Android, and Expo's health check passes, but no screen has been seen and no sign-in has been completed. That is Spike 1.
 
 ## Commands
 ```bash
@@ -31,40 +29,33 @@ npm run lint
 ```
 
 ```bash
-npx convex dev
+npm run backend
 ```
 Watches `convex/` and pushes changes to the dev deployment.
 
 ## Steps that need you
 
-### 1. Clerk
-1. Create a Clerk application (development instance).
-2. Under sign-in options, enable Google only.
-3. Activate the Convex integration and copy the Frontend API URL it shows.
-4. Set it on the Convex deployment:
+### 1. A Google OAuth client
+Sign-in cannot work until the backend has Google credentials.
+
+1. In Google Cloud Console, create a project, then configure the OAuth consent screen.
+2. Under Credentials, create an OAuth client ID of type **Web application**.
+3. Add this authorised redirect URI, which is the dev deployment's callback:
+   ```
+   https://patient-mouse-884.convex.site/api/auth/callback/google
+   ```
+4. Set the client's ID and secret on the Convex deployment. Run each command and paste the value when asked, so it stays out of your shell history:
    ```bash
-   npx convex env set CLERK_JWT_ISSUER_DOMAIN <the Frontend API URL>
+   npx convex env set AUTH_GOOGLE_ID
    ```
-5. Add the publishable key to `.env.local`:
+   ```bash
+   npx convex env set AUTH_GOOGLE_SECRET
    ```
-   EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_...
-   ```
 
-Once step 4 is done, `convex/auth.config.ts` can be added. It is left out until then because Convex refuses to deploy an auth config whose environment variable is unset.
+The type is "Web application" even though the app is native, because Google hands the result to the Convex backend, not to the phone.
 
-### 2. Google sign-in
-Follow Clerk's guide: https://clerk.com/docs/expo/guides/configure/auth-strategies/sign-in-with-google
-
-In short: three OAuth client IDs in Google Cloud (Android, iOS, Web), the Android one with the signing key's SHA-1, then in `.env.local`:
-```
-EXPO_PUBLIC_CLERK_GOOGLE_WEB_CLIENT_ID=...
-EXPO_PUBLIC_CLERK_GOOGLE_ANDROID_CLIENT_ID=...
-EXPO_PUBLIC_CLERK_GOOGLE_IOS_CLIENT_ID=...
-```
-A development Clerk instance can use Clerk's shared Google credentials at first.
-
-### 3. A development build
-The app cannot run in Expo Go: native Google sign-in needs a development build.
+### 2. A development build
+The app cannot run in Expo Go: switching layout direction, push and maps all need a development build.
 
 ```bash
 npx eas-cli@latest login
@@ -82,12 +73,21 @@ npx expo start --dev-client
 
 ## What the first run should show
 1. Welcome screen in the phone's language, with "Continue with Google".
-2. After sign-in: the consent screen. "I agree" stays disabled until the 18-or-over box is ticked.
-3. Role choice.
-4. A placeholder home and a Settings tab.
-5. In Settings, switching to Arabic warns that the app will reload, then comes back mirrored.
+2. Tapping it opens Google in an in-app browser. After signing in, the browser closes.
+3. The consent screen. "I agree" stays disabled until the 18-or-over box is ticked.
+4. Role choice.
+5. A placeholder home and a Settings tab.
+6. In Settings, switching to Arabic warns that the app will reload, then comes back mirrored.
 
-If the build has no Clerk key, it shows a "Setup is not finished" screen instead of crashing.
+If the build has no Convex address, it shows a "Setup is not finished" screen instead of crashing.
+
+## What is already set on the dev deployment
+| Variable | Purpose |
+|---|---|
+| `JWT_PRIVATE_KEY` | Signs session tokens |
+| `JWKS` | The matching public key |
+
+These were generated for this deployment and exist nowhere else. A production deployment needs its own pair.
 
 ## Approving a company during development
 Company approval is an admin function. To make yourself an admin, open the `users` table in the Convex dashboard and set `isAdmin` to `true` on your own row. Then run `companies:approve` from the dashboard's function runner with the company's id.
@@ -96,3 +96,5 @@ Company approval is an admin function. To make yourself an admin, open the `user
 - **Spike 2, partly answered.** In the test backend, the geospatial component's `nearest` returns results closest first and reports a distance for each. The rectangle query with a filter works for the fan-out. Not yet measured: speed on thousands of points on the real deployment.
 - The push component's method for removing a token is `removeToken`, in version 0.4.2.
 - Tests run the real geospatial component through `convex-test`, so geo logic is testable without the cloud.
+- **Convex Auth 2.0.0 does not support React Native yet**, by its own type definitions; the app uses 0.0.98. See [auth.md](../02-architecture/auth.md).
+- Setting a JSON value with `npx convex env set NAME value` from Windows PowerShell strips its quotes. Use `--from-file`, or paste the value at the prompt.

@@ -11,7 +11,7 @@ A mobile app for Tunisia that shows people the jobs closest to where they live, 
 |---|---|
 | Platform | React Native with Expo; builds and releases through EAS |
 | Backend | Convex, with its geospatial component |
-| Sign-in | Clerk. Google on Android and iOS; Apple as well on iOS, which Apple requires |
+| Sign-in | Convex Auth (0.x line). Google on Android and iOS; Apple as well on iOS, which Apple requires |
 | Languages | Arabic (Tunisian dialect), French and English from the first screen; Arabic right to left |
 | Geo matching | On the server. One stored home point per candidate; no background location |
 | Maps | MapLibre with OpenFreeMap; no Google Maps |
@@ -71,7 +71,7 @@ To reconnect on another machine, run `npx convex dev` and pick the existing `ba7
 - [stack.md](docs/02-architecture/stack.md): each tool and why
 - [data-model.md](docs/02-architecture/data-model.md): tables, fields, indexes
 - [geo-matching.md](docs/02-architecture/geo-matching.md): the feed, the fan-out, index sync
-- [auth.md](docs/02-architecture/auth.md): Clerk with Convex, roles, authorisation
+- [auth.md](docs/02-architecture/auth.md): Convex Auth, Google sign-in, roles, authorisation
 - [push.md](docs/02-architecture/push.md): notification delivery
 - [i18n.md](docs/02-architecture/i18n.md): three languages and right-to-left
 

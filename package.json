@@ -7,7 +7,7 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "convex": "convex dev",
+    "backend": "convex dev",
     "lint": "expo lint",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
@@ -15,8 +15,8 @@
     "check": "npm run check:locales && npm run typecheck && npm run test"
   },
   "dependencies": {
-    "@clerk/expo": "^4.16.0",
-    "@clerk/expo-google-signin": "^1.1.0",
+    "@auth/core": "^0.41.3",
+    "@convex-dev/auth": "^0.0.98",
     "@convex-dev/expo-push-notifications": "^0.4.2",
     "@convex-dev/geospatial": "^0.2.1",
     "@expo-google-fonts/readex-pro": "^0.4.1",
@@ -26,7 +26,6 @@
     "convex": "^1.50.0",
     "expo": "~58.0.25",
     "expo-constants": "~58.0.16",
-    "expo-crypto": "~58.0.8",
     "expo-font": "~58.0.12",
     "expo-image": "~58.0.18",
     "expo-linking": "~58.0.17",
@@ -37,6 +36,7 @@
     "expo-status-bar": "~58.0.5",
     "expo-system-ui": "~58.0.7",
     "expo-updates": "~58.0.22",
+    "expo-web-browser": "~58.0.8",
     "i18next": "^27.1.1",
     "react": "19.3.0",
     "react-dom": "19.3.0",
@@ -51,6 +51,7 @@
   },
   "devDependencies": {
     "@edge-runtime/vm": "^5.0.0",
+    "@types/node": "^26.6.6",
     "@types/react": "~19.3.0",
     "convex-test": "^0.0.71",
     "eslint": "^9.39.5",

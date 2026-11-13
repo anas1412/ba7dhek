@@ -29,7 +29,7 @@ Three things that can each stop the project, started in this order because the f
 - Expo project with TypeScript and Expo Router, laid out as in [project-structure.md](project-structure.md).
 - Design tokens from the design system in a theme file; light and dark.
 - i18n set up with the three locale files and the key-parity check. Right-to-left working.
-- Clerk and Convex providers; Google sign-in.
+- Convex Auth provider; Google sign-in.
 - `users.ensure`, role choice, role-based tab layout.
 - The consent screen: privacy notice, terms, age declaration, stored consent record.
 - EAS development build on Android.
@@ -103,7 +103,7 @@ Three things that can each stop the project, started in this order because the f
 **Goal:** real people in the pilot area use it.
 
 - Confirm the legal gate is cleared: declaration accepted, transfer authorised. No real user before this.
-- Production Convex deployment in the Ireland region; production Clerk instance with its own Google credentials.
+- Production Convex deployment in the Ireland region; its own signing keys and its own Google OAuth client.
 - Preview builds through EAS; internal track, then the closed track on Google Play.
 - The closed test: at least 12 testers for 14 consecutive days, then apply for production access.
 - Website at `ba7dhek.tn`: privacy notice, account deletion page, support address.

@@ -1,4 +1,4 @@
-import { useAuth } from '@clerk/expo';
+import { useAuthActions } from '@convex-dev/auth/react';
 import { api } from '@convex/_generated/api';
 import { useMutation, useQuery } from 'convex/react';
 import { useState } from 'react';
@@ -14,7 +14,7 @@ import { useTheme } from '@/theme';
 export default function Settings() {
   const { t } = useTranslation();
   const theme = useTheme();
-  const { signOut } = useAuth();
+  const { signOut } = useAuthActions();
   const me = useQuery(api.users.me);
   const saveLanguage = useMutation(api.users.setLanguage);
 

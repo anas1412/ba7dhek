@@ -4,30 +4,30 @@ Three short proofs to run before building the app. Each one tests an assumption 
 
 Spike code is thrown away. Keep only the findings, written back into this file.
 
-## Spike 1: Google sign-in through Clerk into Convex, on a development build
+## Spike 1: Google sign-in through Convex Auth, on a development build
 
-**Why:** Convex says its Clerk provider works with the Expo SDK but shows no Expo example. Native Google sign-in needs a development build.
+**Why:** the code is written from the installed package's types, and nothing has run on a device. The return from the in-app browser to the app is the part most likely to need adjusting.
 
 **Steps**
 1. Create an Expo app and a Convex dev deployment.
-2. Create a Clerk development instance; enable Google as the only sign-in method; activate the Convex integration.
-3. Add `convex/auth.config.ts`.
-4. Wire `ClerkProvider` and `ConvexProviderWithClerk` at the root.
-5. Build a development client with EAS for Android and install it on a phone.
-6. Add one button that signs in with Google, and one Convex query that returns `ctx.auth.getUserIdentity()`.
+2. Create a Google OAuth client and set its ID and secret on the Convex deployment; see [setup.md](setup.md).
+3. The backend files, the provider and the welcome screen are already in place.
+4. Build a development client with EAS for Android and install it on a phone.
+5. Tap "Continue with Google" and complete the sign-in.
 
 **Pass**
-- After signing in, the query returns an identity with a stable `tokenIdentifier`, a name and a picture URL.
+- The in-app browser closes and the app moves on to the consent screen.
+- A row appears in the `users` table with the name, photo and email from Google.
 - Closing and reopening the app keeps the session.
 - Signing out makes the query return `null`.
 
 **Fail, and what then**
-- If the native Google button cannot be made to work: fall back to Clerk's browser-based OAuth flow, which the docs say works without native modules.
-- If Clerk and Convex cannot be joined in Expo at all: reconsider Convex Auth v1, which lists React Native, or return to Supabase.
+- If the app is not brought back from the browser: check the link scheme in `app.json`, then add a route or link filter so Expo Router ignores the return address.
+- If Convex Auth 0.x cannot be made to work at all: Clerk is the documented alternative for Expo.
 
 **Also record**
-- Which Google Cloud OAuth client IDs were needed, and for which build types.
-- The environment variable names that worked.
+- Whether creating the Google OAuth client needed billing enabled on the project.
+- Whether Expo Router reacted to the return address, and what was needed to stop it.
 
 ## Spike 2: the feed query on seeded data
 

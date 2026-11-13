@@ -1,6 +1,8 @@
-import { useSignInWithGoogle } from '@clerk/expo/google';
+import { useAuthActions } from '@convex-dev/auth/react';
 import { useConvexAuth } from 'convex/react';
+import * as Linking from 'expo-linking';
 import { Redirect } from 'expo-router';
+import { openAuthSessionAsync } from 'expo-web-browser';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
@@ -10,11 +12,15 @@ import { Button } from '@/components/Button';
 import { Screen } from '@/components/Screen';
 import { useTheme } from '@/theme';
 
+// Where Google's sign-in hands control back to the app: "ba7dhek://".
+// convex/auth.ts only accepts addresses that start with the app's scheme.
+const redirectTo = Linking.createURL('/');
+
 export default function Welcome() {
   const { t } = useTranslation();
   const theme = useTheme();
   const { isAuthenticated } = useConvexAuth();
-  const { startGoogleAuthenticationFlow } = useSignInWithGoogle();
+  const { signIn } = useAuthActions();
   const [busy, setBusy] = useState(false);
   const [failed, setFailed] = useState(false);
 
@@ -24,9 +30,19 @@ export default function Welcome() {
     setBusy(true);
     setFailed(false);
     try {
-      const { createdSessionId, setActive } = await startGoogleAuthenticationFlow();
-      // No session means the person closed the Google sheet; that is not an error.
-      if (createdSessionId && setActive) await setActive({ session: createdSessionId });
+      // Step 1: ask the backend where to send the person to sign in.
+      const { redirect } = await signIn('google', { redirectTo });
+      if (!redirect) throw new Error('No sign-in address returned');
+
+      // Step 2: open Google in an in-app browser and wait for it to come back.
+      const result = await openAuthSessionAsync(redirect.toString(), redirectTo);
+      // Anything but "success" means the person closed the browser; that is not an error.
+      if (result.type !== 'success') return;
+
+      // Step 3: trade the one-time code for a session.
+      const code = Linking.parse(result.url).queryParams?.code;
+      if (typeof code !== 'string') throw new Error('No code in the sign-in result');
+      await signIn('google', { code });
     } catch {
       setFailed(true);
     } finally {
