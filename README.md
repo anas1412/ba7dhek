@@ -96,6 +96,7 @@ To reconnect on another machine, run `npx convex dev` and pick the existing `ba7
 - [verified-facts.md](docs/05-reference/verified-facts.md): every checked claim with its source, and the list of unverified ones
 
 ### 06 Design
+- [ux-plan.md](docs/06-design/ux-plan.md): navigation, feedback, loading, errors, motion, maps and the fuller job form
 - [design-system.md](docs/06-design/design-system.md): colour, type, spacing, radius, voice
 - [tokens.json](docs/06-design/tokens.json): the same values, machine-readable
 

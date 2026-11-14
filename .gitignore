@@ -46,3 +46,6 @@ example
 .env
 .env.local
 *.log
+
+# local preview config
+.claude/

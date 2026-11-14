@@ -5,7 +5,7 @@ import { Redirect } from 'expo-router';
 import { openAuthSessionAsync } from 'expo-web-browser';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { View } from 'react-native';
+import { Platform, View } from 'react-native';
 
 import { AppText } from '@/components/AppText';
 import { Button } from '@/components/Button';
@@ -30,6 +30,14 @@ export default function Welcome() {
     setBusy(true);
     setFailed(false);
     try {
+      if (Platform.OS === 'web') {
+        // In a browser the whole page goes to Google and comes back; the auth
+        // provider finishes the sign-in when the page reloads. Development only:
+        // the backend refuses this address unless DEV_WEB_ORIGIN allows it.
+        await signIn('google', { redirectTo: window.location.origin });
+        return;
+      }
+
       // Step 1: ask the backend where to send the person to sign in.
       const { redirect } = await signIn('google', { redirectTo });
       if (!redirect) throw new Error('No sign-in address returned');

@@ -42,6 +42,15 @@ npm run backend
 ```
 Watches `convex/` and pushes changes to the dev deployment.
 
+## Seeing the app in a browser
+```bash
+npx expo start --web --port 8081
+```
+
+Then open `http://localhost:8081`. Google sign-in works there on the dev deployment, because that deployment has `DEV_WEB_ORIGIN` set to this address. Production does not, so there a sign-in can only finish in the phone app.
+
+What the browser does not show: vibration, the phone's own screen transitions, push notifications, and the right-to-left reload.
+
 ## Steps that need you
 
 ### 1. A Google OAuth client

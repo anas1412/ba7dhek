@@ -6,7 +6,7 @@ import * as Updates from 'expo-updates';
 // `use` is renamed because the hooks lint rule treats any call named `use` as a React hook.
 import i18n, { changeLanguage, use as registerPlugin } from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import { DevSettings, I18nManager } from 'react-native';
+import { DevSettings, I18nManager, Platform } from 'react-native';
 
 import { isLanguage, isRtl, pickLanguage, type Language } from './languages';
 import ar from './locales/ar.json';
@@ -14,14 +14,22 @@ import en from './locales/en.json';
 import fr from './locales/fr.json';
 
 const STORAGE_KEY = 'ba7dhek.language';
+const isWeb = Platform.OS === 'web';
 
+// The phone keeps the choice in its encrypted store; the browser build, used
+// in development, keeps it in the browser's own storage.
 async function readStoredLanguage(): Promise<Language | null> {
   try {
-    const stored = await SecureStore.getItemAsync(STORAGE_KEY);
+    const stored = isWeb ? globalThis.localStorage?.getItem(STORAGE_KEY) : await SecureStore.getItemAsync(STORAGE_KEY);
     return isLanguage(stored) ? stored : null;
   } catch {
     return null;
   }
+}
+
+async function storeLanguage(language: Language): Promise<void> {
+  if (isWeb) globalThis.localStorage?.setItem(STORAGE_KEY, language);
+  else await SecureStore.setItemAsync(STORAGE_KEY, language);
 }
 
 /**
@@ -54,6 +62,17 @@ export async function initI18n(): Promise<boolean> {
  */
 async function applyDirection(language: Language): Promise<boolean> {
   const wantRtl = isRtl(language);
+
+  if (isWeb) {
+    // A browser page takes its direction from the document, and can change it live.
+    const root = globalThis.document?.documentElement;
+    if (root) {
+      root.dir = wantRtl ? 'rtl' : 'ltr';
+      root.lang = language;
+    }
+    return true;
+  }
+
   if (I18nManager.isRTL === wantRtl) return true;
 
   I18nManager.allowRTL(wantRtl);
@@ -71,16 +90,15 @@ export function currentLanguage(): Language {
   return isLanguage(i18n.language) ? i18n.language : 'en';
 }
 
-/**
- * Switches language and remembers the choice. Switching to or from Arabic
- * reloads the app; `willReload` says so before it happens.
- */
+/** Whether switching to this language restarts the app. Only the phone needs to. */
 export function willReload(next: Language): boolean {
+  if (isWeb) return false;
   return isRtl(next) !== I18nManager.isRTL;
 }
 
+/** Switches language and remembers the choice. */
 export async function setLanguage(next: Language): Promise<void> {
-  await SecureStore.setItemAsync(STORAGE_KEY, next);
+  await storeLanguage(next);
   await changeLanguage(next);
   await applyDirection(next);
 }
