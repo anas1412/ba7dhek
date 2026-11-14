@@ -7,12 +7,27 @@
     "development": {
       "developmentClient": true,
       "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "EXPO_PUBLIC_CONVEX_URL": "https://patient-mouse-884.convex.cloud"
+      }
+    },
+    "staging": {
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      },
       "env": {
         "EXPO_PUBLIC_CONVEX_URL": "https://patient-mouse-884.convex.cloud"
       }
     },
     "preview": {
       "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      },
       "env": {
         "EXPO_PUBLIC_CONVEX_URL": "https://tame-goldfinch-711.convex.cloud"
       }
@@ -21,6 +36,15 @@
       "autoIncrement": true,
       "env": {
         "EXPO_PUBLIC_CONVEX_URL": "https://tame-goldfinch-711.convex.cloud"
+      }
+    },
+    "simulator": {
+      "distribution": "internal",
+      "ios": {
+        "simulator": true
+      },
+      "env": {
+        "EXPO_PUBLIC_CONVEX_URL": "https://patient-mouse-884.convex.cloud"
       }
     }
   },

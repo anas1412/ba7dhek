@@ -1,0 +1,179 @@
+name: Build apps
+
+# Builds installable Android files on GitHub's own machines and names them:
+#
+#   ba7dhek-v<version>-<variant>-<commit>.<apk|aab>
+#
+#   devclient  development build for day-to-day work, talks to the dev backend   (.apk)
+#   dev        standalone app for testing, talks to the dev backend               (.apk)
+#   prod       standalone app, talks to the production backend                    (.apk)
+#   store      the file Google Play asks for, production backend                  (.aab)
+#
+# Started by hand from the Actions tab (choose what to build), or by pushing a
+# tag such as v0.1.0, which builds dev, prod and store and attaches them to a
+# GitHub release.
+#
+# Needs one repository secret, EXPO_TOKEN: the build uses it to fetch the
+# Android signing key that Expo keeps for the project. See docs/03-build/ci.md.
+
+on:
+  workflow_dispatch:
+    inputs:
+      variant:
+        description: What to build
+        type: choice
+        default: dev
+        options: [dev, prod, devclient, store, all]
+      ios_simulator:
+        description: Also build for the iOS simulator (runs on a Mac machine; cannot be installed on an iPhone)
+        type: boolean
+        default: false
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+jobs:
+  plan:
+    name: Decide what to build
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.plan.outputs.matrix }}
+      version: ${{ steps.plan.outputs.version }}
+      sha: ${{ steps.plan.outputs.sha }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - id: plan
+        env:
+          CHOSEN: ${{ inputs.variant }}
+          EVENT: ${{ github.event_name }}
+        run: |
+          # Each variant: its name in the file, the profile in eas.json, and the kind of file.
+          all='[
+            {"variant":"devclient","profile":"development","ext":"apk"},
+            {"variant":"dev","profile":"staging","ext":"apk"},
+            {"variant":"prod","profile":"preview","ext":"apk"},
+            {"variant":"store","profile":"production","ext":"aab"}
+          ]'
+          if [ "$EVENT" = "push" ]; then
+            # A release: everything a tester or the store needs. The development build is for whoever writes the code.
+            matrix=$(echo "$all" | jq -c '[.[] | select(.variant != "devclient")]')
+          elif [ "$CHOSEN" = "all" ]; then
+            matrix=$(echo "$all" | jq -c '.')
+          else
+            matrix=$(echo "$all" | jq -c --arg v "$CHOSEN" '[.[] | select(.variant == $v)]')
+          fi
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+          echo "version=$(jq -r '.expo.version' app.json)" >> "$GITHUB_OUTPUT"
+          echo "sha=$(git rev-parse --short=7 HEAD)" >> "$GITHUB_OUTPUT"
+
+  android:
+    name: Android ${{ matrix.variant }}
+    needs: plan
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJson(needs.plan.outputs.matrix) }}
+    env:
+      FILE: ba7dhek-v${{ needs.plan.outputs.version }}-${{ matrix.variant }}-${{ needs.plan.outputs.sha }}.${{ matrix.ext }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Stop early if the Expo token is missing
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        run: |
+          if [ -z "$EXPO_TOKEN" ]; then
+            echo "::error::The repository secret EXPO_TOKEN is not set. See docs/03-build/ci.md."
+            exit 1
+          fi
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - uses: expo/expo-github-action@v9
+        with:
+          eas-version: latest
+          packager: npm
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build ${{ env.FILE }}
+        run: |
+          mkdir -p build
+          eas build --platform android --profile "${{ matrix.profile }}" --local --non-interactive --output "build/$FILE"
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: ${{ env.FILE }}
+          path: build/${{ env.FILE }}
+          if-no-files-found: error
+          retention-days: 30
+
+  ios-simulator:
+    name: iOS simulator
+    if: github.event_name == 'workflow_dispatch' && inputs.ios_simulator
+    needs: plan
+    runs-on: macos-latest
+    timeout-minutes: 90
+    env:
+      FILE: ba7dhek-v${{ needs.plan.outputs.version }}-ios-simulator-${{ needs.plan.outputs.sha }}.tar.gz
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - uses: expo/expo-github-action@v9
+        with:
+          eas-version: latest
+          packager: npm
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build ${{ env.FILE }}
+        run: |
+          mkdir -p build
+          eas build --platform ios --profile simulator --local --non-interactive --output "build/$FILE"
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: ${{ env.FILE }}
+          path: build/${{ env.FILE }}
+          if-no-files-found: error
+          retention-days: 30
+
+  release:
+    name: Attach to the release
+    if: github.event_name == 'push'
+    needs: android
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          path: files
+          merge-multiple: true
+
+      - uses: softprops/action-gh-release@v3
+        with:
+          files: files/*
+          generate_release_notes: true

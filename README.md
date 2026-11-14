@@ -81,6 +81,7 @@ To reconnect on another machine, run `npx convex dev` and pick the existing `ba7
 - [roadmap.md](docs/03-build/roadmap.md): milestones with done checks
 - [project-structure.md](docs/03-build/project-structure.md): planned repository layout
 - [eas.md](docs/03-build/eas.md): build profiles, updates, submission
+- [ci.md](docs/03-build/ci.md): the checks that run on every push, and how to get named APK files built on GitHub
 - [testing.md](docs/03-build/testing.md): automated tests and the manual pass
 
 ### 04 Launch
