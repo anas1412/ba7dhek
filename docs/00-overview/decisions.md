@@ -8,7 +8,7 @@ Every decision taken so far, with who took it and why. Decisions marked "Anas" w
 | Name: Ba7dhek | Anas | |
 | All job types, ranked by distance | Anas | The idea came from a hotel, but is not limited to hotels |
 | Arabic, French and English from the first screen | Anas | |
-| Arabic copy in Tunisian dialect, Arabic script | Anas | Legal text is the exception: standard Arabic and French |
+| Arabic interface in simple standard Arabic; dialect only for the name, the tagline and examples of what people write | Anas, 2026-11-14 | Replaces "dialect everywhere" (2026-11-13): the dialect text was not written by a native speaker and did not read well |
 | No payments in the app; local methods later if businesses are charged | Anas | |
 | A registered business must give its tax ID (matricule fiscal) for verification | Anas | |
 | Default language is the device or browser language; English when the device language is not one of the three; changeable | Anas | Settled on 2026-11-14 after two earlier versions |

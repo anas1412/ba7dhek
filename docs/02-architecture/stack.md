@@ -54,7 +54,7 @@ Email and phone codes can be added later through Convex Auth, each with its own 
 - Its README carries no stability label (verified).
 
 ## Languages
-- Arabic (Tunisian dialect), French and English from the first screen. Details in [i18n.md](i18n.md).
+- Arabic (standard, with a few lines of Tunisian dialect), French and English from the first screen. Details in [i18n.md](i18n.md).
 - Hermes, React Native's JavaScript engine, does not fully implement `Intl`. `Intl.RelativeTimeFormat` is unsupported and `Intl.PluralRules` is uncertain, and i18next needs `Intl.PluralRules` for Arabic's six plural forms (verified). The app ships the `@formatjs/intl-pluralrules` and `@formatjs/intl-relativetimeformat` polyfills.
 
 ## Maps

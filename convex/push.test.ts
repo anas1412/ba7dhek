@@ -122,6 +122,7 @@ describe("the words of a push", () => {
     expect(distanceText(1240, "ar")).toBe("1.2 كم");
     expect(payText(4.5, "hour", "fr")).toBe("4,5 TND par heure");
     expect(payText(900, "month", "ar")).toBe("900 دينار في الشهر");
+    expect(newJobText("ar", JOB, "Hotel Sindbad", 1240).body).toBe("Hotel Sindbad · على بعد 1.2 كم");
   });
 
   test("a new job names the job, the pay, the business and the distance", () => {
@@ -133,10 +134,10 @@ describe("the words of a push", () => {
   });
 
   test("Arabic counts follow one, two, a few, many", () => {
-    expect(digestText("ar", 1).title).toBe("خدمة جديدة بحذاك");
-    expect(digestText("ar", 2).title).toBe("زوز خدم جدد بحذاك");
-    expect(digestText("ar", 5).title).toBe("5 خدم جدد بحذاك");
-    expect(digestText("ar", 12).title).toBe("12 خدمة جديدة بحذاك");
+    expect(digestText("ar", 1).title).toBe("وظيفة جديدة بالقرب منك");
+    expect(digestText("ar", 2).title).toBe("وظيفتان جديدتان بالقرب منك");
+    expect(digestText("ar", 5).title).toBe("5 وظائف جديدة بالقرب منك");
+    expect(digestText("ar", 12).title).toBe("12 وظيفة جديدة بالقرب منك");
     expect(applicantsText("en", 1, "Receptionist").title).toBe("1 new applicant");
     expect(applicantsText("fr", 4, "Receptionist").title).toBe("4 nouvelles candidatures");
   });
@@ -294,7 +295,7 @@ describe("applications, acceptance and chat", () => {
     await t.mutation(internal.notify.match, { matchId });
 
     expect(await sentTo(t, candidate.id)).toMatchObject([
-      { title: "Hotel Sindbad يحب يحكي معاك", data: { type: "match", matchId }, channelId: "messages" },
+      { title: "Hotel Sindbad يريد التحدث معك", data: { type: "match", matchId }, channelId: "messages" },
     ]);
   });
 

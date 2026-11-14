@@ -1,6 +1,7 @@
 // The words of every push notification, in the three app languages. The server
 // writes them because it is the server that sends; the app's own translation
-// files are not available here. Wording follows src/i18n/locales.
+// files are not available here. Wording follows src/i18n/locales. The Arabic is
+// simple standard Arabic, like the app's interface.
 //
 // Job titles, business names and message text are inserted as their author
 // wrote them, in whatever language that was.
@@ -27,7 +28,7 @@ export function distanceText(meters: number, lang: Lang): string {
 const PERIOD: Record<Lang, Record<"hour" | "day" | "month", string>> = {
   en: { hour: "TND per hour", day: "TND per day", month: "TND per month" },
   fr: { hour: "TND par heure", day: "TND par jour", month: "TND par mois" },
-  ar: { hour: "دينار في الساعة", day: "دينار في النهار", month: "دينار في الشهر" },
+  ar: { hour: "دينار في الساعة", day: "دينار في اليوم", month: "دينار في الشهر" },
 };
 
 export function payText(amount: number, period: "hour" | "day" | "month", lang: Lang): string {
@@ -44,7 +45,7 @@ export function newJobText(
   distanceM: number,
 ): Text {
   const distance = distanceText(distanceM, lang);
-  const from = { en: `${distance} from you`, fr: `à ${distance} de vous`, ar: `${distance} عليك` }[lang];
+  const from = { en: `${distance} from you`, fr: `à ${distance} de vous`, ar: `على بعد ${distance}` }[lang];
   return {
     title: `${job.title} · ${payText(job.payAmount, job.payPeriod, lang)}`,
     body: `${companyName} · ${from}`,
@@ -71,8 +72,8 @@ export function digestText(lang: Lang, count: number): Text {
       body: "Ouvrez Ba7dhek pour les voir, les plus proches d’abord.",
     },
     ar: {
-      title: `${arabicCount(count, "خدمة جديدة", "زوز خدم جدد", "خدم جدد", "خدمة جديدة")} بحذاك`,
-      body: "حلّ بحذاك باش تشوفهم، الأقرب هو الأول.",
+      title: `${arabicCount(count, "وظيفة جديدة", "وظيفتان جديدتان", "وظائف جديدة", "وظيفة جديدة")} بالقرب منك`,
+      body: "افتح بحذاك لتراها، الأقرب أولًا.",
     },
   }[lang];
 }
@@ -82,7 +83,7 @@ export function matchText(lang: Lang, companyName: string): Text {
   return {
     en: { title: `${companyName} wants to talk to you`, body: "Open the chat." },
     fr: { title: `${companyName} souhaite vous parler`, body: "Ouvrez la discussion." },
-    ar: { title: `${companyName} يحب يحكي معاك`, body: "حلّ المحادثة." },
+    ar: { title: `${companyName} يريد التحدث معك`, body: "افتح المحادثة." },
   }[lang];
 }
 
@@ -102,7 +103,7 @@ export function applicantsText(lang: Lang, count: number, jobTitle: string): Tex
       body: jobTitle,
     },
     ar: {
-      title: arabicCount(count, "مترشّح جديد", "زوز مترشّحين جدد", "مترشّحين جدد", "مترشّح جديد"),
+      title: arabicCount(count, "مترشح جديد", "مترشحان جديدان", "مترشحين جدد", "مترشحًا جديدًا"),
       body: jobTitle,
     },
   }[lang];
@@ -112,6 +113,6 @@ export function companyApprovedText(lang: Lang, companyName: string): Text {
   return {
     en: { title: `${companyName} is approved`, body: "You can publish your jobs now." },
     fr: { title: `${companyName} est validé`, body: "Vous pouvez publier vos offres." },
-    ar: { title: `${companyName} تقبل`, body: "تنجّم تنشر العروض متاعك توّا." },
+    ar: { title: `تم قبول ${companyName}`, body: "يمكنك نشر وظائفك الآن." },
   }[lang];
 }

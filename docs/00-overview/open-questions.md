@@ -41,7 +41,7 @@ See [spikes.md](../03-build/spikes.md): Google sign-in through Convex Auth on a 
 - **Still needed:** the district, meaning where the anchor hotel is. It sets the default map position and where the first employers are recruited.
 
 ### Who writes the Tunisian dialect copy?
-- The Arabic interface is in dialect and should be written by a native speaker, with a consistent spelling list. The developer may be that person.
+- Settled on 2026-11-14: the interface is in standard Arabic, so this no longer blocks anything. The few dialect lines left (tagline, examples) are for Anas to check.
 
 ### Is there a registered company, or will there be one?
 - A company would change three things: the tech card ceiling (10,000 TND), the Play account type (no 12-tester test), and the store identity. The plan assumes there is none.

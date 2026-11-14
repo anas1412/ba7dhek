@@ -7,7 +7,7 @@ How to run what exists, and the steps that only the developer can do.
 |---|---|
 | Expo SDK 58 app, Expo Router, TypeScript | Scaffolded |
 | Theme from the design tokens, light and dark, Readex Pro | Done |
-| Arabic (Tunisian dialect), French, English; right-to-left switching | Done; the Arabic text needs a native read-through |
+| Arabic (standard), French, English; right-to-left switching | Done; the Arabic text was rewritten in standard Arabic on 2026-11-14 and needs one read-through by Anas |
 | Convex schema, both spatial indexes, push component | Deployed to the dev deployment |
 | Sign-in with Convex Auth and Google | Backend deployed and its routes verified; needs the Google steps below |
 | `users` functions: ensure, consent, role, language, profile, starting point | Done, tested |
