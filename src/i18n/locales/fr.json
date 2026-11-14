@@ -15,7 +15,7 @@
   "welcome": {
     "tagline": "Des emplois près de chez vous.",
     "pitch": "Voyez les emplois les plus proches de chez vous et postulez d'un geste.",
-    "google": "Continuer avec Google",
+    "google": "Se connecter avec Google",
     "apple": "Continuer avec Apple",
     "failed": "La connexion n'a pas abouti. Réessayez."
   },
@@ -456,5 +456,34 @@
     "reportedToast": "Signalement envoyé. La discussion est bloquée.",
     "missingTitle": "Cette discussion n’est pas disponible",
     "missingBody": "Elle a peut-être été retirée."
+  },
+  "push": {
+    "title": "Restez informé",
+    "body": "Ba7dhek peut vous prévenir quand quelque chose vous attend. Voici tout ce qu’il enverra.",
+    "candidateJobs": "Une nouvelle offre dans votre rayon, avec sa distance. Cinq par jour au plus, et aucune la nuit.",
+    "candidateAccepted": "Un employeur a accepté votre candidature.",
+    "employerApplicants": "Les nouvelles candidatures à vos offres, regroupées pour que votre téléphone ne vibre pas toute la journée.",
+    "employerApproved": "Votre établissement a été validé.",
+    "messages": "Un message dans l’une de vos discussions.",
+    "promise": "Jamais de publicité. Vous pouvez changer cela à tout moment dans les réglages.",
+    "accept": "Activer les notifications",
+    "decline": "Pas maintenant",
+    "settingsTitle": "Notifications",
+    "isOn": "Les notifications sont activées sur ce téléphone.",
+    "isOff": "Les notifications sont désactivées sur ce téléphone.",
+    "isBlocked": "Les notifications sont bloquées dans les réglages du téléphone. Vous seul pouvez les y autoriser.",
+    "openSettings": "Ouvrir les réglages du téléphone",
+    "phoneOnly": "Les notifications ne fonctionnent que dans l’application sur téléphone.",
+    "turnedOn": "Notifications activées",
+    "newJobs": "Nouvelles offres près de vous",
+    "modeAll": "Chacune",
+    "modeDigest": "Une fois par jour",
+    "modeOff": "Jamais",
+    "modeAllHint": "Une notification par nouvelle offre, cinq par jour au plus, aucune entre 22h et 7h.",
+    "modeDigestHint": "Une notification chaque matin avec le nombre de nouvelles offres.",
+    "modeOffHint": "Aucune notification pour les nouvelles offres. Elles apparaissent toujours dans votre pile.",
+    "channelJobs": "Nouvelles offres",
+    "channelMessages": "Messages",
+    "channelActivity": "Candidatures et validations"
   }
 }

@@ -1,4 +1,5 @@
 /// <reference types="vite/client" />
+import pushNotifications from "@convex-dev/expo-push-notifications/test";
 import geospatial from "@convex-dev/geospatial/test";
 import { convexTest } from "convex-test";
 import schema from "./schema";
@@ -17,6 +18,7 @@ export function setupBackend() {
   const t = convexTest(schema, modules);
   geospatial.register(t, "jobsGeo");
   geospatial.register(t, "candidatesGeo");
+  pushNotifications.register(t, "pushNotifications");
   return t;
 }
 

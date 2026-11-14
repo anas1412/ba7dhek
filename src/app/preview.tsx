@@ -26,6 +26,7 @@ const VIEW_TITLE = {
   filters: 'preview.filters',
   chats: 'preview.chats',
   chat: 'preview.chat',
+  push: 'push.title',
   applicants: 'applicants.title',
   applications: 'applications.title',
   images: 'images.title',

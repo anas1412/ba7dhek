@@ -1,4 +1,5 @@
 import { ConvexError, v } from "convex/values";
+import { internal } from "./_generated/api";
 import type { Doc, Id } from "./_generated/dataModel";
 import { mutation, query, type QueryCtx } from "./_generated/server";
 import { requireRole } from "./lib/auth";
@@ -25,7 +26,7 @@ export const record = mutation({
       .unique();
     if (existing) throw new ConvexError({ code: "already_swiped" });
 
-    return await ctx.db.insert("swipes", {
+    const swipeId = await ctx.db.insert("swipes", {
       candidateId: user._id,
       jobId: job._id,
       direction: args.direction,
@@ -33,6 +34,11 @@ export const record = mutation({
       // Stored now so the employer's distance range does not shift if the candidate moves.
       distanceM: Math.round(haversineM(user.home, job.location)),
     });
+    // An application is news for the employer; a pass is nobody's business.
+    if (args.direction === "right") {
+      await ctx.scheduler.runAfter(0, internal.notify.applicant, { jobId: job._id });
+    }
+    return swipeId;
   },
 });
 
@@ -138,7 +144,7 @@ export const decide = mutation({
     if (!args.accept) return null;
 
     const now = Date.now();
-    return await ctx.db.insert("matches", {
+    const matchId = await ctx.db.insert("matches", {
       jobId: job._id,
       companyId: company._id,
       candidateId: swipe.candidateId,
@@ -149,5 +155,7 @@ export const decide = mutation({
       lastSenderId: user._id,
       employerReadAt: now,
     });
+    await ctx.scheduler.runAfter(0, internal.notify.match, { matchId });
+    return matchId;
   },
 });

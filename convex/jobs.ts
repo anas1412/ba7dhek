@@ -1,4 +1,5 @@
 import { ConvexError, v } from "convex/values";
+import { internal } from "./_generated/api";
 import type { Doc, Id } from "./_generated/dataModel";
 import { mutation, query, type MutationCtx, type QueryCtx } from "./_generated/server";
 import { requireConsentedUser, requireRole } from "./lib/auth";
@@ -117,7 +118,8 @@ export const publish = mutation({
       { category: job.category, contractType: job.contractType },
       now,
     );
-    // The push fan-out to candidates in range is added with Milestone 5.
+    // Candidates in range are told after this returns, so a push problem cannot undo the publish.
+    await ctx.scheduler.runAfter(0, internal.notify.newJob, { jobId: job._id });
   },
 });
 

@@ -10,6 +10,7 @@ import { Button } from '@/components/Button';
 import { Screen } from '@/components/Screen';
 import { useToast } from '@/components/Toast';
 import { PhotoEditor } from '@/features/images/PhotoEditor';
+import { NotificationSettings } from '@/features/push/NotificationSettings';
 import { useImageUpload } from '@/features/images/useImageUpload';
 import { LANGUAGES, currentLanguage, setLanguage, willReload, type Language } from '@/i18n';
 import { useTheme } from '@/theme';
@@ -20,6 +21,7 @@ export default function Settings() {
   const { signOut } = useAuthActions();
   const me = useQuery(api.users.me);
   const saveLanguage = useMutation(api.users.setLanguage);
+  const unregisterPush = useMutation(api.push.unregister);
 
   const active = currentLanguage();
   // Set when the chosen language flips the layout and needs the user's go-ahead to reload.
@@ -141,10 +143,20 @@ export default function Settings() {
         ) : null}
       </View>
 
+      {me?.role ? <NotificationSettings role={me.role} newJobs={me.notifyNewJobs ?? 'all'} /> : null}
+
       <View style={{ gap: theme.space[2] }}>
         <AppText variant="heading">{t('settings.account')}</AppText>
         {me?.name ? <AppText color="inkMuted">{me.name}</AppText> : null}
-        <Button label={t('settings.signOut')} variant="neutral" onPress={() => signOut()} />
+        <Button
+          label={t('settings.signOut')}
+          variant="neutral"
+          onPress={async () => {
+            // First, so this phone stops receiving this person's notifications. Signing out goes ahead either way.
+            await unregisterPush().catch(() => {});
+            await signOut();
+          }}
+        />
       </View>
     </Screen>
   );

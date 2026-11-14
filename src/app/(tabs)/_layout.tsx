@@ -4,6 +4,7 @@ import { Redirect, Tabs } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 
 import { Icon } from '@/components/Icon';
+import { PushManager } from '@/features/push/PushManager';
 import { useTheme } from '@/theme';
 
 export default function TabsLayout() {
@@ -19,6 +20,9 @@ export default function TabsLayout() {
   const candidate = me?.role === 'candidate';
 
   return (
+    <>
+      {/* Signed in and past the role choice: the phone can be registered for notifications. */}
+      {me?.role ? <PushManager role={me.role} /> : null}
     <Tabs
       screenOptions={{
         headerShown: false,
@@ -62,5 +66,6 @@ export default function TabsLayout() {
         }}
       />
     </Tabs>
+    </>
   );
 }

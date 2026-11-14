@@ -10,6 +10,7 @@
 
 import type * as auth from "../auth.js";
 import type * as companies from "../companies.js";
+import type * as crons from "../crons.js";
 import type * as files from "../files.js";
 import type * as http from "../http.js";
 import type * as jobs from "../jobs.js";
@@ -17,12 +18,16 @@ import type * as lib_auth from "../lib/auth.js";
 import type * as lib_geo from "../lib/geo.js";
 import type * as lib_geoMath from "../lib/geoMath.js";
 import type * as lib_images from "../lib/images.js";
+import type * as lib_pushRules from "../lib/pushRules.js";
+import type * as lib_pushText from "../lib/pushText.js";
 import type * as lib_redirect from "../lib/redirect.js";
 import type * as lib_taxId from "../lib/taxId.js";
 import type * as lib_validate from "../lib/validate.js";
 import type * as lib_wordFilter from "../lib/wordFilter.js";
 import type * as matches from "../matches.js";
 import type * as messages from "../messages.js";
+import type * as notify from "../notify.js";
+import type * as push from "../push.js";
 import type * as swipes from "../swipes.js";
 import type * as users from "../users.js";
 
@@ -35,6 +40,7 @@ import type {
 declare const fullApi: ApiFromModules<{
   auth: typeof auth;
   companies: typeof companies;
+  crons: typeof crons;
   files: typeof files;
   http: typeof http;
   jobs: typeof jobs;
@@ -42,12 +48,16 @@ declare const fullApi: ApiFromModules<{
   "lib/geo": typeof lib_geo;
   "lib/geoMath": typeof lib_geoMath;
   "lib/images": typeof lib_images;
+  "lib/pushRules": typeof lib_pushRules;
+  "lib/pushText": typeof lib_pushText;
   "lib/redirect": typeof lib_redirect;
   "lib/taxId": typeof lib_taxId;
   "lib/validate": typeof lib_validate;
   "lib/wordFilter": typeof lib_wordFilter;
   matches: typeof matches;
   messages: typeof messages;
+  notify: typeof notify;
+  push: typeof push;
   swipes: typeof swipes;
   users: typeof users;
 }>;

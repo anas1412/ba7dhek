@@ -123,6 +123,9 @@ export default defineSchema({
     expiresAt: v.optional(v.number()),
     closedAt: v.optional(v.number()),
     notifiedCount: v.number(),
+    // When the employer was last told about applicants, and whether a later push is already lined up.
+    applicantPushAt: v.optional(v.number()),
+    applicantPushPending: v.optional(v.boolean()),
     hidden: v.optional(v.boolean()),
     isDemo: v.optional(v.boolean()),
     // Up to four photos of the job or workplace, in display order. The first leads the card.

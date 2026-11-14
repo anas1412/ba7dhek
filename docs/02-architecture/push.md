@@ -85,3 +85,44 @@ Enforced in `notify.fanOutNewJob`, using the `pushCounters` table:
 ## Failure handling
 - A token Expo reports as invalid is removed, so dead devices do not accumulate.
 - The fan-out records how many candidates it targeted on the job, which gives the employer a number to see and gives a way to notice a silent failure.
+
+## What is built (2026-11-14)
+
+Backend, in `convex/notify.ts`, `convex/push.ts`, `convex/crons.ts` and `convex/lib/pushRules.ts` / `pushText.ts`. Covered by 20 tests; none of it has yet delivered a notification to a real phone.
+
+| Function | What it does |
+|---|---|
+| `push.register` / `push.unregister` | Stores or removes the phone's Expo push address. Only the Expo address format is accepted |
+| `push.setNewJobs` | A candidate's choice: each job, once a day, or never |
+| `notify.newJob` | Fan-out on publish: candidates whose own radius covers the job, on "each job", under the cap of 5 a day, outside 22:00 to 07:00, with a registered phone |
+| `notify.digest` | Daily at 06:00 UTC (07:00 in Tunisia): one push with a count. Overnight jobs for "each job", the last 24 hours for "once a day" |
+| `notify.match` | The candidate is told an employer accepted them |
+| `notify.message` | Runs 4 seconds after a message; skipped if the other side has read it by then. Pushes in one chat replace each other |
+| `notify.applicant` / `notify.applicantsLater` | First applicant at once; after that at most one push an hour per job, with a count |
+| `notify.companyApproved` | The owner is told the business was approved |
+
+App, in `src/features/push/`:
+- One screen explains what will be sent before the phone asks its own question. It is shown once; after that the choice lives in Settings.
+- The phone registers on every launch when permission exists, and unregisters on sign-out.
+- A tap opens the job, the applicants list, the chat, or the home screen.
+- Three Android channels: new jobs, messages, applications and approvals.
+- Settings shows whether this phone receives notifications and, for candidates, the new-job frequency.
+
+**Differences from the plan above**
+- The plan's names `notify.fanOutNewJob` and `notify.applicants` became `notify.newJob` and `notify.applicant`.
+- "They are not currently in that chat" is approximated by the 4-second wait and the read mark. There is no live presence.
+- Settings has the new-job frequency only. A switch per event type is not built.
+- Tokens that Expo reports as invalid are not yet removed.
+- The fan-out looks at the nearest 500 candidates and the digest reads every user row. Both are fine for one town and need paging beyond it.
+- Nothing is measured yet (sent, opened, turned off).
+
+## What Anas has to do before a phone receives anything
+
+These need accounts and keys, so they are not done:
+
+1. Create a Firebase project (free plan) and add an Android app with the package name `tn.ba7dhek.app`.
+2. Download its `google-services.json` into the project root and add `"googleServicesFile": "./google-services.json"` under `android` in `app.json`.
+3. Create a service-account key for Firebase Cloud Messaging (V1) and upload it with `eas credentials`. Expo's guide: https://docs.expo.dev/push-notifications/fcm-credentials/
+4. Make a new development build. The notifications package is native, like the map and vibration added before it.
+
+Without these the app runs as before: asking for the push address fails quietly and nothing is sent.

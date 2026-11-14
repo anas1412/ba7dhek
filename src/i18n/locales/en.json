@@ -15,7 +15,7 @@
   "welcome": {
     "tagline": "Jobs next to you.",
     "pitch": "See the jobs closest to your home and apply with one swipe.",
-    "google": "Continue with Google",
+    "google": "Sign in with Google",
     "apple": "Continue with Apple",
     "failed": "Sign-in did not complete. Try again."
   },
@@ -449,5 +449,34 @@
     "reportedToast": "Report sent. The chat is blocked.",
     "missingTitle": "This chat is not available",
     "missingBody": "It may have been removed."
+  },
+  "push": {
+    "title": "Stay in the loop",
+    "body": "Ba7dhek can tell you when something needs you. Here is everything it will send.",
+    "candidateJobs": "A new job inside your radius, with its distance. Five a day at most, and none at night.",
+    "candidateAccepted": "An employer accepted your application.",
+    "employerApplicants": "New applicants on your jobs, grouped so your phone is not buzzing all day.",
+    "employerApproved": "Your business was approved.",
+    "messages": "A message in one of your chats.",
+    "promise": "No advertising, ever. You can change this in Settings at any time.",
+    "accept": "Turn on notifications",
+    "decline": "Not now",
+    "settingsTitle": "Notifications",
+    "isOn": "Notifications are on for this phone.",
+    "isOff": "Notifications are off for this phone.",
+    "isBlocked": "Notifications are blocked in your phone settings. Only you can allow them there.",
+    "openSettings": "Open phone settings",
+    "phoneOnly": "Notifications work in the phone app only.",
+    "turnedOn": "Notifications are on",
+    "newJobs": "New jobs near you",
+    "modeAll": "Each one",
+    "modeDigest": "Once a day",
+    "modeOff": "Never",
+    "modeAllHint": "A notification for each new job, five a day at most, none between 22:00 and 07:00.",
+    "modeDigestHint": "One notification each morning with the number of new jobs.",
+    "modeOffHint": "No notifications about new jobs. They still appear in your stack.",
+    "channelJobs": "New jobs",
+    "channelMessages": "Messages",
+    "channelActivity": "Applications and approvals"
   }
 }

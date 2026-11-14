@@ -162,6 +162,14 @@ await png('favicon.png', tileMark, 48);
 // Inside the app: the mark in its blue tile, which sits well on the light and the dark ground.
 await png('logo-mark.png', tileMark, 512);
 
+// Android's status bar shows a small one-colour shape, where a five-letter word would be a smudge.
+// So this one icon is the first letter alone: white on nothing, tinted brand blue by the system.
+{
+  const letter = shapesOf(font.glyphForCodePoint(0x0628));
+  const body = `<path d="${letter.map((shape) => shape.d).join(' ')}" fill="${WHITE}"/>`;
+  await png('notification-icon.png', svg(SIZE, SIZE, fit(body, extent(letter), SIZE * 0.84, SIZE / 2, SIZE / 2)), 96);
+}
+
 // For print, a store listing or a slide.
 writeFileSync(join(brand, 'logo-mark.svg'), tileMark, 'utf8');
 console.log('wrote assets/brand/logo-mark.svg');

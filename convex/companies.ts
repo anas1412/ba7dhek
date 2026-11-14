@@ -1,4 +1,5 @@
 import { ConvexError, v } from "convex/values";
+import { internal } from "./_generated/api";
 import { mutation, query, type MutationCtx } from "./_generated/server";
 import { requireAdmin, requireRole } from "./lib/auth";
 import { unindexJob } from "./lib/geo";
@@ -97,6 +98,7 @@ export const approve = mutation({
   handler: async (ctx, args) => {
     await requireAdmin(ctx);
     await ctx.db.patch(args.companyId, { approval: "approved", rejectionReason: undefined });
+    await ctx.scheduler.runAfter(0, internal.notify.companyApproved, { companyId: args.companyId });
   },
 });
 

@@ -1,4 +1,6 @@
 import { ConvexError, v } from "convex/values";
+import { internal } from "./_generated/api";
+import { MESSAGE_PUSH_DELAY_MS } from "./lib/pushRules";
 import { mutation, query } from "./_generated/server";
 import { cleanText } from "./lib/validate";
 import { requireMatch } from "./matches";
@@ -55,6 +57,8 @@ export const send = mutation({
       // Whoever writes has, by writing, read what came before.
       ...(side === "candidate" ? { candidateReadAt: now } : { employerReadAt: now }),
     });
+    // After a short wait, so someone with the chat open has had time to be marked as having read it.
+    await ctx.scheduler.runAfter(MESSAGE_PUSH_DELAY_MS, internal.notify.message, { messageId });
     return messageId;
   },
 });

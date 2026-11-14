@@ -166,6 +166,8 @@ Chat, push notifications, report and block, and account deletion are still owed 
 
 **Chat (built 2026-11-14, not yet run on a phone or with two real accounts).** Accepting an applicant opens a conversation. Both sides get a Chats tab with an unread count, and an "Open the chat" button on the accepted application or applicant. Messages arrive live, pass the word filter, and are capped at 1,000 characters and 20 a minute per person. Either side can block (only the blocker can lift it) or report, which files a report for review and blocks at once. Covered by backend tests; the screens were checked in the browser preview with sample data. Still owed: a push when a message arrives, loading messages older than the newest 200, and a screen for an admin to read reports.
 
+**Push notifications (built 2026-11-14, never yet delivered to a phone).** New job nearby, morning summary, accepted, new message, new applicants, business approved. The rules, the wording in three languages and who receives what are covered by backend tests. Delivery needs Firebase credentials and a new build; the steps are in `docs/02-architecture/push.md`.
+
 Not built from phases B and C: the warning before leaving a form with unsaved text, "Undo" on result messages, and scrolling to the first field in error.
 
 ## Open questions
