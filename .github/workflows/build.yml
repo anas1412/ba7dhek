@@ -73,7 +73,8 @@ jobs:
     name: Android ${{ matrix.variant }}
     needs: plan
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    # A first build with an empty cache is slow; later ones reuse the cache.
+    timeout-minutes: 120
     strategy:
       fail-fast: false
       matrix:
@@ -111,10 +112,25 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # Gradle's downloads and compiled outputs, kept between runs. The first build fills it; later ones are much faster.
+      - uses: actions/cache@v6
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+          restore-keys: gradle-${{ runner.os }}-
+
       - name: Build ${{ env.FILE }}
+        # Shorter than the job's limit, so a build that runs too long fails here and the log below is still kept.
+        timeout-minutes: 100
+        env:
+          # Real phones only: 64-bit and 32-bit ARM. Leaving out the two emulator architectures halves the native compile.
+          ORG_GRADLE_PROJECT_reactNativeArchitectures: arm64-v8a,armeabi-v7a
         run: |
           mkdir -p build
-          eas build --platform android --profile "${{ matrix.profile }}" --local --non-interactive --output "build/$FILE"
+          set -o pipefail
+          eas build --platform android --profile "${{ matrix.profile }}" --local --non-interactive --output "build/$FILE" 2>&1 | tee build/build.log
 
       - uses: actions/upload-artifact@v7
         with:
@@ -122,6 +138,16 @@ jobs:
           path: build/${{ env.FILE }}
           if-no-files-found: error
           retention-days: 30
+
+      # Kept whether the build worked, failed or ran out of time, so a failure can always be read.
+      - name: Keep the build log
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: log-${{ matrix.variant }}-${{ needs.plan.outputs.sha }}
+          path: build/build.log
+          if-no-files-found: ignore
+          retention-days: 14
 
   ios-simulator:
     name: iOS simulator
