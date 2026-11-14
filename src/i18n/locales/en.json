@@ -157,7 +157,9 @@
     "applicants_other": "{{count}} applicants",
     "business": "Your business",
     "photos": "Photos",
-    "statusHidden": "Hidden, under review"
+    "statusHidden": "Hidden, under review",
+    "rejectedReason": "Reason: {{reason}}",
+    "fix": "Fix and resend"
   },
   "preview": {
     "title": "Preview",
@@ -213,7 +215,11 @@
     "taxIdRead": "Read as {{taxId}}",
     "taxIdInvalid": "This does not look like a matricule fiscal. It is seven digits and a letter, for example 1234567A/A/M/000.",
     "taxIdTaken": "A business with this tax ID is already registered.",
-    "individualNote": "For someone hiring for their own home or their own work, with no registered business. We may contact you before your first job goes live."
+    "individualNote": "For someone hiring for their own home or their own work, with no registered business. We may contact you before your first job goes live.",
+    "editTitle": "Edit your business",
+    "editNote": "Changing the name, the tax ID or who is hiring needs a new check. Your live jobs stay live meanwhile.",
+    "save": "Save",
+    "saveFailed": "Your changes were not saved. Check the fields and try again."
   },
   "job": {
     "title": "Post a job",
@@ -306,7 +312,9 @@
     "setupSaved": "Saved",
     "accepted": "Accepted. A chat is open.",
     "rejected": "Marked as not selected",
-    "languageChanged": "Language changed"
+    "languageChanged": "Language changed",
+    "businessSaved": "Changes saved",
+    "businessRecheck": "Saved. We are checking your business again."
   },
   "crash": {
     "title": "Something broke",
@@ -608,5 +616,18 @@
     "reportedSide": "reported",
     "logReadChat": "Read a reported chat",
     "logExport": "Exported a list"
+  },
+  "business": {
+    "statusPending": "Being checked",
+    "statusApproved": "Business verified",
+    "statusRejected": "Business not approved",
+    "pendingBody": "We are checking the details below. Your jobs go live once it is approved.",
+    "approvedBody": "You can publish jobs.",
+    "rejectedBody": "Fix the details and send them again: they will be checked again.",
+    "reason": "Reason: {{reason}}",
+    "taxIdPrivate": "Seen only by you and our team, never by candidates.",
+    "category": "Type of business",
+    "edit": "Edit details",
+    "fixAndResend": "Fix and resend"
   }
 }

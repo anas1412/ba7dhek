@@ -3,7 +3,8 @@ import { internal } from "./_generated/api";
 import { mutation, query, type MutationCtx } from "./_generated/server";
 import { requireRole, requireStaff, staffRoleOf } from "./lib/auth";
 import { logStaffAction } from "./lib/staffLog";
-import { unindexJob } from "./lib/geo";
+import type { Id } from "./_generated/dataModel";
+import { indexJob, unindexJob } from "./lib/geo";
 import { checkUpload, companyLogoUrl } from "./lib/images";
 import { normaliseTaxId, taxIdBase } from "./lib/taxId";
 import { cleanText, requireCategory, requireTunisianPoint } from "./lib/validate";
@@ -45,25 +46,10 @@ export const create = mutation({
       .unique();
     if (existing) throw new ConvexError({ code: "company_exists" });
 
-    let taxId: string | undefined;
-    if (args.kind === "business") {
-      const canonical = normaliseTaxId(args.taxId ?? "");
-      if (!canonical) throw new ConvexError({ code: "invalid_tax_id", field: "taxId" });
-      // One account per establishment: the same tax ID cannot be registered twice.
-      const taken = await ctx.db
-        .query("companies")
-        .withIndex("by_tax_id", (q) => q.eq("taxId", canonical))
-        .first();
-      if (taken) throw new ConvexError({ code: "tax_id_taken", field: "taxId" });
-      taxId = canonical;
-    }
-
+    const taxId = await checkedTaxId(ctx, args.kind, args.taxId, null);
     const id = await ctx.db.insert("companies", {
       ownerId: user._id,
-      name: cleanText(args.name, "name", { min: 2, max: 80 }),
-      category: requireCategory(args.category),
-      address: cleanText(args.address, "address", { min: 3, max: 200 }),
-      location: requireTunisianPoint(args.location, "location"),
+      ...cleanDetails(args),
       kind: args.kind,
       taxId,
       taxIdBase: taxId ? taxIdBase(taxId) : undefined,
@@ -73,6 +59,100 @@ export const create = mutation({
     return id;
   },
 });
+
+/**
+ * The employer edits their business. What the check was based on (who recruits,
+ * the tax ID, the name) sends it back for a new check; so does any save after a
+ * rejection, which is how a rejected employer fixes and resubmits. The category,
+ * address and place can change without one. Open jobs stay open meanwhile.
+ * Jobs placed at the business move with it.
+ */
+export const update = mutation({
+  args: {
+    name: v.string(),
+    category: v.string(),
+    address: v.string(),
+    location: point,
+    kind: employerKind,
+    taxId: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const company = await requireOwnCompany(ctx);
+    const taxId = await checkedTaxId(ctx, args.kind, args.taxId, company._id);
+    const details = cleanDetails(args);
+
+    const checkedPartChanged =
+      args.kind !== (company.kind ?? "business") || taxId !== company.taxId || details.name !== company.name;
+    const recheck = company.approval === "rejected" || (company.approval === "approved" && checkedPartChanged);
+
+    await ctx.db.patch(company._id, {
+      ...details,
+      kind: args.kind,
+      taxId,
+      taxIdBase: taxId ? taxIdBase(taxId) : undefined,
+      ...(recheck ? { approval: "pending" as const, rejectionReason: undefined } : {}),
+    });
+
+    const moved =
+      details.location.latitude !== company.location.latitude ||
+      details.location.longitude !== company.location.longitude;
+    if (moved) {
+      const jobs = await ctx.db
+        .query("jobs")
+        .withIndex("by_company_status", (q) => q.eq("companyId", company._id))
+        .collect();
+      for (const job of jobs) {
+        const atBusiness =
+          job.location.latitude === company.location.latitude &&
+          job.location.longitude === company.location.longitude;
+        if (!atBusiness) continue;
+        await ctx.db.patch(job._id, { location: details.location });
+        if (job.status === "open" && !job.hidden) {
+          await indexJob(
+            ctx,
+            job._id,
+            details.location,
+            { category: job.category, contractType: job.contractType },
+            job.publishedAt ?? Date.now(),
+          );
+        }
+      }
+    }
+    return { recheck };
+  },
+});
+
+/** The free-text and place fields, checked and trimmed. */
+function cleanDetails(args: { name: string; category: string; address: string; location: { latitude: number; longitude: number } }) {
+  return {
+    name: cleanText(args.name, "name", { min: 2, max: 80 }),
+    category: requireCategory(args.category),
+    address: cleanText(args.address, "address", { min: 3, max: 200 }),
+    location: requireTunisianPoint(args.location, "location"),
+  };
+}
+
+/**
+ * A registered business must give a valid tax ID that no other business holds;
+ * a person hiring for themselves has none. `self` is the company being edited.
+ */
+async function checkedTaxId(
+  ctx: MutationCtx,
+  kind: "business" | "individual",
+  raw: string | undefined,
+  self: Id<"companies"> | null,
+): Promise<string | undefined> {
+  if (kind !== "business") return undefined;
+  const canonical = normaliseTaxId(raw ?? "");
+  if (!canonical) throw new ConvexError({ code: "invalid_tax_id", field: "taxId" });
+  // One account per establishment: the same tax ID cannot be registered twice.
+  const taken = await ctx.db
+    .query("companies")
+    .withIndex("by_tax_id", (q) => q.eq("taxId", canonical))
+    .first();
+  if (taken && taken._id !== self) throw new ConvexError({ code: "tax_id_taken", field: "taxId" });
+  return canonical;
+}
 
 // Back-office functions, for moderators and admins.
 

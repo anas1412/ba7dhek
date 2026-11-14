@@ -80,9 +80,18 @@ export function EmployerHome() {
           style={{
             padding: theme.space[4],
             borderRadius: theme.radius.sm,
+            gap: theme.space[2],
             backgroundColor: theme.colors.brandSoft,
           }}>
           <AppText>{t(company.approval === 'pending' ? 'employer.pending' : 'employer.rejected')}</AppText>
+          {company.approval === 'rejected' ? (
+            <>
+              {company.rejectionReason ? (
+                <AppText color="inkMuted">{t('employer.rejectedReason', { reason: company.rejectionReason })}</AppText>
+              ) : null}
+              <Button label={t('employer.fix')} onPress={() => router.push('/business/edit')} />
+            </>
+          ) : null}
         </View>
       ) : null}
 

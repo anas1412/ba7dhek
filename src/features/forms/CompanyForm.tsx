@@ -30,23 +30,27 @@ export type CompanyValues = {
 type Props = {
   onSubmit: (values: CompanyValues) => Promise<void>;
   errorMessage: (error: unknown) => string;
+  /** The saved business, when editing it. Left out when adding one. */
+  initial?: CompanyValues;
 };
 
 /**
- * An employer adds their business once. A registered business gives its tax ID
- * (matricule fiscal), which is what gets checked before the first job goes live.
+ * An employer adds their business once, and edits it later. A registered business
+ * gives its tax ID (matricule fiscal), which is what gets checked before the
+ * first job goes live.
  */
-export function CompanyForm({ onSubmit, errorMessage }: Props) {
+export function CompanyForm({ onSubmit, errorMessage, initial }: Props) {
   const { t } = useTranslation();
   const theme = useTheme();
   const toast = useToast();
-  const [kind, setKind] = useState<EmployerKind>('business');
-  const [taxId, setTaxId] = useState('');
+  const editing = initial !== undefined;
+  const [kind, setKind] = useState<EmployerKind>(initial?.kind ?? 'business');
+  const [taxId, setTaxId] = useState(initial?.taxId ?? '');
   const [taxIdTouched, setTaxIdTouched] = useState(false);
-  const [name, setName] = useState('');
-  const [category, setCategory] = useState<Category | null>(null);
-  const [address, setAddress] = useState('');
-  const [location, setLocation] = useState<Point | null>(null);
+  const [name, setName] = useState(initial?.name ?? '');
+  const [category, setCategory] = useState<Category | null>(initial?.category ?? null);
+  const [address, setAddress] = useState(initial?.address ?? '');
+  const [location, setLocation] = useState<Point | null>(initial?.location ?? null);
   const [busy, setBusy] = useState(false);
   // Field errors stay hidden until the person has tried to save once.
   const [attempted, setAttempted] = useState(false);
@@ -90,7 +94,6 @@ export function CompanyForm({ onSubmit, errorMessage }: Props) {
     }
   }
 
-  const rules = ['company.rule1', 'company.rule2', 'company.rule3', 'company.rule4'] as const;
   // Shown once the person has left the field or tried to save, not while they are still typing.
   const showTaxIdError = (taxIdTouched && taxId.trim() !== '') || attempted;
 
@@ -105,10 +108,11 @@ export function CompanyForm({ onSubmit, errorMessage }: Props) {
               {error}
             </AppText>
           ) : null}
-          <Button label={t('company.submit')} loading={busy} onPress={submit} />
+          <Button label={t(editing ? 'company.save' : 'company.submit')} loading={busy} onPress={submit} />
         </>
       }>
-      <AppText variant="display">{t('company.title')}</AppText>
+      <AppText variant="display">{t(editing ? 'company.editTitle' : 'company.title')}</AppText>
+      {editing ? <AppText color="inkMuted">{t('company.editNote')}</AppText> : null}
 
       <ChoiceChips
         label={t('company.kind')}
@@ -180,6 +184,17 @@ export function CompanyForm({ onSubmit, errorMessage }: Props) {
         ) : null}
       </View>
 
+      {editing ? null : <Rules />}
+    </Screen>
+  );
+}
+
+/** What an employer agrees to, shown when the business is first added. */
+function Rules() {
+  const { t } = useTranslation();
+  const theme = useTheme();
+  const rules = ['company.rule1', 'company.rule2', 'company.rule3', 'company.rule4'] as const;
+  return (
       <View
         style={{
           gap: theme.space[2],
@@ -197,6 +212,5 @@ export function CompanyForm({ onSubmit, errorMessage }: Props) {
           </View>
         ))}
       </View>
-    </Screen>
   );
 }

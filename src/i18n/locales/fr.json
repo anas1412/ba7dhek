@@ -159,7 +159,9 @@
     "applicants_other": "{{count}} candidats",
     "business": "Votre établissement",
     "photos": "Photos",
-    "statusHidden": "Masquée, en cours de vérification"
+    "statusHidden": "Masquée, en cours de vérification",
+    "rejectedReason": "Motif : {{reason}}",
+    "fix": "Corriger et renvoyer"
   },
   "preview": {
     "title": "Aperçu",
@@ -215,7 +217,11 @@
     "taxIdRead": "Lu comme {{taxId}}",
     "taxIdInvalid": "Cela ne ressemble pas à un matricule fiscal. Il comporte sept chiffres et une lettre, par exemple 1234567A/A/M/000.",
     "taxIdTaken": "Une entreprise avec ce matricule fiscal est déjà enregistrée.",
-    "individualNote": "Pour une personne qui recrute pour son foyer ou son propre travail, sans entreprise enregistrée. Nous pourrons vous contacter avant la mise en ligne de votre première offre."
+    "individualNote": "Pour une personne qui recrute pour son foyer ou son propre travail, sans entreprise enregistrée. Nous pourrons vous contacter avant la mise en ligne de votre première offre.",
+    "editTitle": "Modifier l’établissement",
+    "editNote": "Un changement de nom, de matricule fiscal ou de type d’employeur demande une nouvelle vérification. Vos offres en ligne le restent pendant ce temps.",
+    "save": "Enregistrer",
+    "saveFailed": "Les modifications n’ont pas été enregistrées. Vérifiez les champs et réessayez."
   },
   "job": {
     "title": "Publier une offre",
@@ -308,7 +314,9 @@
     "setupSaved": "Enregistré",
     "accepted": "Accepté. Une discussion est ouverte.",
     "rejected": "Marqué comme non retenu",
-    "languageChanged": "Langue modifiée"
+    "languageChanged": "Langue modifiée",
+    "businessSaved": "Modifications enregistrées",
+    "businessRecheck": "Enregistré. Nous vérifions à nouveau votre établissement."
   },
   "crash": {
     "title": "Quelque chose s'est cassé",
@@ -623,5 +631,18 @@
     "reportedSide": "signalé",
     "logReadChat": "A lu une discussion signalée",
     "logExport": "A exporté une liste"
+  },
+  "business": {
+    "statusPending": "En cours de vérification",
+    "statusApproved": "Établissement vérifié",
+    "statusRejected": "Établissement non validé",
+    "pendingBody": "Nous vérifions les informations ci-dessous. Vos offres seront mises en ligne après validation.",
+    "approvedBody": "Vous pouvez publier vos offres.",
+    "rejectedBody": "Corrigez les informations puis renvoyez-les : elles seront vérifiées à nouveau.",
+    "reason": "Motif : {{reason}}",
+    "taxIdPrivate": "Visible par vous et par notre équipe uniquement, jamais par les candidats.",
+    "category": "Type d’établissement",
+    "edit": "Modifier les informations",
+    "fixAndResend": "Corriger et renvoyer"
   }
 }
