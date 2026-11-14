@@ -8,7 +8,6 @@
     "scheme": "ba7dhek",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "icon": "./assets/expo.icon",
       "bundleIdentifier": "tn.ba7dhek.app",
       "infoPlist": {
         "CFBundleLocalizations": [
@@ -21,9 +20,8 @@
     "android": {
       "package": "tn.ba7dhek.app",
       "adaptiveIcon": {
-        "backgroundColor": "#DCE8FA",
+        "backgroundColor": "#1557B8",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
-        "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "predictiveBackGestureEnabled": false
@@ -38,7 +36,11 @@
         {
           "backgroundColor": "#1557B8",
           "image": "./assets/images/splash-icon.png",
-          "imageWidth": 76
+          "imageWidth": 200,
+          "dark": {
+            "backgroundColor": "#0F141B",
+            "image": "./assets/images/splash-icon-dark.png"
+          }
         }
       ],
       [

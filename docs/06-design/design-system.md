@@ -105,7 +105,7 @@ No exclamation marks and no emoji in interface text.
 ## Not defined yet
 - Components: button, chip, text field, job card, chat bubble. They are added to the design system as the first screens are built.
 - An icon set. One outline set, with mirrored forms of directional icons for Arabic.
-- A logo. Until there is one, the name is set in Readex Pro at weight 600: "Ba7dhek" and "بحذاك".
+- ~~A logo.~~ Done: see `logo.md`.
 - Shadow and motion values.
 
 ## Changing the system

@@ -7,6 +7,7 @@ import { AppText } from '@/components/AppText';
 import { Button } from '@/components/Button';
 import { Chip } from '@/components/Chip';
 import { LanguageSwitch } from '@/components/LanguageSwitch';
+import { Logo } from '@/components/Logo';
 import { CardStack } from '@/features/jobs/CardStack';
 import { sampleJobs } from '@/features/jobs/sampleJobs';
 import { currentLanguage } from '@/i18n';
@@ -103,6 +104,7 @@ export function Intro({ startAtEnd, onSeen, signIn }: Props) {
     </View>,
 
     <View key="start" style={{ flex: 1, justifyContent: 'center', gap: theme.space[2], padding: theme.space[4] }}>
+      <Logo size={96} />
       <AppText variant="display">{t('common.appName')}</AppText>
       <AppText variant="title" color="brand">
         {t('welcome.tagline')}

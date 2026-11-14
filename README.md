@@ -98,6 +98,7 @@ To reconnect on another machine, run `npx convex dev` and pick the existing `ba7
 ### 06 Design
 - [ux-plan.md](docs/06-design/ux-plan.md): navigation, feedback, loading, errors, motion, maps and the fuller job form
 - [design-system.md](docs/06-design/design-system.md): colour, type, spacing, radius, voice
+- [logo.md](docs/06-design/logo.md): the mark, its rules, and the files generated from it
 - [tokens.json](docs/06-design/tokens.json): the same values, machine-readable
 
 ## How to read the documents
