@@ -37,7 +37,8 @@ type Props = {
 const EXIT_MS = 220;
 /** A flick this fast counts as a swipe even if the card has not travelled far. */
 const FLICK_VELOCITY = 900;
-const SPRING = { damping: 18, stiffness: 180 };
+// Slightly under-damped, so a card that springs back overshoots a touch and settles.
+const SPRING = { damping: 13, stiffness: 190 };
 
 /**
  * The job stack. Right means apply and left means pass in every language: a

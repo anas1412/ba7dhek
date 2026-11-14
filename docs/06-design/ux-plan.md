@@ -159,7 +159,7 @@ Chat, push notifications, report and block, and account deletion are still owed 
 | B. Headers, back, sheets, keyboard | Built 2026-11-14 | Back and forward between screens in the browser. Sheet presentation and keyboard behaviour need a phone |
 | C. Feedback, field errors, offline, crash screen | Built 2026-11-14 | Empty job form marks its fields and shows a message. The offline band and crash screen were not triggered |
 | Tax ID for businesses | Built 2026-11-14 | Backend tests, and the form in the browser |
-| D. Placeholders and motion | Not started | |
+| D. Placeholders and motion | Built 2026-11-14 | Placeholders seen in the browser preview; rows fade in and a decision swaps in place. Chip fill, the drawn check mark and "still loading" after a delay are not built |
 | E. Fuller job form, job detail, filters | Not started | |
 | F. Map picker, vibration | Not started | |
 | G. Icon, logo, illustrations | Not started | |

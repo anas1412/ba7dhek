@@ -4,7 +4,8 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { AppText } from '@/components/AppText';
-import { LoadingScreen, Screen } from '@/components/Screen';
+import { Screen } from '@/components/Screen';
+import { ListSkeleton } from '@/components/Skeleton';
 import { ApplicationsList } from '@/features/jobs/ApplicationsList';
 
 /** The candidate's applications and their answers. Hidden from the tab bar for employers. */
@@ -14,7 +15,14 @@ export default function Applications() {
   const applications = useQuery(api.swipes.mine, me?.role === 'candidate' ? {} : 'skip');
   const [now] = useState(() => Date.now());
 
-  if (!applications) return <LoadingScreen />;
+  if (!applications) {
+    return (
+      <Screen scroll>
+        <AppText variant="display">{t('applications.title')}</AppText>
+        <ListSkeleton />
+      </Screen>
+    );
+  }
 
   return (
     <Screen scroll>

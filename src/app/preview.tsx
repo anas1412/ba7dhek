@@ -24,6 +24,7 @@ const VIEW_TITLE = {
   job: 'job.title',
   applicants: 'applicants.title',
   applications: 'applications.title',
+  loading: 'common.loading',
 } as const;
 
 function isPreviewView(value: unknown): value is PreviewView {

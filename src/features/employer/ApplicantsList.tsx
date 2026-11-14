@@ -2,6 +2,7 @@ import { Image } from 'expo-image';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 
+import { Appear, Swap } from '@/components/Appear';
 import { AppText } from '@/components/AppText';
 import { Button } from '@/components/Button';
 import { Chip } from '@/components/Chip';
@@ -48,9 +49,10 @@ export function ApplicantsList({ applicants, now, busyId, onDecide }: Props) {
 
   return (
     <View style={{ gap: theme.space[4] }}>
-      {applicants.map((applicant) => (
-        <View
+      {applicants.map((applicant, index) => (
+        <Appear
           key={applicant._id}
+          index={index}
           style={{
             padding: theme.space[4],
             gap: theme.space[2] + theme.space[1],
@@ -105,7 +107,7 @@ export function ApplicantsList({ applicants, now, busyId, onDecide }: Props) {
               />
             </View>
           ) : (
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: theme.space[1] }}>
+            <Swap key={applicant.decision} style={{ flexDirection: 'row', alignItems: 'center', gap: theme.space[1] }}>
               <Icon
                 name={applicant.decision === 'accepted' ? 'check' : 'x'}
                 size={20}
@@ -114,9 +116,9 @@ export function ApplicantsList({ applicants, now, busyId, onDecide }: Props) {
               <AppText variant="bodyStrong" color={applicant.decision === 'accepted' ? 'success' : 'inkMuted'}>
                 {t(applicant.decision === 'accepted' ? 'applicants.accepted' : 'applicants.rejected')}
               </AppText>
-            </View>
+            </Swap>
           )}
-        </View>
+        </Appear>
       ))}
     </View>
   );

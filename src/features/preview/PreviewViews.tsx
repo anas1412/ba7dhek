@@ -1,15 +1,17 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { View } from 'react-native';
 
 import { AppText } from '@/components/AppText';
 import { Screen } from '@/components/Screen';
+import { CardSkeleton, ListSkeleton } from '@/components/Skeleton';
 import { ApplicantsList, type Applicant } from '@/features/employer/ApplicantsList';
 import { CandidateSetupForm } from '@/features/forms/CandidateSetupForm';
 import { CompanyForm } from '@/features/forms/CompanyForm';
 import { JobForm } from '@/features/forms/JobForm';
 import { ApplicationsList, type Application } from '@/features/jobs/ApplicationsList';
 
-export const PREVIEW_VIEWS = ['setup', 'company', 'job', 'applicants', 'applications'] as const;
+export const PREVIEW_VIEWS = ['setup', 'company', 'job', 'applicants', 'applications', 'loading'] as const;
 export type PreviewView = (typeof PREVIEW_VIEWS)[number];
 
 // Stands in for the backend: waits a moment, then succeeds.
@@ -88,6 +90,16 @@ export function PreviewViewScreen({ view }: { view: PreviewView }) {
               )
             }
           />
+        </Screen>
+      );
+    case 'loading':
+      return (
+        <Screen scroll underHeader>
+          <AppText variant="display">{t('common.loading')}</AppText>
+          <View style={{ height: 460 }}>
+            <CardSkeleton />
+          </View>
+          <ListSkeleton rows={2} />
         </Screen>
       );
     case 'applications':

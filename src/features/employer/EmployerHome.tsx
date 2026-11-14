@@ -6,11 +6,13 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 
+import { Appear, Swap } from '@/components/Appear';
 import { AppText } from '@/components/AppText';
 import { Button } from '@/components/Button';
 import { Chip } from '@/components/Chip';
 import { EmptyState } from '@/components/EmptyState';
-import { LoadingScreen, Screen } from '@/components/Screen';
+import { Screen } from '@/components/Screen';
+import { ListSkeleton } from '@/components/Skeleton';
 import { useToast } from '@/components/Toast';
 import { currentLanguage } from '@/i18n';
 import { formatPay } from '@/lib/format';
@@ -31,7 +33,14 @@ export function EmployerHome() {
   const [busyId, setBusyId] = useState<string | null>(null);
   const toast = useToast();
 
-  if (company === undefined || jobs === undefined) return <LoadingScreen />;
+  if (company === undefined || jobs === undefined) {
+    return (
+      <Screen scroll>
+        <AppText variant="display">{t('employer.title')}</AppText>
+        <ListSkeleton />
+      </Screen>
+    );
+  }
 
   if (company === null) {
     return (
@@ -79,9 +88,10 @@ export function EmployerHome() {
           <EmptyState icon="plus" title={t('employer.noJobsTitle')} body={t('employer.noJobsBody')} />
         </View>
       ) : (
-        jobs.map((job) => (
-          <View
+        jobs.map((job, index) => (
+          <Appear
             key={job._id}
+            index={index}
             style={{
               padding: theme.space[4],
               gap: theme.space[2],
@@ -95,7 +105,9 @@ export function EmployerHome() {
               {formatPay(job.payAmount, job.payPeriod, language, t)}
             </AppText>
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: theme.space[2] }}>
-              <Chip label={t(STATUS_KEY[job.status])} />
+              <Swap key={job.status}>
+                <Chip label={t(STATUS_KEY[job.status])} />
+              </Swap>
               <Chip icon="user" label={t('employer.applicants', { count: job.applicantCount })} />
             </View>
             {job.status === 'draft' ? (
@@ -120,7 +132,7 @@ export function EmployerHome() {
                 onPress={() => run(job._id, () => close({ jobId: job._id }), 'toast.jobClosed')}
               />
             ) : null}
-          </View>
+          </Appear>
         ))
       )}
     </Screen>

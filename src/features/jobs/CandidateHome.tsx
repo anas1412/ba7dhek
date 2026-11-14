@@ -9,7 +9,8 @@ import { View } from 'react-native';
 import { AppText } from '@/components/AppText';
 import { EmptyState } from '@/components/EmptyState';
 import { RoundButton } from '@/components/RoundButton';
-import { LoadingScreen, Screen } from '@/components/Screen';
+import { Screen } from '@/components/Screen';
+import { CardSkeleton, Skeleton } from '@/components/Skeleton';
 import { useToast } from '@/components/Toast';
 import { DEFAULT_RADIUS_M } from '@/features/forms/options';
 import { currentLanguage } from '@/i18n';
@@ -31,7 +32,16 @@ export function CandidateHome({ radiusM }: { radiusM: number | null }) {
   const [failed, setFailed] = useState(false);
   const toast = useToast();
 
-  if (!feed) return <LoadingScreen />;
+  if (!feed) {
+    return (
+      <Screen>
+        <Skeleton width={170} height={26} />
+        <View style={{ flex: 1 }}>
+          <CardSkeleton />
+        </View>
+      </Screen>
+    );
+  }
 
   // No starting point yet: the setup screen asks for one.
   if (feed.reason === 'no_home') return <Redirect href="/setup/candidate" />;

@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 
+import { Appear, Swap } from '@/components/Appear';
 import { AppText } from '@/components/AppText';
 import { EmptyState } from '@/components/EmptyState';
 import { Icon, type IconName } from '@/components/Icon';
@@ -43,11 +44,12 @@ export function ApplicationsList({ applications, now }: { applications: Applicat
 
   return (
     <View style={{ gap: theme.space[4] }}>
-      {applications.map((application) => {
+      {applications.map((application, index) => {
         const state = stateOf(application);
         return (
-          <View
+          <Appear
             key={application._id}
+            index={index}
             style={{
               padding: theme.space[4],
               gap: theme.space[1],
@@ -60,16 +62,18 @@ export function ApplicationsList({ applications, now }: { applications: Applicat
               {application.jobTitle ?? '—'}
             </AppText>
             {application.companyName ? <AppText color="inkMuted">{application.companyName}</AppText> : null}
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: theme.space[1], marginTop: theme.space[2] }}>
+            <Swap
+              key={state.key}
+              style={{ flexDirection: 'row', alignItems: 'center', gap: theme.space[1], marginTop: theme.space[2] }}>
               <Icon name={state.icon} size={20} color={state.color} />
               <AppText variant="bodyStrong" color={state.color}>
                 {t(state.key)}
               </AppText>
-            </View>
+            </Swap>
             <AppText variant="caption" color="inkMuted">
               {t('applications.applied', { time: formatRelativeTime(application.appliedAt, now, language) })}
             </AppText>
-          </View>
+          </Appear>
         );
       })}
     </View>

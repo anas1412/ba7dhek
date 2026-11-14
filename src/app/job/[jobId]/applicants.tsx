@@ -6,7 +6,8 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { AppText } from '@/components/AppText';
-import { LoadingScreen, Screen } from '@/components/Screen';
+import { Screen } from '@/components/Screen';
+import { ListSkeleton } from '@/components/Skeleton';
 import { useToast } from '@/components/Toast';
 import { ApplicantsList, type Applicant } from '@/features/employer/ApplicantsList';
 
@@ -21,7 +22,14 @@ export default function Applicants() {
   const [failed, setFailed] = useState(false);
   const toast = useToast();
 
-  if (!applicants) return <LoadingScreen />;
+  if (!applicants) {
+    return (
+      <Screen scroll underHeader>
+        <AppText variant="display">{t('applicants.title')}</AppText>
+        <ListSkeleton />
+      </Screen>
+    );
+  }
 
   async function onDecide(applicant: Applicant, accept: boolean) {
     setBusyId(applicant._id);
