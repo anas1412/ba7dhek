@@ -9,6 +9,7 @@
  */
 
 import type * as account from "../account.js";
+import type * as adminTools from "../adminTools.js";
 import type * as auth from "../auth.js";
 import type * as companies from "../companies.js";
 import type * as crons from "../crons.js";
@@ -41,6 +42,7 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   account: typeof account;
+  adminTools: typeof adminTools;
   auth: typeof auth;
   companies: typeof companies;
   crons: typeof crons;
