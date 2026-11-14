@@ -17,13 +17,12 @@ This plan fixes that. It is ordered so the app feels right early, and so the cha
 | Job form | Six fields. No hours, start date, openings, requirements or benefits |
 
 ## 1. Default language
-**Rule on first launch** (changed on 2026-11-14: the device language comes first)
+**Rule on first launch**
 1. If the person has already chosen a language, use it.
 2. Otherwise, use the browser or device language if it is Arabic, French or English.
-3. Otherwise, if the device is in Tunisia, use Arabic (Tunisian dialect).
-4. Otherwise, French.
+3. Otherwise, English.
 
-**How "in Tunisia" is decided**, without asking for location permission: the device's region is `TN`, or its time zone is `Africa/Tunis`. Both come from the localization package the app already uses. This only matters for a device set to a language the app does not have.
+Where the device is plays no part. An earlier version of this plan made someone in Tunisia default to Arabic; that was dropped on 2026-11-14.
 
 **Swipes never mirror.** In Arabic the layout runs right to left, but a swipe keeps its direction: right applies and left passes on a job card, and a swipe left goes to the next onboarding page. The page dots run left to right in every language to match.
 
@@ -154,7 +153,7 @@ Chat, push notifications, report and block, and account deletion are still owed 
 ## Progress
 | Phase | State | Checked how |
 |---|---|---|
-| A. Default language | Built 2026-11-14 | A browser set to English opens in English; the switch changes it and the choice is kept |
+| A. Default language | Built 2026-11-14 | A browser set to English opens in English; the switch changes it and the choice is kept. Any other device language falls back to English |
 | Swipe onboarding | Built 2026-11-14 | Swiped between pages and on the practice card in the browser. Swipe left goes forward in English and in Arabic |
 | B. Headers, back, sheets, keyboard | Built 2026-11-14 | Back and forward between screens in the browser. Sheet presentation and keyboard behaviour need a phone |
 | C. Feedback, field errors, offline, crash screen | Built 2026-11-14 | Empty job form marks its fields and shows a message. The offline band and crash screen were not triggered |

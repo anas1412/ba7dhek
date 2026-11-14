@@ -11,7 +11,7 @@ Every decision taken so far, with who took it and why. Decisions marked "Anas" w
 | Arabic copy in Tunisian dialect, Arabic script | Anas | Legal text is the exception: standard Arabic and French |
 | No payments in the app; local methods later if businesses are charged | Anas | |
 | A registered business must give its tax ID (matricule fiscal) for verification | Anas | |
-| Default language is the device or browser language; Tunisian Darija only as the fallback in Tunisia; changeable | Anas | He first asked for language to follow place, then corrected it the same day |
+| Default language is the device or browser language; English when the device language is not one of the three; changeable | Anas | Settled on 2026-11-14 after two earlier versions |
 | Swipes keep the same direction in every language | Anas | A swipe is a physical gesture |
 | Onboarding is swiped through, with a practice card that teaches the gesture | Anas | |
 | Free for candidates, always | delegated | Product principle, and it keeps the app clear of placement rules |
@@ -53,7 +53,7 @@ All delegated. These are starting values, chosen to be reasonable and adjusted a
 | Job expiry | 30 days, renewable |
 | Reports that hide a job pending review | 3, from different users |
 | Reminder to an employer with waiting applicants | After 48 hours |
-| Fallback language when the device language is not one of the three | French |
+| Fallback language when the device language is not one of the three | English |
 | Jobs in the pilot circle before inviting candidates | 30 within 3 km |
 
 Retention periods are in [data-protection.md](../04-launch/data-protection.md).

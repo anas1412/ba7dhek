@@ -1,6 +1,6 @@
 import './polyfills';
 
-import { getCalendars, getLocales } from 'expo-localization';
+import { getLocales } from 'expo-localization';
 import * as Updates from 'expo-updates';
 // `use` is renamed because the hooks lint rule treats any call named `use` as a React hook.
 import i18n, { changeLanguage, use as registerPlugin } from 'i18next';
@@ -19,12 +19,7 @@ const isWeb = Platform.OS === 'web';
 
 /** The language this device would get with no saved choice. */
 function languageFromDevice(): Language {
-  const locales = getLocales();
-  return pickLanguage({
-    languageCodes: locales.map((locale) => locale.languageCode),
-    regionCodes: locales.map((locale) => locale.regionCode),
-    timeZone: getCalendars()[0]?.timeZone ?? null,
-  });
+  return pickLanguage(getLocales().map((locale) => locale.languageCode));
 }
 
 /**

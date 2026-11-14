@@ -77,30 +77,20 @@ describe('formatRelativeTime', () => {
 });
 
 describe('pickLanguage', () => {
-  const abroad = { regionCodes: ['FR'], timeZone: 'Europe/Paris' };
-
-  const tunisia = { regionCodes: ['TN'], timeZone: 'Africa/Tunis' };
-
-  test('the device language wins, in Tunisia or not', () => {
-    expect(pickLanguage({ languageCodes: ['en'], ...tunisia })).toBe('en');
-    expect(pickLanguage({ languageCodes: ['fr'], ...tunisia })).toBe('fr');
-    expect(pickLanguage({ languageCodes: ['ar'], ...abroad })).toBe('ar');
-    expect(pickLanguage({ languageCodes: ['en'], ...abroad })).toBe('en');
+  test('uses the device language when the app has it', () => {
+    expect(pickLanguage(['en'])).toBe('en');
+    expect(pickLanguage(['fr'])).toBe('fr');
+    expect(pickLanguage(['ar'])).toBe('ar');
   });
 
-  test('the first supported language in the device list is used', () => {
-    expect(pickLanguage({ languageCodes: ['de', 'ar', 'fr'], ...abroad })).toBe('ar');
-    expect(pickLanguage({ languageCodes: ['de', 'fr'], ...tunisia })).toBe('fr');
+  test('takes the first supported language in the device list', () => {
+    expect(pickLanguage(['de', 'ar', 'fr'])).toBe('ar');
+    expect(pickLanguage(['it', 'fr'])).toBe('fr');
   });
 
-  test('with no supported device language, a device in Tunisia gets Arabic', () => {
-    expect(pickLanguage({ languageCodes: ['de'], ...tunisia })).toBe('ar');
-    expect(pickLanguage({ languageCodes: ['it'], regionCodes: ['IT'], timeZone: 'Africa/Tunis' })).toBe('ar');
-    expect(pickLanguage({ languageCodes: [], regionCodes: ['TN'], timeZone: null })).toBe('ar');
-  });
-
-  test('with no supported device language outside Tunisia, it falls back to French', () => {
-    expect(pickLanguage({ languageCodes: ['de', null], ...abroad })).toBe('fr');
-    expect(pickLanguage({ languageCodes: [], regionCodes: [], timeZone: null })).toBe('fr');
+  test('falls back to English for any other language', () => {
+    expect(pickLanguage(['de'])).toBe('en');
+    expect(pickLanguage(['it', null])).toBe('en');
+    expect(pickLanguage([])).toBe('en');
   });
 });

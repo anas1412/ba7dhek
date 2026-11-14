@@ -1,8 +1,8 @@
 export const LANGUAGES = ['ar', 'fr', 'en'] as const;
 export type Language = (typeof LANGUAGES)[number];
 
-/** Used when nothing about the device points to one of the three languages. */
-export const FALLBACK_LANGUAGE: Language = 'fr';
+/** Used when the device is set to a language the app does not have. */
+export const FALLBACK_LANGUAGE: Language = 'en';
 
 export function isLanguage(value: unknown): value is Language {
   return typeof value === 'string' && (LANGUAGES as readonly string[]).includes(value);
@@ -27,32 +27,16 @@ export function formatLocale(language: Language): string {
   }
 }
 
-export type DeviceHints = {
-  /** The device's languages, most preferred first: "fr", "en". */
-  languageCodes: readonly (string | null)[];
-  /** The device's regions: "TN", "FR". */
-  regionCodes: readonly (string | null)[];
-  /** The device's time zone: "Africa/Tunis". */
-  timeZone: string | null;
-};
-
-/** Tunisia by region setting or by clock. Needs no location permission. */
-export function isInTunisia(hints: DeviceHints): boolean {
-  return hints.regionCodes.includes('TN') || hints.timeZone === 'Africa/Tunis';
-}
-
 /**
- * The language for a first launch.
+ * The language for a first launch: the device or browser language when it is
+ * Arabic, French or English, and English otherwise. Where the device is plays
+ * no part. A person's own choice, once made, overrides this.
  *
- * 1. The device or browser language, when it is one of the three.
- * 2. Otherwise Arabic (Tunisian dialect) for a device in Tunisia.
- * 3. Otherwise French.
- *
- * A person's own choice, once made, overrides all of this.
+ * `languageCodes` is the device's list, most preferred first: "fr", "en".
  */
-export function pickLanguage(hints: DeviceHints): Language {
-  for (const code of hints.languageCodes) {
+export function pickLanguage(languageCodes: readonly (string | null)[]): Language {
+  for (const code of languageCodes) {
     if (isLanguage(code)) return code;
   }
-  return isInTunisia(hints) ? 'ar' : FALLBACK_LANGUAGE;
+  return FALLBACK_LANGUAGE;
 }
