@@ -2,7 +2,7 @@ import { ConvexError, v } from "convex/values";
 import { mutation, query, type MutationCtx } from "./_generated/server";
 import { requireAdmin, requireRole } from "./lib/auth";
 import { unindexJob } from "./lib/geo";
-import { MAX_BUSINESS_IMAGES, checkUpload, companyImages } from "./lib/images";
+import { checkUpload, companyLogoUrl } from "./lib/images";
 import { normaliseTaxId, taxIdBase } from "./lib/taxId";
 import { cleanText, requireCategory, requireTunisianPoint } from "./lib/validate";
 import { employerKind, point } from "./schema";
@@ -17,7 +17,7 @@ export const mine = query({
       .withIndex("by_owner", (q) => q.eq("ownerId", user._id))
       .unique();
     if (!company) return null;
-    return { ...company, images: await companyImages(ctx, company) };
+    return { ...company, logoUrl: await companyLogoUrl(ctx, company) };
   },
 });
 
@@ -129,48 +129,28 @@ async function requireOwnCompany(ctx: MutationCtx) {
 }
 
 /**
- * Adds one image to the business, up to four. An upload that is not an
- * acceptable image, or that would be a fifth, is deleted and the problem returned.
+ * Sets the business's logo, replacing any earlier one. An upload that is not an
+ * acceptable image is deleted and the problem returned.
  */
-export const addImage = mutation({
+export const setLogo = mutation({
   args: { storageId: v.id("_storage") },
   handler: async (ctx, args) => {
     const company = await requireOwnCompany(ctx);
-    const current = company.imageIds ?? [];
-    if (current.includes(args.storageId)) return { ok: true as const };
-    if (current.length >= MAX_BUSINESS_IMAGES) {
-      await ctx.storage.delete(args.storageId);
-      return { ok: false as const, problem: "too_many" as const };
-    }
     const problem = await checkUpload(ctx, args.storageId);
     if (problem) return { ok: false as const, problem };
-    await ctx.db.patch(company._id, { imageIds: [...current, args.storageId] });
+    if (company.logoId && company.logoId !== args.storageId) await ctx.storage.delete(company.logoId);
+    await ctx.db.patch(company._id, { logoId: args.storageId });
     return { ok: true as const };
   },
 });
 
-/** Removes one of the business's images and deletes the file. */
-export const removeImage = mutation({
-  args: { storageId: v.id("_storage") },
-  handler: async (ctx, args) => {
+/** Removes the business's logo and deletes the file. */
+export const removeLogo = mutation({
+  args: {},
+  handler: async (ctx) => {
     const company = await requireOwnCompany(ctx);
-    const current = company.imageIds ?? [];
-    // Only a file that belongs to this business can be deleted through it.
-    if (!current.includes(args.storageId)) throw new ConvexError({ code: "not_found" });
-    await ctx.db.patch(company._id, { imageIds: current.filter((id) => id !== args.storageId) });
-    await ctx.storage.delete(args.storageId);
-  },
-});
-
-/** Moves one image to the front. The first image is the one shown on job cards. */
-export const setMainImage = mutation({
-  args: { storageId: v.id("_storage") },
-  handler: async (ctx, args) => {
-    const company = await requireOwnCompany(ctx);
-    const current = company.imageIds ?? [];
-    if (!current.includes(args.storageId)) throw new ConvexError({ code: "not_found" });
-    await ctx.db.patch(company._id, {
-      imageIds: [args.storageId, ...current.filter((id) => id !== args.storageId)],
-    });
+    if (!company.logoId) return;
+    await ctx.storage.delete(company.logoId);
+    await ctx.db.patch(company._id, { logoId: undefined });
   },
 });

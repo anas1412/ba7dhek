@@ -157,7 +157,7 @@
     "applicants_many": "{{count}} de candidats",
     "applicants_other": "{{count}} candidats",
     "business": "Votre établissement",
-    "businessPhotos": "Photos de l'établissement"
+    "photos": "Photos"
   },
   "preview": {
     "title": "Aperçu",
@@ -285,8 +285,8 @@
     "reload": "Recharger"
   },
   "images": {
-    "title": "Photos de votre établissement",
-    "body": "Jusqu'à 4 photos. La première apparaît à côté de votre nom sur chaque offre publiée.",
+    "title": "Photos de cette offre",
+    "body": "Jusqu'à 4 photos du poste ou du lieu de travail. La première figure en haut de la carte que les gens balaient.",
     "add": "Ajouter une photo",
     "adding": "Envoi",
     "remove": "Retirer cette photo",
@@ -302,7 +302,11 @@
     "tooLarge": "Cette photo reste trop lourde même réduite. Essayez-en une autre.",
     "tooMany": "Vous avez déjà 4 photos. Retirez-en une pour en ajouter une autre.",
     "failed": "La photo n'a pas été enregistrée. Vérifiez votre connexion et réessayez.",
-    "shrinkNote": "Les photos sont réduites sur votre téléphone avant l'envoi."
+    "shrinkNote": "Les photos sont réduites sur votre téléphone avant l'envoi.",
+    "done": "Terminé",
+    "photosCount_one": "{{count}} photo",
+    "photosCount_many": "{{count}} de photos",
+    "photosCount_other": "{{count}} photos"
   },
   "photo": {
     "title": "Votre photo",
@@ -315,5 +319,14 @@
     "changed": "Photo modifiée",
     "removed": "Votre photo n'est plus affichée",
     "restored": "Retour à votre photo Google"
+  },
+  "logo": {
+    "title": "Logo",
+    "body": "Une seule image. Elle apparaît à côté du nom de votre établissement sur chaque offre publiée.",
+    "add": "Ajouter un logo",
+    "change": "Changer de logo",
+    "remove": "Retirer le logo",
+    "changed": "Logo enregistré",
+    "removed": "Logo retiré"
   }
 }

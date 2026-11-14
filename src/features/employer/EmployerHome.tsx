@@ -72,7 +72,7 @@ export function EmployerHome() {
       footer={<Button label={t('employer.newJob')} onPress={() => router.push('/job/new')} />}>
       <AppText variant="display">{t('employer.title')}</AppText>
 
-      <Button label={t('employer.businessPhotos')} variant="neutral" onPress={() => router.push('/business')} />
+      <Button label={t('employer.business')} variant="neutral" onPress={() => router.push('/business')} />
 
       {company.approval !== 'approved' ? (
         <View
@@ -111,7 +111,13 @@ export function EmployerHome() {
                 <Chip label={t(STATUS_KEY[job.status])} />
               </Swap>
               <Chip icon="user" label={t('employer.applicants', { count: job.applicantCount })} />
+              <Chip label={t('images.count', { count: job.images.length, max: 4 })} />
             </View>
+            <Button
+              label={t('employer.photos')}
+              variant="neutral"
+              onPress={() => router.push({ pathname: '/job/[jobId]/photos', params: { jobId: job._id } })}
+            />
             {job.status === 'draft' ? (
               <Button
                 label={t('employer.publish')}

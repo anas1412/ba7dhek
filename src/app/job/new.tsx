@@ -18,9 +18,10 @@ export default function NewJob() {
     <JobForm
       errorMessage={(error) => formErrorMessage(error, t, 'job.failed')}
       onSubmit={async (values) => {
-        await create(values);
+        const jobId = await create(values);
         toast.show(t('toast.draftSaved'));
-        router.back();
+        // Straight on to photos: they are optional, and this is the moment someone has them to hand.
+        router.replace({ pathname: '/job/[jobId]/photos', params: { jobId } });
       }}
     />
   );

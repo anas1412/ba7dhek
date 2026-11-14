@@ -20,8 +20,10 @@ export type JobCardData = {
   publishedAt: number;
   distanceM: number;
   companyName: string;
-  /** The business's main photo, when it has one. */
-  companyImageUrl?: string | null;
+  /** The business's logo, when it has one. */
+  companyLogoUrl?: string | null;
+  /** The job's photos, main one first. */
+  imageUrls?: string[];
 };
 
 /**
@@ -33,6 +35,8 @@ export function JobCard({ job, now }: { job: JobCardData; now: number }) {
   const { t } = useTranslation();
   const theme = useTheme();
   const language = currentLanguage();
+  const mainPhoto = job.imageUrls?.[0];
+  const photoCount = job.imageUrls?.length ?? 0;
 
   return (
     <View
@@ -45,6 +49,26 @@ export function JobCard({ job, now }: { job: JobCardData; now: number }) {
         borderColor: theme.colors.line,
         backgroundColor: theme.colors.surfaceRaised,
       }}>
+      {mainPhoto ? (
+        <View style={{ height: 132, borderRadius: theme.radius.sm, overflow: 'hidden', backgroundColor: theme.colors.line }}>
+          <Image source={{ uri: mainPhoto }} style={{ flex: 1 }} contentFit="cover" transition={200} />
+          {photoCount > 1 ? (
+            <View
+              style={{
+                position: 'absolute',
+                bottom: theme.space[2],
+                end: theme.space[2],
+                paddingHorizontal: theme.space[2],
+                paddingVertical: theme.space[1],
+                borderRadius: theme.radius.full,
+                backgroundColor: theme.colors.surfaceRaised,
+              }}>
+              <AppText variant="label">{t('images.photosCount', { count: photoCount })}</AppText>
+            </View>
+          ) : null}
+        </View>
+      ) : null}
+
       <Chip
         variant="near"
         large
@@ -53,7 +77,7 @@ export function JobCard({ job, now }: { job: JobCardData; now: number }) {
       />
 
       <View style={{ gap: theme.space[1] }}>
-        <AppText variant="display" numberOfLines={3}>
+        <AppText variant={mainPhoto ? 'title' : 'display'} numberOfLines={mainPhoto ? 2 : 3}>
           {job.title}
         </AppText>
         <AppText variant="title" color="brand">
@@ -62,9 +86,9 @@ export function JobCard({ job, now }: { job: JobCardData; now: number }) {
       </View>
 
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: theme.space[2] }}>
-        {job.companyImageUrl ? (
+        {job.companyLogoUrl ? (
           <Image
-            source={{ uri: job.companyImageUrl }}
+            source={{ uri: job.companyLogoUrl }}
             style={{ width: 40, height: 40, borderRadius: theme.radius.sm, backgroundColor: theme.colors.line }}
             contentFit="cover"
             transition={200}
@@ -86,7 +110,7 @@ export function JobCard({ job, now }: { job: JobCardData; now: number }) {
       <View style={{ flex: 1 }}>
         {job.description ? (
           // Written by the employer, in whatever language they used; shown as written.
-          <AppText color="inkMuted" numberOfLines={3}>
+          <AppText color="inkMuted" numberOfLines={mainPhoto ? 2 : 3}>
             {job.description}
           </AppText>
         ) : null}

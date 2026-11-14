@@ -41,7 +41,7 @@ Indexes: `email` and `phone`, which Convex Auth requires. Users are looked up by
 | `category` | string | From a fixed list |
 | `address` | string | Free text, as written |
 | `location` | `{ latitude, longitude }` | |
-| `imageIds` | storage ids, optional | Up to 4 images in display order. The first is the main one, shown on job cards |
+| `logoId` | storage id, optional | One logo, shown beside the business's name on its job cards |
 | `kind` | `"business"` \| `"individual"`, optional | A registered business, or a person hiring for themselves |
 | `taxId` | string, optional | The matricule fiscal in canonical form. Required for a business. Owner and admins only |
 | `taxIdBase` | string, optional | Its first eight characters, shared by all establishments of one taxpayer |
@@ -67,6 +67,7 @@ One company per employer in the MVP.
 | `expiresAt` | number, optional | 30 days after publishing; renewable |
 | `closedAt` | number, optional | |
 | `notifiedCount` | number | Candidates pushed at publish time |
+| `imageIds` | storage ids, optional | Up to 4 photos of the job or workplace, in display order. The first sits at the top of the card |
 | `hidden` | boolean, optional | Set automatically after 3 reports, pending review |
 | `isDemo` | boolean, optional | Seeded jobs for store reviewers; shown only to reviewer accounts |
 
@@ -149,7 +150,9 @@ A daily cron job deletes what has passed its declared period: accounts unused fo
 
 ## Images
 - **Profile photo:** a candidate's photo comes from their Google account. They can replace it with one of their own, show none, or go back to the Google one. A photo is never required to apply.
-- **Business photos:** up to 4. The first is the main one and appears beside the business's name on every job card. The limit is enforced on the server, not only hidden in the interface.
+- **Job offer photos:** up to 4 per offer. The first is the main one and sits at the top of the job card. The limit is enforced on the server, not only hidden in the interface.
+- **Offers per business:** no limit. Each offer has its own photos.
+- **Business logo:** one image, shown beside the business's name on every job card.
 - **Shrunk before sending:** every image is resized on the device to at most 1280 pixels on its longer side and saved as JPEG, stepping down in size and quality until it is under about 400 KB. Re-encoding also drops the data embedded in the photo, such as where it was taken.
 - **Server checks:** only JPEG, PNG and WebP, and nothing over 1 MB. A file that fails is deleted at once.
 - **Deletion:** replacing or removing an image deletes the file, not just the reference to it.

@@ -1,8 +1,8 @@
 import type { Doc, Id } from "../_generated/dataModel";
 import type { MutationCtx, QueryCtx } from "../_generated/server";
 
-/** A business shows at most this many images. The first is its main one, used on job cards. */
-export const MAX_BUSINESS_IMAGES = 4;
+/** A job offer shows at most this many photos. The first is its main one, at the top of the card. */
+export const MAX_JOB_IMAGES = 4;
 
 /**
  * The app shrinks every image before sending it (see src/lib/images.ts), so a
@@ -40,15 +40,14 @@ export async function userPhotoUrl(ctx: QueryCtx, user: Doc<"users">): Promise<s
   return user.image ?? null;
 }
 
-/** A business's images in order, each with the address to load it from. */
-export async function companyImages(ctx: QueryCtx, company: Doc<"companies">) {
-  const ids = company.imageIds ?? [];
+/** A job offer's photos in order, each with the address to load it from. */
+export async function jobImages(ctx: QueryCtx, job: Doc<"jobs">) {
+  const ids = job.imageIds ?? [];
   const images = await Promise.all(ids.map(async (id) => ({ id, url: await ctx.storage.getUrl(id) })));
   return images.filter((image): image is { id: Id<"_storage">; url: string } => image.url !== null);
 }
 
-/** The business's main image, shown beside its name on a job card. */
-export async function companyMainImageUrl(ctx: QueryCtx, company: Doc<"companies">): Promise<string | null> {
-  const first = company.imageIds?.[0];
-  return first ? await ctx.storage.getUrl(first) : null;
+/** The business's logo, shown beside its name on a job card. */
+export async function companyLogoUrl(ctx: QueryCtx, company: Doc<"companies">): Promise<string | null> {
+  return company.logoId ? await ctx.storage.getUrl(company.logoId) : null;
 }

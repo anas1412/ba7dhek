@@ -1,5 +1,9 @@
 import type { JobCardData } from './JobCard';
 
+/** A plain coloured rectangle, standing in for a photo so the preview needs no files. */
+const tile = (colour: string) =>
+  `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='300'%3E%3Crect width='600' height='300' fill='${colour}'/%3E%3C/svg%3E`;
+
 /**
  * Sample jobs for the development preview page only. They are written in the
  * three languages employers will write in, to check that mixed-language
@@ -20,6 +24,9 @@ export function sampleJobs(now: number): JobCardData[] {
       publishedAt: minutes(12),
       distanceM: 650,
       companyName: 'Hôtel Les Orangers',
+      // Plain coloured tiles stand in for a logo and three photos.
+      companyLogoUrl: tile('%23FFD166'),
+      imageUrls: [tile('%231557B8'), tile('%230E7A4B'), tile('%2351607A')],
     },
     {
       _id: 'sample-2',

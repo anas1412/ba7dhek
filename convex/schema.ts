@@ -72,8 +72,8 @@ export default defineSchema({
     category: v.string(),
     address: v.string(),
     location: point,
-    // Up to four images, in display order. The first is the main one, shown on job cards.
-    imageIds: v.optional(v.array(v.id("_storage"))),
+    // One logo, shown beside the business's name on its job cards.
+    logoId: v.optional(v.id("_storage")),
     // A registered business gives its tax ID; a person hiring for themselves has none.
     kind: v.optional(employerKind),
     // Canonical matricule fiscal. Shown to its owner and to admins only, never to candidates.
@@ -103,6 +103,8 @@ export default defineSchema({
     notifiedCount: v.number(),
     hidden: v.optional(v.boolean()),
     isDemo: v.optional(v.boolean()),
+    // Up to four photos of the job or workplace, in display order. The first leads the card.
+    imageIds: v.optional(v.array(v.id("_storage"))),
   }).index("by_company_status", ["companyId", "status"]),
 
   swipes: defineTable({

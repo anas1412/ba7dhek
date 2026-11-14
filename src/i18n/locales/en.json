@@ -155,7 +155,7 @@
     "applicants_one": "{{count}} applicant",
     "applicants_other": "{{count}} applicants",
     "business": "Your business",
-    "businessPhotos": "Business photos"
+    "photos": "Photos"
   },
   "preview": {
     "title": "Preview",
@@ -283,8 +283,8 @@
     "reload": "Reload"
   },
   "images": {
-    "title": "Photos of your business",
-    "body": "Up to 4 photos. The first one appears beside your name on every job you post.",
+    "title": "Photos of this job",
+    "body": "Up to 4 photos of the job or the workplace. The first one sits at the top of the card people swipe.",
     "add": "Add a photo",
     "adding": "Sending",
     "remove": "Remove this photo",
@@ -299,7 +299,10 @@
     "tooLarge": "That photo is too large even after shrinking. Try another.",
     "tooMany": "You already have 4 photos. Remove one to add another.",
     "failed": "The photo was not saved. Check your connection and try again.",
-    "shrinkNote": "Photos are shrunk on your phone before they are sent."
+    "shrinkNote": "Photos are shrunk on your phone before they are sent.",
+    "done": "Done",
+    "photosCount_one": "{{count}} photo",
+    "photosCount_other": "{{count}} photos"
   },
   "photo": {
     "title": "Your photo",
@@ -312,5 +315,14 @@
     "changed": "Photo changed",
     "removed": "Your photo is no longer shown",
     "restored": "Back to your Google photo"
+  },
+  "logo": {
+    "title": "Logo",
+    "body": "One image. It appears beside your business name on every job you post.",
+    "add": "Add a logo",
+    "change": "Change logo",
+    "remove": "Remove logo",
+    "changed": "Logo saved",
+    "removed": "Logo removed"
   }
 }

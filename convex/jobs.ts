@@ -4,7 +4,7 @@ import { mutation, query, type MutationCtx, type QueryCtx } from "./_generated/s
 import { requireRole } from "./lib/auth";
 import { indexJob, jobsGeo, unindexJob } from "./lib/geo";
 import { DEFAULT_RADIUS_M } from "./lib/geoMath";
-import { companyMainImageUrl } from "./lib/images";
+import { MAX_JOB_IMAGES, checkUpload, companyLogoUrl, jobImages } from "./lib/images";
 import { cleanText, requireCategory, requireTunisianPoint } from "./lib/validate";
 import { contractType, payPeriod, point } from "./schema";
 
@@ -125,7 +125,7 @@ export const mine = query({
           .query("swipes")
           .withIndex("by_job_direction", (q) => q.eq("jobId", job._id).eq("direction", "right"))
           .collect();
-        return { ...job, applicantCount: applicants.length };
+        return { ...job, applicantCount: applicants.length, images: await jobImages(ctx, job) };
       }),
     );
   },
@@ -142,7 +142,9 @@ export type JobCard = {
   publishedAt: number;
   distanceM: number;
   companyName: string;
-  companyImageUrl: string | null;
+  companyLogoUrl: string | null;
+  /** The job's photos, main one first. Empty when it has none. */
+  imageUrls: string[];
 };
 
 /**
@@ -191,7 +193,8 @@ export const feed = query({
           publishedAt: job.publishedAt ?? job._creationTime,
           distanceM: Math.round(hit.distance),
           companyName: company.name,
-          companyImageUrl: await companyMainImageUrl(ctx, company),
+          companyLogoUrl: await companyLogoUrl(ctx, company),
+          imageUrls: (await jobImages(ctx, job)).map((image) => image.url),
         });
         if (cards.length >= FEED_SIZE) break;
       }
@@ -202,5 +205,61 @@ export const feed = query({
 
     cards.sort((a, b) => a.distanceM - b.distanceM);
     return { reason: "ok", jobs: cards };
+  },
+});
+
+/**
+ * Adds one photo to a job offer, up to four. An upload that is not an
+ * acceptable image, or that would be a fifth, is deleted and the problem returned.
+ */
+export const addImage = mutation({
+  args: { jobId: v.id("jobs"), storageId: v.id("_storage") },
+  handler: async (ctx, args) => {
+    const { job } = await requireOwnJob(ctx, args.jobId);
+    const current = job.imageIds ?? [];
+    if (current.includes(args.storageId)) return { ok: true as const };
+    if (current.length >= MAX_JOB_IMAGES) {
+      await ctx.storage.delete(args.storageId);
+      return { ok: false as const, problem: "too_many" as const };
+    }
+    const problem = await checkUpload(ctx, args.storageId);
+    if (problem) return { ok: false as const, problem };
+    await ctx.db.patch(job._id, { imageIds: [...current, args.storageId] });
+    return { ok: true as const };
+  },
+});
+
+/** Removes one of the job's photos and deletes the file. */
+export const removeImage = mutation({
+  args: { jobId: v.id("jobs"), storageId: v.id("_storage") },
+  handler: async (ctx, args) => {
+    const { job } = await requireOwnJob(ctx, args.jobId);
+    const current = job.imageIds ?? [];
+    // Only a file that belongs to this job can be deleted through it.
+    if (!current.includes(args.storageId)) throw new ConvexError({ code: "not_found" });
+    await ctx.db.patch(job._id, { imageIds: current.filter((id) => id !== args.storageId) });
+    await ctx.storage.delete(args.storageId);
+  },
+});
+
+/** Moves one photo to the front. The first photo is the one at the top of the card. */
+export const setMainImage = mutation({
+  args: { jobId: v.id("jobs"), storageId: v.id("_storage") },
+  handler: async (ctx, args) => {
+    const { job } = await requireOwnJob(ctx, args.jobId);
+    const current = job.imageIds ?? [];
+    if (!current.includes(args.storageId)) throw new ConvexError({ code: "not_found" });
+    await ctx.db.patch(job._id, {
+      imageIds: [args.storageId, ...current.filter((id) => id !== args.storageId)],
+    });
+  },
+});
+
+/** One of the employer's own jobs, with its photos, for the screen that manages them. */
+export const mineOne = query({
+  args: { jobId: v.id("jobs") },
+  handler: async (ctx, args) => {
+    const { job } = await requireOwnJob(ctx, args.jobId);
+    return { _id: job._id, title: job.title, status: job.status, images: await jobImages(ctx, job) };
   },
 });
