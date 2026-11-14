@@ -69,7 +69,7 @@ export function ApplicationsList({ applications, now, onOpen, onOpenChat }: Prop
                 opacity: pressed ? 0.85 : 1,
                 padding: theme.space[4],
                 gap: theme.space[1],
-                borderRadius: theme.radius.lg,
+                borderRadius: theme.radius.md,
                 borderWidth: 1,
                 borderColor: theme.colors.line,
                 backgroundColor: theme.colors.surfaceRaised,

@@ -2,10 +2,32 @@ import { api } from '@convex/_generated/api';
 import { useConvexAuth, useQuery } from 'convex/react';
 import { Redirect, Tabs } from 'expo-router';
 import { useTranslation } from 'react-i18next';
+import { View } from 'react-native';
 
-import { Icon } from '@/components/Icon';
+import { Icon, type IconName } from '@/components/Icon';
 import { PushManager } from '@/features/push/PushManager';
 import { useTheme } from '@/theme';
+
+/**
+ * A destination in the Material 3 navigation bar: the icon sits in a pill that
+ * fills in when its tab is the active one.
+ */
+function TabIcon({ name, focused }: { name: IconName; focused: boolean }) {
+  const theme = useTheme();
+  return (
+    <View
+      style={{
+        width: 64,
+        height: 32,
+        borderRadius: theme.radius.full,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: focused ? theme.colors.brandSoft : 'transparent',
+      }}>
+      <Icon name={name} color={focused ? 'onBrandSoft' : 'inkMuted'} />
+    </View>
+  );
+}
 
 export default function TabsLayout() {
   const { t } = useTranslation();
@@ -23,49 +45,55 @@ export default function TabsLayout() {
     <>
       {/* Signed in and past the role choice: the phone can be registered for notifications. */}
       {me?.role ? <PushManager role={me.role} /> : null}
-    <Tabs
-      screenOptions={{
-        headerShown: false,
-        tabBarActiveTintColor: theme.colors.brand,
-        tabBarInactiveTintColor: theme.colors.inkMuted,
-        tabBarStyle: { backgroundColor: theme.colors.surfaceRaised, borderTopColor: theme.colors.line },
-        tabBarLabelStyle: theme.text.label,
-        sceneStyle: { backgroundColor: theme.colors.surface },
-      }}>
-      <Tabs.Screen
-        name="home"
-        options={{
-          title: t('tabs.home'),
-          tabBarIcon: ({ focused }) => <Icon name="home" color={focused ? 'brand' : 'inkMuted'} />,
-        }}
-      />
-      <Tabs.Screen
-        name="applications"
-        options={{
-          title: t('tabs.applications'),
-          // Only candidates apply to jobs, so employers do not get this tab.
-          href: candidate ? undefined : null,
-          tabBarIcon: ({ focused }) => <Icon name="briefcase" color={focused ? 'brand' : 'inkMuted'} />,
-        }}
-      />
-      <Tabs.Screen
-        name="chats"
-        options={{
-          title: t('tabs.chats'),
-          // A number on the tab says there is something to read without opening it.
-          tabBarBadge: unread ? unread : undefined,
-          tabBarBadgeStyle: { backgroundColor: theme.colors.brand, color: theme.colors.onBrand },
-          tabBarIcon: ({ focused }) => <Icon name="message-circle" color={focused ? 'brand' : 'inkMuted'} />,
-        }}
-      />
-      <Tabs.Screen
-        name="settings"
-        options={{
-          title: t('tabs.settings'),
-          tabBarIcon: ({ focused }) => <Icon name="settings" color={focused ? 'brand' : 'inkMuted'} />,
-        }}
-      />
-    </Tabs>
+      <Tabs
+        screenOptions={{
+          headerShown: false,
+          // The active tab is told by its filled pill and darker label, not by a brand tint.
+          tabBarActiveTintColor: theme.colors.ink,
+          tabBarInactiveTintColor: theme.colors.inkMuted,
+          tabBarStyle: {
+            height: 80,
+            paddingTop: 12,
+            backgroundColor: theme.colors.surfaceContainer,
+            borderTopWidth: 0,
+          },
+          tabBarLabelStyle: { fontFamily: theme.text.label.fontFamily, fontSize: 12, lineHeight: 16, marginTop: 4 },
+          sceneStyle: { backgroundColor: theme.colors.surface },
+        }}>
+        <Tabs.Screen
+          name="home"
+          options={{
+            title: t('tabs.home'),
+            tabBarIcon: ({ focused }) => <TabIcon name="home" focused={focused} />,
+          }}
+        />
+        <Tabs.Screen
+          name="applications"
+          options={{
+            title: t('tabs.applications'),
+            // Only candidates apply to jobs, so employers do not get this tab.
+            href: candidate ? undefined : null,
+            tabBarIcon: ({ focused }) => <TabIcon name="briefcase" focused={focused} />,
+          }}
+        />
+        <Tabs.Screen
+          name="chats"
+          options={{
+            title: t('tabs.chats'),
+            // A number on the tab says there is something to read without opening it.
+            tabBarBadge: unread ? unread : undefined,
+            tabBarBadgeStyle: { backgroundColor: theme.colors.danger, color: theme.colors.surface },
+            tabBarIcon: ({ focused }) => <TabIcon name="message-circle" focused={focused} />,
+          }}
+        />
+        <Tabs.Screen
+          name="settings"
+          options={{
+            title: t('tabs.settings'),
+            tabBarIcon: ({ focused }) => <TabIcon name="settings" focused={focused} />,
+          }}
+        />
+      </Tabs>
     </>
   );
 }

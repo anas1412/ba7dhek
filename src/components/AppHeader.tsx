@@ -32,9 +32,10 @@ export function AppHeader({ kind }: Props) {
   return (
     <View
       style={{
+        // A Material 3 small top app bar: 64 high, with its icon button 4 from the edge.
         paddingTop: insets.top + theme.space[2],
-        paddingBottom: theme.space[1],
-        paddingHorizontal: theme.space[2],
+        paddingBottom: theme.space[2],
+        paddingHorizontal: theme.space[1],
         backgroundColor: theme.colors.surface,
         flexDirection: 'row',
       }}>
@@ -44,12 +45,12 @@ export function AppHeader({ kind }: Props) {
         hitSlop={8}
         onPress={leave}
         style={({ pressed }) => ({
-          width: 44,
-          height: 44,
+          width: 48,
+          height: 48,
           alignItems: 'center',
           justifyContent: 'center',
           borderRadius: theme.radius.full,
-          backgroundColor: pressed ? theme.colors.brandSoft : 'transparent',
+          backgroundColor: pressed ? theme.colors.surfaceContainerHigh : 'transparent',
         })}>
         <Icon name={kind === 'close' ? 'x' : 'arrow-left'} directional={kind === 'back'} />
       </Pressable>

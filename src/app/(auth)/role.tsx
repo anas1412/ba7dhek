@@ -69,7 +69,7 @@ export default function RoleChoice() {
               style={{
                 padding: theme.space[6],
                 gap: theme.space[1],
-                borderRadius: theme.radius.lg,
+                borderRadius: theme.radius.md,
                 borderWidth: 2,
                 borderColor: selected ? theme.colors.brand : theme.colors.line,
                 backgroundColor: selected ? theme.colors.brandSoft : theme.colors.surfaceRaised,

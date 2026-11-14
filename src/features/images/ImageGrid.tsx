@@ -113,7 +113,7 @@ export function ImageGrid({ images, max, adding, busyId, onAdd, onRemove, onMake
                 gap: theme.space[1],
                 borderWidth: 1,
                 borderStyle: 'dashed',
-                borderColor: theme.colors.inkMuted,
+                borderColor: theme.colors.outline,
                 backgroundColor: pressed ? theme.colors.brandSoft : theme.colors.surfaceRaised,
               },
             ]}>

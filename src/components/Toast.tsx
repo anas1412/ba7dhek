@@ -83,22 +83,15 @@ export function ToastProvider({ children }: { children: ReactNode }) {
                 gap: theme.space[2],
                 paddingVertical: theme.space[2] + theme.space[1],
                 paddingHorizontal: theme.space[4],
-                borderRadius: theme.radius.lg,
-                // Inverted against the page so it reads as a layer above it.
-                backgroundColor: theme.colors.ink,
+                minHeight: 48,
+                borderRadius: theme.radius.xs,
+                // A Material 3 snackbar: inverted against the page, lifted above it.
+                backgroundColor: theme.colors.inverseSurface,
+                boxShadow: '0 1px 3px rgba(0, 0, 0, 0.3), 0 4px 8px 3px rgba(0, 0, 0, 0.15)',
               }}>
-              <View
-                style={{
-                  width: 24,
-                  height: 24,
-                  borderRadius: theme.radius.full,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  backgroundColor: error ? theme.colors.danger : toast.kind === 'success' ? theme.colors.success : theme.colors.brand,
-                }}>
-                <Icon name={error ? 'alert-circle' : toast.kind === 'success' ? 'check' : 'navigation'} size={16} color="surface" />
-              </View>
-              <AppText variant="bodyStrong" color="surface" style={{ flexShrink: 1 }}>
+              {/* The icon says which kind of message this is, so it is not told by wording alone. */}
+              <Icon name={error ? 'alert-circle' : toast.kind === 'success' ? 'check' : 'info'} size={20} color="onInverseSurface" />
+              <AppText color="onInverseSurface" style={{ flexShrink: 1 }}>
                 {toast.message}
               </AppText>
             </Pressable>

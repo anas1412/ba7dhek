@@ -117,8 +117,7 @@ export function Conversation({ header, messages, onSend, onBack, onOpenJob, onBl
           gap: theme.space[2],
           paddingHorizontal: theme.space[2],
           paddingVertical: theme.space[1],
-          borderBottomWidth: 1,
-          borderBottomColor: theme.colors.line,
+          backgroundColor: theme.colors.surfaceContainer,
         }}>
         <HeaderButton icon="arrow-left" directional label={t('common.back')} onPress={onBack} />
         <Avatar url={header.other.imageUrl} size={40} kind={header.side === 'candidate' ? 'business' : 'person'} />
@@ -180,10 +179,11 @@ export function Conversation({ header, messages, onSend, onBack, onOpenJob, onBl
                     alignSelf: message.mine ? 'flex-end' : 'flex-start',
                     paddingHorizontal: theme.space[4],
                     paddingVertical: theme.space[2],
-                    borderRadius: theme.radius.lg,
-                    borderWidth: message.mine ? 0 : 1,
-                    borderColor: theme.colors.line,
-                    backgroundColor: message.mine ? theme.colors.brand : theme.colors.surfaceRaised,
+                    borderRadius: 20,
+                    // The corner nearest the speaker is tight, which gives the bubble its direction.
+                    borderBottomEndRadius: message.mine ? theme.radius.xs : 20,
+                    borderBottomStartRadius: message.mine ? 20 : theme.radius.xs,
+                    backgroundColor: message.mine ? theme.colors.brand : theme.colors.surfaceContainerHigh,
                   }}>
                   {/* Shown as written, in whatever language the person used. */}
                   <AppText color={message.mine ? 'onBrand' : 'ink'}>{message.body}</AppText>
@@ -210,7 +210,7 @@ export function Conversation({ header, messages, onSend, onBack, onOpenJob, onBl
                 {problem}
               </AppText>
             ) : null}
-            <View style={{ flexDirection: 'row', alignItems: 'flex-end', gap: theme.space[2] }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: theme.space[2] }}>
               <TextInput
                 accessibilityLabel={t('chat.placeholder')}
                 placeholder={t('chat.placeholder')}
@@ -225,13 +225,11 @@ export function Conversation({ header, messages, onSend, onBack, onOpenJob, onBl
                     flex: 1,
                     minHeight: 48,
                     maxHeight: 132,
-                    paddingHorizontal: theme.space[4],
+                    paddingHorizontal: theme.space[6],
                     paddingVertical: theme.space[2] + theme.space[1],
-                    borderRadius: theme.radius.lg,
-                    borderWidth: 1,
-                    borderColor: theme.colors.inkMuted,
+                    borderRadius: 24,
                     color: theme.colors.ink,
-                    backgroundColor: theme.colors.surfaceRaised,
+                    backgroundColor: theme.colors.surfaceContainerHigh,
                   },
                 ]}
               />
@@ -248,8 +246,7 @@ export function Conversation({ header, messages, onSend, onBack, onOpenJob, onBl
                   justifyContent: 'center',
                   borderRadius: 24,
                   backgroundColor: theme.colors.brand,
-                  opacity: !text || sending ? 0.4 : pressed ? 0.85 : 1,
-                  transform: [{ scale: pressed ? 0.94 : 1 }],
+                  opacity: !text || sending ? 0.38 : pressed ? 0.85 : 1,
                 })}>
                 <Icon name="send" size={20} color="onBrand" directional />
               </Pressable>
@@ -270,8 +267,9 @@ export function Conversation({ header, messages, onSend, onBack, onOpenJob, onBl
               gap: theme.space[2],
               padding: theme.space[4],
               paddingBottom: theme.space[6],
-              borderTopLeftRadius: theme.radius.lg,
-              borderTopRightRadius: theme.radius.lg,
+              // A Material 3 bottom sheet: extra-large corners at the top.
+              borderTopLeftRadius: theme.radius.xl,
+              borderTopRightRadius: theme.radius.xl,
               backgroundColor: theme.colors.surface,
             }}>
             {menu === 'report' ? (

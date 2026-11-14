@@ -40,14 +40,15 @@ export function LanguageSwitch({ onChanged }: Props) {
       style={{
         flexDirection: 'row',
         alignSelf: 'center',
-        padding: theme.space[1],
-        gap: theme.space[1],
+        // A Material 3 segmented button: one outline around the set, a divider between segments.
+        // It keeps the same left-to-right order in every language, like a row of flags would.
+        direction: 'ltr',
         borderRadius: theme.radius.full,
         borderWidth: 1,
-        borderColor: theme.colors.line,
-        backgroundColor: theme.colors.surfaceRaised,
+        borderColor: theme.colors.outline,
+        overflow: 'hidden',
       }}>
-      {LANGUAGES.map((language) => {
+      {LANGUAGES.map((language, index) => {
         const selected = language === active;
         return (
           <Pressable
@@ -59,11 +60,11 @@ export function LanguageSwitch({ onChanged }: Props) {
               minHeight: 40,
               justifyContent: 'center',
               paddingHorizontal: theme.space[4],
-              borderRadius: theme.radius.full,
-              backgroundColor: selected ? theme.colors.brand : 'transparent',
-              opacity: pressed && !selected ? 0.6 : 1,
+              borderStartWidth: index === 0 ? 0 : 1,
+              borderStartColor: theme.colors.outline,
+              backgroundColor: selected ? theme.colors.brandSoft : pressed ? theme.colors.surfaceContainerHigh : 'transparent',
             })}>
-            <AppText variant="bodyStrong" color={selected ? 'onBrand' : 'ink'}>
+            <AppText variant="label" color={selected ? 'onBrandSoft' : 'ink'}>
               {t(`languages.${language}`)}
             </AppText>
           </Pressable>

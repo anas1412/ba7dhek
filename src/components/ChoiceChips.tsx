@@ -27,21 +27,26 @@ function ChoiceChip({ label, selected, role, flagged, onPress }: ChipProps) {
         haptic.select();
         onPress();
       }}
+      // A Material 3 filter chip is 32 high; this brings the area a finger can hit up to 48.
+      hitSlop={{ top: 8, bottom: 8 }}
       style={({ pressed }) => ({
-        minHeight: 44,
+        minHeight: 32,
         flexDirection: 'row',
         alignItems: 'center',
-        gap: theme.space[1],
-        paddingHorizontal: theme.space[4],
-        borderRadius: theme.radius.full,
-        borderWidth: selected ? 2 : 1,
-        borderColor: selected ? theme.colors.brand : flagged ? theme.colors.danger : theme.colors.inkMuted,
-        backgroundColor: selected || pressed ? theme.colors.brandSoft : theme.colors.surfaceRaised,
-        transform: [{ scale: pressed ? 0.96 : 1 }],
+        gap: theme.space[2],
+        // With its tick, a selected chip has less padding at the start, as Material specifies.
+        paddingStart: selected ? theme.space[2] : theme.space[4],
+        paddingEnd: theme.space[4],
+        borderRadius: theme.radius.sm,
+        borderWidth: 1,
+        borderColor: selected ? 'transparent' : flagged ? theme.colors.danger : theme.colors.line,
+        backgroundColor: selected ? theme.colors.brandSoft : pressed ? theme.colors.surfaceContainerHigh : 'transparent',
       })}>
-      {/* A tick as well as the colour, so "several can be chosen" is visible. */}
-      {role === 'checkbox' && selected ? <Icon name="check" size={16} color="brand" /> : null}
-      <AppText variant={selected ? 'bodyStrong' : 'body'}>{label}</AppText>
+      {/* A tick as well as the fill: the choice is never told by colour alone. */}
+      {selected ? <Icon name="check" size={16} color="onBrandSoft" /> : null}
+      <AppText variant="label" color={selected ? 'onBrandSoft' : 'inkMuted'}>
+        {label}
+      </AppText>
     </Pressable>
   );
 }
@@ -59,7 +64,7 @@ function ChipGroup({ label, hint, error, role, children }: GroupProps) {
   return (
     <View style={{ gap: theme.space[2] }}>
       <View style={{ gap: theme.space[1] }}>
-        <AppText variant="bodyStrong">{label}</AppText>
+        <AppText variant="label">{label}</AppText>
         {hint ? (
           <AppText variant="caption" color="inkMuted">
             {hint}

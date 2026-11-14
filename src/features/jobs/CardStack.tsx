@@ -214,7 +214,7 @@ function TopCard({
               left: theme.space[6],
               backgroundColor: theme.colors.surface,
               borderWidth: 1,
-              borderColor: theme.colors.inkMuted,
+              borderColor: theme.colors.outline,
             },
             passStamp,
           ]}>

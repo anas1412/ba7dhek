@@ -98,7 +98,7 @@ export function EmployerHome() {
             style={{
               padding: theme.space[4],
               gap: theme.space[2],
-              borderRadius: theme.radius.lg,
+              borderRadius: theme.radius.md,
               borderWidth: 1,
               borderColor: theme.colors.line,
               backgroundColor: theme.colors.surfaceRaised,

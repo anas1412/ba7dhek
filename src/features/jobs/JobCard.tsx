@@ -48,15 +48,14 @@ export function JobCard({ job, now, onOpen }: { job: JobCardData; now: number; o
     <View
       style={{
         flex: 1,
-        padding: theme.space[6],
-        gap: theme.space[4],
-        borderRadius: theme.radius.lg,
-        borderWidth: 1,
-        borderColor: theme.colors.line,
+        borderRadius: theme.radius.md,
+        overflow: 'hidden',
         backgroundColor: theme.colors.surfaceRaised,
+        // Material's level 1 elevation: what makes this a card you can pick up.
+        boxShadow: '0 1px 2px rgba(0, 0, 0, 0.3), 0 1px 3px 1px rgba(0, 0, 0, 0.15)',
       }}>
       {mainPhoto ? (
-        <View style={{ height: 132, borderRadius: theme.radius.sm, overflow: 'hidden', backgroundColor: theme.colors.line }}>
+        <View style={{ height: 150, backgroundColor: theme.colors.line }}>
           <Image source={{ uri: mainPhoto }} style={{ flex: 1 }} contentFit="cover" transition={200} />
           {photoCount > 1 ? (
             <View
@@ -69,12 +68,13 @@ export function JobCard({ job, now, onOpen }: { job: JobCardData; now: number; o
                 borderRadius: theme.radius.full,
                 backgroundColor: theme.colors.surfaceRaised,
               }}>
-              <AppText variant="label">{t('images.photosCount', { count: photoCount })}</AppText>
+              <AppText variant="caption">{t('images.photosCount', { count: photoCount })}</AppText>
             </View>
           ) : null}
         </View>
       ) : null}
 
+      <View style={{ flex: 1, padding: theme.space[4], gap: theme.space[4] }}>
       <Chip
         variant="near"
         large
@@ -142,20 +142,21 @@ export function JobCard({ job, now, onOpen }: { job: JobCardData; now: number; o
             hitSlop={12}
             onPress={onOpen}
             style={({ pressed }) => ({
-              minHeight: 36,
+              minHeight: 40,
               flexDirection: 'row',
               alignItems: 'center',
               gap: theme.space[1],
               paddingHorizontal: theme.space[2] + theme.space[1],
               borderRadius: theme.radius.full,
-              borderWidth: 1,
-              borderColor: theme.colors.inkMuted,
-              backgroundColor: pressed ? theme.colors.brandSoft : theme.colors.surfaceRaised,
+              backgroundColor: pressed ? theme.colors.brandSoft : 'transparent',
             })}>
-            <AppText variant="label">{t('detail.open')}</AppText>
-            <Icon name="chevron-right" size={16} directional />
+            <AppText variant="label" color="brand">
+              {t('detail.open')}
+            </AppText>
+            <Icon name="chevron-right" size={16} color="brand" directional />
           </Pressable>
         ) : null}
+      </View>
       </View>
     </View>
   );

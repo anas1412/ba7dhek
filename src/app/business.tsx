@@ -54,7 +54,7 @@ export default function Business() {
           style={{
             width: 96,
             height: 96,
-            borderRadius: theme.radius.lg,
+            borderRadius: theme.radius.md,
             overflow: 'hidden',
             alignItems: 'center',
             justifyContent: 'center',

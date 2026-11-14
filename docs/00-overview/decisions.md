@@ -8,6 +8,7 @@ Every decision taken so far, with who took it and why. Decisions marked "Anas" w
 | Name: Ba7dhek | Anas | |
 | All job types, ranked by distance | Anas | The idea came from a hotel, but is not limited to hotels |
 | Arabic, French and English from the first screen | Anas | |
+| Material 3 as the design system, with the app's own components built to its spec | Anas, 2026-11-14 | Chosen after a side-by-side comparison with the earlier custom system. Readex Pro stays as the typeface because Roboto has no Arabic |
 | Arabic interface in simple standard Arabic; dialect only for the name, the tagline and examples of what people write | Anas, 2026-11-14 | Replaces "dialect everywhere" (2026-11-13): the dialect text was not written by a native speaker and did not read well |
 | No payments in the app; local methods later if businesses are charged | Anas | |
 | A registered business must give its tax ID (matricule fiscal) for verification | Anas | |

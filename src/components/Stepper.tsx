@@ -37,24 +37,23 @@ function StepButton({
       accessibilityLabel={name}
       accessibilityState={{ disabled }}
       disabled={disabled}
-      hitSlop={4}
+      hitSlop={8}
       onPress={() => {
         haptic.select();
         onPress();
       }}
       style={({ pressed }) => ({
-        width: 48,
-        height: 48,
+        width: 40,
+        height: 40,
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: theme.radius.full,
         borderWidth: 1,
-        borderColor: theme.colors.inkMuted,
-        backgroundColor: pressed ? theme.colors.brandSoft : theme.colors.surfaceRaised,
-        opacity: disabled ? 0.4 : 1,
-        transform: [{ scale: pressed ? 0.94 : 1 }],
+        borderColor: theme.colors.outline,
+        backgroundColor: pressed ? theme.colors.surfaceContainerHigh : 'transparent',
+        opacity: disabled ? 0.38 : 1,
       })}>
-      <Icon name={icon} size={20} />
+      <Icon name={icon} size={20} color="inkMuted" />
     </Pressable>
   );
 }
@@ -64,7 +63,7 @@ export function Stepper({ label, value, min, max, onChange, fewerLabel, moreLabe
   const theme = useTheme();
   return (
     <View style={{ gap: theme.space[2] }}>
-      <AppText variant="bodyStrong">{label}</AppText>
+      <AppText variant="label">{label}</AppText>
       {/* Minus then plus in every language: a number line does not mirror. */}
       <View style={{ flexDirection: 'row', direction: 'ltr', alignSelf: 'flex-start', alignItems: 'center', gap: theme.space[4] }}>
         <StepButton icon="minus" name={fewerLabel} disabled={value <= min} onPress={() => onChange(value - 1)} />

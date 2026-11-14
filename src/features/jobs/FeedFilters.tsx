@@ -38,20 +38,26 @@ export function FilterButton({ filters, onPress }: { filters: Filters; onPress: 
       hitSlop={8}
       onPress={onPress}
       style={({ pressed }) => ({
-        minHeight: 40,
+        minHeight: 32,
         flexDirection: 'row',
         alignItems: 'center',
-        gap: theme.space[1],
-        paddingHorizontal: theme.space[4],
-        borderRadius: theme.radius.full,
-        borderWidth: active ? 2 : 1,
-        borderColor: active ? theme.colors.brand : theme.colors.inkMuted,
-        backgroundColor: active || pressed ? theme.colors.brandSoft : theme.colors.surfaceRaised,
-        transform: [{ scale: pressed ? 0.96 : 1 }],
+        gap: theme.space[2],
+        paddingStart: theme.space[2],
+        paddingEnd: theme.space[4],
+        borderRadius: theme.radius.sm,
+        borderWidth: 1,
+        borderColor: active ? 'transparent' : theme.colors.line,
+        backgroundColor: active ? theme.colors.brandSoft : pressed ? theme.colors.surfaceContainerHigh : 'transparent',
       })}>
-      <Icon name="sliders" size={16} />
-      <AppText variant="label">{t('filters.button')}</AppText>
-      {active ? <AppText variant="label">{formatNumber(count, currentLanguage(), 0)}</AppText> : null}
+      <Icon name="sliders" size={16} color={active ? 'onBrandSoft' : 'inkMuted'} />
+      <AppText variant="label" color={active ? 'onBrandSoft' : 'inkMuted'}>
+        {t('filters.button')}
+      </AppText>
+      {active ? (
+        <AppText variant="label" color="onBrandSoft">
+          {formatNumber(count, currentLanguage(), 0)}
+        </AppText>
+      ) : null}
     </Pressable>
   );
 }

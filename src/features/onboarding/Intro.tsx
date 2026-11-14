@@ -58,7 +58,7 @@ export function Intro({ startAtEnd, onSeen, signIn }: Props) {
         style={{
           gap: theme.space[2],
           padding: theme.space[6],
-          borderRadius: theme.radius.lg,
+          borderRadius: theme.radius.md,
           borderWidth: 1,
           borderColor: theme.colors.line,
           backgroundColor: theme.colors.surfaceRaised,

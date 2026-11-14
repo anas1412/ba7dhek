@@ -95,7 +95,8 @@ export function JobDetail({ job, now }: { job: JobDetailData; now: number }) {
               style={{
                 width: job.imageUrls.length === 1 ? 328 : 280,
                 height: 190,
-                borderRadius: theme.radius.sm,
+                // The extra-large shape Material 3 gives a carousel item.
+                borderRadius: theme.radius.xl,
                 backgroundColor: theme.colors.line,
               }}
               contentFit="cover"
@@ -136,7 +137,7 @@ export function JobDetail({ job, now }: { job: JobDetailData; now: number }) {
         style={{
           padding: theme.space[4],
           gap: theme.space[4],
-          borderRadius: theme.radius.lg,
+          borderRadius: theme.radius.md,
           borderWidth: 1,
           borderColor: theme.colors.line,
           backgroundColor: theme.colors.surfaceRaised,

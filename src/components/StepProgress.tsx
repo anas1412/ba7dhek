@@ -19,7 +19,7 @@ function Segment({ filled }: { filled: boolean }) {
   const theme = useTheme();
   const fill = useAnimatedStyle(() => ({ opacity: withTiming(filled ? 1 : 0, { duration: 220 }) }));
   return (
-    <View style={{ flex: 1, height: 6, borderRadius: theme.radius.full, overflow: 'hidden', backgroundColor: theme.colors.line }}>
+    <View style={{ flex: 1, height: 4, borderRadius: theme.radius.full, overflow: 'hidden', backgroundColor: theme.colors.brandSoft }}>
       <Animated.View style={[{ flex: 1, backgroundColor: theme.colors.brand }, fill]} />
     </View>
   );
@@ -40,7 +40,7 @@ export function StepProgress({ current, total, label, title }: Props) {
         ))}
       </View>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', gap: theme.space[2] }}>
-        <AppText variant="bodyStrong">{title}</AppText>
+        <AppText variant="label">{title}</AppText>
         <AppText variant="caption" color="inkMuted">
           {label}
         </AppText>

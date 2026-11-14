@@ -67,7 +67,7 @@ export function ChatsList({ chats, now, otherKind, onOpen }: Props) {
                 alignItems: 'center',
                 gap: theme.space[4],
                 padding: theme.space[4],
-                borderRadius: theme.radius.lg,
+                borderRadius: theme.radius.md,
                 borderWidth: 1,
                 borderColor: theme.colors.line,
                 backgroundColor: pressed ? theme.colors.brandSoft : theme.colors.surfaceRaised,
