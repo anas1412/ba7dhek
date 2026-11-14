@@ -42,15 +42,17 @@ export function isInTunisia(hints: DeviceHints): boolean {
 }
 
 /**
- * The language for a first launch. Language follows place: someone in Tunisia
- * gets Arabic (Tunisian dialect) even when the phone is set to French or
- * English, which is common there. Elsewhere the device language decides.
+ * The language for a first launch.
+ *
+ * 1. The device or browser language, when it is one of the three.
+ * 2. Otherwise Arabic (Tunisian dialect) for a device in Tunisia.
+ * 3. Otherwise French.
+ *
  * A person's own choice, once made, overrides all of this.
  */
 export function pickLanguage(hints: DeviceHints): Language {
-  if (isInTunisia(hints)) return 'ar';
   for (const code of hints.languageCodes) {
     if (isLanguage(code)) return code;
   }
-  return FALLBACK_LANGUAGE;
+  return isInTunisia(hints) ? 'ar' : FALLBACK_LANGUAGE;
 }

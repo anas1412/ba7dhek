@@ -1,10 +1,8 @@
-import { useEffect, useState, type ReactNode } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { useEffect, type ReactNode } from 'react';
+import { StyleSheet, useWindowDimensions } from 'react-native';
 import { GestureDetector, usePanGesture } from 'react-native-gesture-handler';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring, type SharedValue } from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
-
-import { isLayoutRtl } from '@/i18n';
 
 type Props = {
   pages: ReactNode[];
@@ -18,14 +16,17 @@ const SPRING = { damping: 22, stiffness: 220 };
 const FLICK_VELOCITY = 600;
 
 /**
- * Pages that follow the finger and settle on the nearest one. In Arabic the
- * order runs right to left: the next page comes in from the left.
+ * Pages that follow the finger and settle on the nearest one. The direction is
+ * the same in every language: the next page always comes in from the right,
+ * and a swipe to the left always goes forward. A swipe is a physical gesture,
+ * so it does not mirror for Arabic, exactly like the job card.
  */
 export function Pager({ pages, index, onIndexChange, swipeEnabled = true }: Props) {
-  const [width, setWidth] = useState(0);
+  // The pager spans the screen, so the screen's width is the page width.
+  const { width } = useWindowDimensions();
   // Fractional page position: 1.5 is halfway between the second and third page.
   const progress = useSharedValue(index);
-  const direction = isLayoutRtl() ? -1 : 1;
+  const direction = 1;
   const last = pages.length - 1;
 
   // Buttons change `index` from outside; glide to it.
@@ -61,13 +62,13 @@ export function Pager({ pages, index, onIndexChange, swipeEnabled = true }: Prop
 
   return (
     <GestureDetector gesture={pan}>
-      <View style={styles.fill} onLayout={(event) => setWidth(event.nativeEvent.layout.width)}>
+      <Animated.View style={styles.fill}>
         {pages.map((page, pageIndex) => (
           <Page key={pageIndex} index={pageIndex} progress={progress} width={width} direction={direction}>
             {page}
           </Page>
         ))}
-      </View>
+      </Animated.View>
     </GestureDetector>
   );
 }

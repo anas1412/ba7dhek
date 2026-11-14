@@ -129,7 +129,8 @@ export function Intro({ startAtEnd, onSeen, signIn }: Props) {
         <View
           accessibilityRole="tablist"
           accessibilityLabel={t('intro.page', { current: index + 1, total: PAGE_COUNT })}
-          style={{ flexDirection: 'row', justifyContent: 'center', gap: theme.space[2] }}>
+          // The dots run left to right in every language, matching the pages they stand for.
+          style={{ direction: 'ltr', flexDirection: 'row', justifyContent: 'center', gap: theme.space[2] }}>
           {pages.map((_, dot) => (
             <Pressable
               key={dot}

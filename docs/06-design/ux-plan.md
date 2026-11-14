@@ -16,14 +16,16 @@ This plan fixes that. It is ordered so the app feels right early, and so the cha
 | Location | Read once from GPS only. No map, no exact pin, no way to give a job its own location |
 | Job form | Six fields. No hours, start date, openings, requirements or benefits |
 
-## 1. Language follows place
-**Rule on first launch**
+## 1. Default language
+**Rule on first launch** (changed on 2026-11-14: the device language comes first)
 1. If the person has already chosen a language, use it.
-2. Otherwise, if they are in Tunisia, use Arabic (Tunisian dialect).
-3. Otherwise, use the device language if it is Arabic, French or English.
+2. Otherwise, use the browser or device language if it is Arabic, French or English.
+3. Otherwise, if the device is in Tunisia, use Arabic (Tunisian dialect).
 4. Otherwise, French.
 
-**How "in Tunisia" is decided**, without asking for location permission: the device's region is `TN`, or its time zone is `Africa/Tunis`. Both come from the localization package the app already uses. The time zone matters because many phones in Tunisia are set to French or English with a foreign region.
+**How "in Tunisia" is decided**, without asking for location permission: the device's region is `TN`, or its time zone is `Africa/Tunis`. Both come from the localization package the app already uses. This only matters for a device set to a language the app does not have.
+
+**Swipes never mirror.** In Arabic the layout runs right to left, but a swipe keeps its direction: right applies and left passes on a job card, and a swipe left goes to the next onboarding page. The page dots run left to right in every language to match.
 
 **Changing it**
 - A language switch on the welcome screen, visible before sign-in. Today the switch is only in Settings, behind sign-in.
@@ -152,8 +154,8 @@ Chat, push notifications, report and block, and account deletion are still owed 
 ## Progress
 | Phase | State | Checked how |
 |---|---|---|
-| A. Language follows place | Built 2026-11-14 | Browser set to English on Tunisian time opened in Darija, right to left |
-| Swipe onboarding | Built 2026-11-14 | Swiped between pages and on the practice card in the browser, in Arabic |
+| A. Default language | Built 2026-11-14 | A browser set to English opens in English; the switch changes it and the choice is kept |
+| Swipe onboarding | Built 2026-11-14 | Swiped between pages and on the practice card in the browser. Swipe left goes forward in English and in Arabic |
 | B. Headers, back, sheets, keyboard | Built 2026-11-14 | Back and forward between screens in the browser. Sheet presentation and keyboard behaviour need a phone |
 | C. Feedback, field errors, offline, crash screen | Built 2026-11-14 | Empty job form marks its fields and shows a message. The offline band and crash screen were not triggered |
 | Tax ID for businesses | Built 2026-11-14 | Backend tests, and the form in the browser |
