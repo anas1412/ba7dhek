@@ -42,7 +42,7 @@ The version in the file name comes from `version` in `app.json`; change it there
 
 ## Why releases and not Actions artifacts
 
-GitHub's storage for Actions artifacts is counted per account, across every repository, and on 2026-11-14 it was full: three other repositories held about 35 GB between them (copland-os about 28 GB, tackora-app about 5.4 GB, bootleg16 about 1.7 GB). Files attached to releases do not count against that storage. The repository is private, so its releases are visible only to people with access to it.
+GitHub's storage for Actions artifacts is counted per account, across every repository, and on 2026-11-14 it was full, used by other repositories. Files attached to releases do not count against that storage. The repository has been public since 2026-11-14, so anyone can download its release files. They contain no secrets: the backend addresses inside the app are public by nature.
 
 ## Speed
 
