@@ -79,3 +79,19 @@ Secrets go in EAS environment variables or secrets, never in the repository.
 ## Versioning
 - `version` in app config is the user-visible version: `0.1.0` for the first tester build.
 - Build numbers increment automatically through EAS.
+
+## Which backend each build talks to
+
+Set in `eas.json`, per build profile, as `EXPO_PUBLIC_CONVEX_URL`. The address is public by nature: it is in every installed copy of the app.
+
+| Profile | For | Backend |
+|---|---|---|
+| `development` | Day-to-day work, with the dev client | dev (`patient-mouse-884`) |
+| `preview` | Testers, installed from a link | production (`tame-goldfinch-711`) |
+| `production` | The store | production |
+
+On a computer, `npx expo start` reads `.env.local`, which points at dev.
+
+All three profiles build the **same app**: one name, one package id (`tn.ba7dhek.app`). A phone can therefore hold only one of them at a time; installing a preview build replaces a development build. Giving the development build its own name and package id, so both sit side by side, is possible and not done: it needs a second Android app in Firebase and a second redirect address for Google sign-in.
+
+Production needs three things before anyone can sign in there: the backend deployed (`npx convex deploy`), `AUTH_GOOGLE_SECRET` set with `--prod`, and the production redirect address added in the Google console.

@@ -159,7 +159,8 @@ describe("blocking and reporting", () => {
     const reports = await t.run((ctx) => ctx.db.query("reports").collect());
     expect(reports).toHaveLength(1);
     expect(reports[0]).toMatchObject({ targetType: "user", targetId: candidateId, reason: "harassment", status: "open" });
-    expect(reports[0].note).toContain(matchId);
+    // The conversation is named on the report, which is what lets staff read it and only it.
+    expect(reports[0]).toMatchObject({ matchId, note: "Messages insultants" });
     await expect(candidate.mutation(api.messages.send, { matchId, body: "Pardon" })).rejects.toThrow();
   });
 });

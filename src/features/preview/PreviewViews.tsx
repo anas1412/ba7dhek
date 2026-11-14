@@ -14,6 +14,7 @@ import { ChatsList, type ChatSummary } from '@/features/chat/ChatsList';
 import { Conversation, type ChatMessage } from '@/features/chat/Conversation';
 import { CompanyForm } from '@/features/forms/CompanyForm';
 import { JobForm } from '@/features/forms/JobForm';
+import { DailyBars } from '@/features/staff/DailyBars';
 import { ReportSheet } from '@/features/report/ReportSheet';
 import { PushExplanation } from '@/features/push/PushManager';
 import { ApplicationsList, type Application } from '@/features/jobs/ApplicationsList';
@@ -21,7 +22,7 @@ import { FeedFilters, NO_FILTERS } from '@/features/jobs/FeedFilters';
 import { JobDetail } from '@/features/jobs/JobDetail';
 import { sampleDetail } from '@/features/jobs/sampleJobs';
 
-export const PREVIEW_VIEWS = ['setup', 'company', 'job', 'detail', 'filters', 'chats', 'chat', 'push', 'delete', 'report', 'applicants', 'applications', 'images', 'photo', 'loading'] as const;
+export const PREVIEW_VIEWS = ['setup', 'company', 'job', 'detail', 'filters', 'chats', 'chat', 'push', 'delete', 'report', 'charts', 'applicants', 'applications', 'images', 'photo', 'loading'] as const;
 export type PreviewView = (typeof PREVIEW_VIEWS)[number];
 
 // Coloured tiles standing in for photos, so the preview needs no files or network.
@@ -130,6 +131,22 @@ export function PreviewViewScreen({ view }: { view: PreviewView }) {
       );
     case 'filters':
       return <FeedFilters filters={NO_FILTERS} onApply={() => {}} onCancel={() => {}} />;
+    case 'charts': {
+      // Fourteen made-up days ending today, including quiet ones.
+      const series = (counts: number[]) =>
+        counts.map((count, index) => ({
+          day: new Date(now - (counts.length - 1 - index) * 86_400_000).toISOString().slice(0, 10),
+          count,
+        }));
+      return (
+        <Screen scroll underHeader>
+          <AppText variant="display">{t('admin.section_overview')}</AppText>
+          <DailyBars title={t('admin.chartAccounts')} data={series([2, 0, 3, 5, 1, 0, 0, 4, 7, 6, 3, 9, 12, 8])} />
+          <DailyBars title={t('admin.chartJobs')} data={series([0, 1, 0, 2, 0, 0, 1, 1, 3, 0, 2, 4, 2, 1])} />
+          <DailyBars title={t('admin.chartApplications')} data={series([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])} />
+        </Screen>
+      );
+    }
     case 'report':
       return (
         <Screen scroll underHeader>

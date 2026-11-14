@@ -41,6 +41,8 @@ export type ColorTokens = {
   success: string;
   /** error. */
   danger: string;
+  /** Chart marks. Not a Material role: Material's dark primary is too grey for a data mark. */
+  chart: string;
   /** inverse surface and inverse on surface: the snackbar. */
   inverseSurface: string;
   onInverseSurface: string;
@@ -65,6 +67,7 @@ export const lightColors: ColorTokens = {
   onNear: '#2A1800',
   success: '#0E7A4B',
   danger: '#BA1A1A',
+  chart: '#1C5BBC',
   inverseSurface: '#303034',
   onInverseSurface: '#F2F0F4',
 };
@@ -88,6 +91,7 @@ export const darkColors: ColorTokens = {
   onNear: '#FFDDB5',
   success: '#4FD197',
   danger: '#FFB4AB',
+  chart: '#5590F5',
   inverseSurface: '#E3E2E6',
   onInverseSurface: '#303034',
 };

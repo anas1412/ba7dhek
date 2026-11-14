@@ -49,8 +49,8 @@ export default function BackOffice() {
 
       {section === 'overview' ? <Overview /> : null}
       {section === 'reports' ? <Reports /> : null}
-      {section === 'businesses' ? <Businesses /> : null}
-      {section === 'jobs' ? <Jobs /> : null}
+      {section === 'businesses' ? <Businesses role={role} /> : null}
+      {section === 'jobs' ? <Jobs role={role} /> : null}
       {section === 'people' ? <People role={role} /> : null}
       {section === 'activity' && role === 'admin' ? <Activity /> : null}
     </Screen>

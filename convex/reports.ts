@@ -1,3 +1,4 @@
+import { paginationOptsValidator } from "convex/server";
 import { ConvexError, v } from "convex/values";
 import type { Doc, Id } from "./_generated/dataModel";
 import { mutation, query, type MutationCtx, type QueryCtx } from "./_generated/server";
@@ -74,17 +75,17 @@ export const job = mutation({
 
 /** Everything waiting for a decision, oldest first, with enough about each target to judge it. */
 export const open = query({
-  args: {},
-  handler: async (ctx) => {
+  args: { paginationOpts: paginationOptsValidator },
+  handler: async (ctx, args) => {
     await requireStaff(ctx, "moderator");
-    const reports = await ctx.db
+    const result = await ctx.db
       .query("reports")
       .withIndex("by_status", (q) => q.eq("status", "open"))
       .order("asc")
-      .take(200);
+      .paginate(args.paginationOpts);
 
-    return await Promise.all(
-      reports.map(async (report) => {
+    const page = await Promise.all(
+      result.page.map(async (report) => {
         const reporter = await ctx.db.get(report.reporterId);
         const base = {
           _id: report._id,
@@ -116,10 +117,13 @@ export const open = query({
           title: target?.name ?? null,
           role: target?.role ?? null,
           banned: Boolean(target?.banned),
+          // True when the report came from a chat, which staff may then read.
+          hasChat: Boolean(report.matchId),
           reportCount: (await openReportsOn(ctx, "user", report.targetId)).length,
         };
       }),
     );
+    return { ...result, page };
   },
 });
 

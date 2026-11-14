@@ -1,6 +1,6 @@
 # Back office
 
-**Status:** built 2026-11-14. The server side is covered by tests. The screens have not been seen with a signed-in member of staff: nobody has opened them yet.
+**Status:** built 2026-11-14, extended the same day with paging, bulk actions, export, charts and reported-chat reading. The server side is covered by tests. The screens have not been seen with a signed-in member of staff: nobody has opened them yet.
 
 The back office is a screen inside the app, reached from Settings by anyone who is staff. It works on a phone and in a browser, since it is the same app.
 
@@ -16,6 +16,8 @@ The back office is a screen inside the app, reached from Settings by anyone who 
 | Lift a ban | No | Yes |
 | See e-mail addresses | No | Yes |
 | Make or remove a moderator | No | Yes |
+| Read a conversation that was reported | Yes | Yes |
+| Export a list as a spreadsheet | No | Yes |
 | Read the activity log | No | Yes |
 | Make or remove an admin | No | Not from the app |
 
@@ -29,7 +31,7 @@ Add `--prod` for the production deployment. The person must have signed in once 
 
 ## Sections
 
-- **Overview:** reports waiting, businesses waiting, jobs live and hidden, people, chats, bans.
+- **Overview:** reports waiting, businesses waiting, jobs live and hidden, people, chats, bans. Below them, three small charts of the last 14 days: new accounts, jobs published, applications.
 - **Reports:** open reports on jobs and on people, oldest first. Each gets one of two decisions: nothing wrong, or remove the job / ban the person.
 - **Businesses:** waiting, approved, rejected. Approve or reject, with an optional reason kept with the business.
 - **Jobs:** live, hidden, closed, drafts, with a search on the title or the business name. Hide, bring back, remove.
@@ -44,10 +46,27 @@ Add `--prod` for the production deployment. The person must have signed in once 
 - A removed job is closed and stays hidden, so its owner cannot publish it again.
 - A ban refuses the person in every function, stops their notifications and closes their open jobs. Lifting it does not reopen those jobs; the owner publishes again.
 
+## Lists, bulk actions and export
+
+- **Every list is read a page at a time** (20 rows, then "Load more"), so nothing is cut off however long it grows. A search is applied to each page as it is read, so a page can come back short while more remain; the list says when it has reached its end.
+- **Bulk actions:** tick rows, or "select all shown", then act on them together. Businesses: approve, reject. Jobs: hide, bring back, remove. People: ban, and for an admin lift a ban. Reports: only "nothing wrong" is offered in bulk; removing a job or banning a person from a report is decided one at a time. Each row in a bulk action is still checked and logged on its own.
+- **Export (admin only):** people, businesses, jobs and the activity log, as a spreadsheet file of up to 5,000 rows, newest first. A browser downloads it; a phone opens the share sheet. The people and businesses files hold e-mail addresses. Every export is logged. Values that could run as a spreadsheet formula are made harmless.
+
+## Reading a conversation
+
+Nobody browses conversations. There is no function that lists them or opens one by its address. The one way in:
+
+1. A person reports someone from inside a chat. Before sending, they are told that the team will be able to read that chat.
+2. The report carries that one conversation. While the report is open, a moderator or admin can press "Read the reported chat" on it.
+3. Each reading is written to the activity log with who read it.
+4. Once the report is settled, the conversation can no longer be read.
+
+A report on a job gives no access to any conversation.
+
 ## Limits
 
-- Lists show the newest 100 and the overview counts up to 5,000 rows per table. That is ample for one town and needs paging beyond it.
-- No bulk actions, no export, no charts.
+- The overview counts by reading up to 5,000 rows per table. Past that it says so and the figures are a minimum; exact counts at that size need running totals kept as data changes, which are not built.
+- The charts cover 14 days and three measures. No date range to choose, no breakdown by category or area.
 - The reporter is not told what was decided.
-- No back-office screen for a single person's history (their jobs, their reports, their chats). Chat contents are deliberately not readable from the back office; a report names the conversation, and reading it means the Convex dashboard.
-- Code: `convex/staff.ts`, `convex/reports.ts`, `convex/companies.ts`, `convex/lib/staffLog.ts`, `src/features/staff/sections.tsx`, `src/app/admin.tsx`.
+- No back-office screen for a single person's history (their jobs, the reports about them).
+- Code: `convex/staff.ts`, `convex/reports.ts`, `convex/companies.ts`, `convex/lib/staffLog.ts`, `src/features/staff/sections.tsx`, `src/features/staff/DailyBars.tsx`, `src/app/admin.tsx`.

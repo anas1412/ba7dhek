@@ -88,7 +88,8 @@ export default defineSchema({
   })
     // Convex Auth looks users up through these two indexes.
     .index("email", ["email"])
-    .index("phone", ["phone"]),
+    .index("phone", ["phone"])
+    .index("by_banned", ["banned"]),
 
   companies: defineTable({
     ownerId: v.id("users"),
@@ -140,7 +141,10 @@ export default defineSchema({
     benefits: v.optional(v.array(benefit)),
     experience: v.optional(experience),
     languages: v.optional(v.array(spokenLanguage)),
-  }).index("by_company_status", ["companyId", "status"]),
+  })
+    .index("by_company_status", ["companyId", "status"])
+    .index("by_status", ["status"])
+    .index("by_hidden", ["hidden"]),
 
   swipes: defineTable({
     candidateId: v.id("users"),
@@ -185,6 +189,8 @@ export default defineSchema({
     targetId: v.string(),
     reason: v.string(),
     note: v.optional(v.string()),
+    // Set on a report made from inside a conversation.
+    matchId: v.optional(v.id("matches")),
     status: v.union(v.literal("open"), v.literal("resolved")),
     // What the admin decided, and when.
     resolution: v.optional(v.union(v.literal("dismiss"), v.literal("remove"))),

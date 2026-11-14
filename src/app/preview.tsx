@@ -30,6 +30,7 @@ const VIEW_TITLE = {
   push: 'push.title',
   delete: 'account.delete',
   report: 'report.job',
+  charts: 'admin.section_overview',
   applicants: 'applicants.title',
   applications: 'applications.title',
   images: 'images.title',

@@ -178,8 +178,9 @@ export const report = mutation({
       targetType: "user",
       targetId,
       reason: args.reason,
-      // The conversation is named so the reviewer can find what was said.
-      note: `match ${match._id}${note ? `: ${note}` : ""}`,
+      // The conversation is named: this is what lets staff read it, and only it.
+      matchId: match._id,
+      note: note || undefined,
       status: "open",
     });
     if (!match.blockedBy) await ctx.db.patch(match._id, { blockedBy: user._id });

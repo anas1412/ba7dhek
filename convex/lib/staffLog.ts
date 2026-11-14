@@ -11,7 +11,9 @@ export type StaffAction =
   | "unban"
   | "add_moderator"
   | "remove_moderator"
-  | "dismiss_report";
+  | "dismiss_report"
+  | "read_chat"
+  | "export";
 
 /**
  * Records one thing a member of staff did: who, what, to what. Written inside

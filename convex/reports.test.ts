@@ -5,6 +5,10 @@ import { HAMMAMET, setupBackend, signedIn } from "./test.setup";
 
 type Backend = ReturnType<typeof setupBackend>;
 
+const PAGE = { paginationOpts: { numItems: 50, cursor: null } };
+/** The open reports, as one generous page. */
+const queue = async (admin: { query: Backend["query"] }) => (await admin.query(api.reports.open, PAGE)).page;
+
 async function person(t: Backend, name: string, role: "candidate" | "employer") {
   const { as, id } = await signedIn(t, name);
   await as.mutation(api.users.ensure, { language: "fr" });
@@ -104,10 +108,10 @@ describe("reviewing reports", () => {
     const t = setupBackend();
     const { admin, employer, jobId } = await hiddenJob(t);
 
-    await expect(employer.as.query(api.reports.open, {})).rejects.toThrow();
-    const queue = await admin.query(api.reports.open, {});
-    expect(queue).toHaveLength(3);
-    expect(queue[0]).toMatchObject({
+    await expect(employer.as.query(api.reports.open, PAGE)).rejects.toThrow();
+    const waiting = await queue(admin);
+    expect(waiting).toHaveLength(3);
+    expect(waiting[0]).toMatchObject({
       kind: "job",
       jobId,
       title: "Receptionist",
@@ -123,23 +127,23 @@ describe("reviewing reports", () => {
     const t = setupBackend();
     const { admin, jobId } = await hiddenJob(t);
     const onlooker = await candidate(t, "Onlooker");
-    const [first] = await admin.query(api.reports.open, {});
+    const [first] = await queue(admin);
 
     await admin.mutation(api.reports.resolve, { reportId: first._id, action: "dismiss" });
 
     expect(await visibleTo(onlooker)).toEqual([jobId]);
-    expect(await admin.query(api.reports.open, {})).toHaveLength(2);
+    expect(await queue(admin)).toHaveLength(2);
   });
 
   test("removing a job closes it for good and settles every report about it", async () => {
     const t = setupBackend();
     const { admin, employer, jobId } = await hiddenJob(t);
     const onlooker = await candidate(t, "Onlooker");
-    const [first] = await admin.query(api.reports.open, {});
+    const [first] = await queue(admin);
 
     await admin.mutation(api.reports.resolve, { reportId: first._id, action: "remove" });
 
-    expect(await admin.query(api.reports.open, {})).toEqual([]);
+    expect(await queue(admin)).toEqual([]);
     expect(await visibleTo(onlooker)).toEqual([]);
     const [mine] = await employer.as.query(api.jobs.mine, {});
     expect(mine).toMatchObject({ _id: jobId, status: "closed", hidden: true });
@@ -156,20 +160,20 @@ describe("reviewing reports", () => {
     const matchId = (await employer.as.mutation(api.swipes.decide, { swipeId, accept: true })) as Id<"matches">;
     await amine.as.mutation(api.matches.report, { matchId, reason: "asks_money" });
 
-    const [report] = await admin.query(api.reports.open, {});
+    const [report] = await queue(admin);
     expect(report).toMatchObject({ kind: "user", title: "Sindbad", role: "employer", banned: false });
     await admin.mutation(api.reports.resolve, { reportId: report._id, action: "remove" });
 
     await expect(employer.as.query(api.jobs.mine, {})).rejects.toThrow();
     const onlooker = await candidate(t, "Onlooker");
     expect(await visibleTo(onlooker)).toEqual([]);
-    expect(await admin.query(api.reports.open, {})).toEqual([]);
+    expect(await queue(admin)).toEqual([]);
   });
 
   test("a report cannot be settled twice, nor by anyone but the admin", async () => {
     const t = setupBackend();
     const { admin, employer } = await hiddenJob(t);
-    const [first] = await admin.query(api.reports.open, {});
+    const [first] = await queue(admin);
     await expect(employer.as.mutation(api.reports.resolve, { reportId: first._id, action: "dismiss" })).rejects.toThrow();
     await admin.mutation(api.reports.resolve, { reportId: first._id, action: "dismiss" });
     await expect(admin.mutation(api.reports.resolve, { reportId: first._id, action: "dismiss" })).rejects.toThrow();
