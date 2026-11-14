@@ -40,6 +40,18 @@ git push origin v0.1.0
 
 The version in the file name comes from `version` in `app.json`; change it there before tagging.
 
+## Publish update (`update.yml`)
+
+Sends code-only changes to apps already installed, with EAS Update, so no new APK is needed.
+
+- **Automatic:** every push to `main` that touches `src/`, `assets/`, `app.json` or the package files publishes to channel `dev`, which the dev APKs listen to. It takes a few minutes.
+- **By hand, for prod:** Actions → "Publish update" → Run workflow → channel `prod`. The prod APKs pick it up.
+- On the phone: the app downloads the update when it starts and runs it from the next start. So open the app, close it fully, open it again.
+- A change to native code or native config (a new native library, a plugin or permission in `app.json`) gives a new runtime version. Older APKs ignore updates for it, and a new APK from "Build apps" is needed.
+- Each update is named after its commit (short id and subject). They are listed on expo.dev under the project's Updates page.
+
+Details: [eas.md](eas.md#eas-update-set-up-2026-11-14).
+
 ## Why releases and not Actions artifacts
 
 GitHub's storage for Actions artifacts is counted per account, across every repository, and on 2026-11-14 it was full, used by other repositories. Files attached to releases do not count against that storage. The repository has been public since 2026-11-14, so anyone can download its release files. They contain no secrets: the backend addresses inside the app are public by nature.

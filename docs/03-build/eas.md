@@ -27,11 +27,15 @@ Each profile sets its own environment variable: the Convex URL.
 
 Everything else is a JavaScript change and can go out as an update.
 
-## EAS Update
-- One channel per profile: `development`, `preview`, `production`.
-- A JavaScript-only fix is published to a channel and picked up by installed builds on next launch.
-- An update only reaches builds with a matching runtime version. Use a runtime version policy tied to the native code, so an update can never land on a build that lacks a native module it needs.
+## EAS Update (set up 2026-11-14)
+- **Two channels, one per backend.** `dev`: the `development`, `staging` and `simulator` builds. `prod`: the `preview` and `production` builds. Set as `channel` on each profile in `eas.json`. Both channels exist on EAS, each with a branch of the same name.
+- **Runtime version: `fingerprint`** (app.json). It changes whenever anything that can affect the native app changes, so an update never lands on a build without the native code it needs. Older builds just keep what they have until a new APK is installed.
+- **Publishing:** `.github/workflows/update.yml`. Every push to `main` that touches the app publishes to `dev`. `prod` is published by hand: Actions → "Publish update" → Run workflow → channel `prod`. See [ci.md](ci.md).
+- **Backend address in an update:** `eas update --environment <name>` reads only that Expo environment's variables, not the `env` blocks in `eas.json` and not `.env` files (Expo docs, environment variables usage page). So `EXPO_PUBLIC_CONVEX_URL` is also stored in Expo's `development` environment (dev backend) and `production` environment (prod backend). `preview` is left empty on purpose.
+- An installed app checks for an update when it starts, and runs it from the next start.
 - Locale file changes are JavaScript, so a translation fix can ship as an update.
+- **Free plan:** 1,000 monthly active users for updates, no overage (expo.dev/pricing, checked 2026-11-14).
+- Builds made before 2026-11-14 have no update address and never receive updates; reinstall from a newer APK.
 
 ## Identifiers
 To be fixed before the first build, because changing them later means a new app listing:
@@ -73,7 +77,7 @@ Secrets go in EAS environment variables or secrets, never in the repository.
 ## Routine
 1. Code against the `development` build.
 2. When a milestone is done, cut a `preview` build and send it to testers.
-3. Small fixes go to the `preview` channel as updates.
+3. Small fixes go out as updates: to `dev` on every push, then to `prod` by hand once checked.
 4. For release, cut a `production` build from the same commit that testers approved, and submit.
 
 ## Versioning

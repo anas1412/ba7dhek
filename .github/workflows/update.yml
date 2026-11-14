@@ -1,0 +1,88 @@
+name: Publish update
+
+# Sends the app's JavaScript and images to installed apps over the air, with
+# EAS Update, so a code-only change reaches phones without a new APK.
+#
+#   channel dev   the dev APKs (and the development build), dev backend
+#   channel prod  the prod APKs and the store build, production backend
+#
+# Every push to main publishes to dev. Prod is published by hand from the
+# Actions tab ("Run workflow", channel prod), so testers see a change first.
+#
+# An update only reaches APKs built from the same native code: app.json uses
+# the "fingerprint" runtime version, so a change to native code or native
+# config (plugins, permissions, a new native library) makes a new runtime
+# version, and older APKs simply never receive it. Those changes need a new
+# APK from the "Build apps" workflow.
+#
+# The backend address comes from the matching Expo environment (development
+# or production), not from eas.json: `eas update` reads only those.
+# Needs the repository secret EXPO_TOKEN. See docs/03-build/ci.md.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'assets/**'
+      - 'convex/_generated/**'
+      - 'app.json'
+      - 'package.json'
+      - 'package-lock.json'
+  workflow_dispatch:
+    inputs:
+      channel:
+        description: Which apps get it
+        type: choice
+        default: dev
+        options: [dev, prod]
+
+permissions:
+  contents: read
+
+# One update per channel at a time; a newer push replaces a waiting one.
+concurrency:
+  group: update-${{ inputs.channel || 'dev' }}
+  cancel-in-progress: false
+
+jobs:
+  update:
+    name: Update ${{ inputs.channel || 'dev' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      CHANNEL: ${{ inputs.channel || 'dev' }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Stop early if the Expo token is missing
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        run: |
+          if [ -z "$EXPO_TOKEN" ]; then
+            echo "::error::The repository secret EXPO_TOKEN is not set. See docs/03-build/ci.md."
+            exit 1
+          fi
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - uses: expo/expo-github-action@v9
+        with:
+          eas-version: latest
+          packager: npm
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Publish to ${{ env.CHANNEL }}
+        run: |
+          if [ "$CHANNEL" = "prod" ]; then ENVIRONMENT=production; else ENVIRONMENT=development; fi
+          SHA=$(git rev-parse --short=7 HEAD)
+          SUBJECT=$(git log -1 --format=%s)
+          # Android only: there is no iPhone app yet.
+          eas update --channel "$CHANNEL" --environment "$ENVIRONMENT" --platform android \
+            --message "$SHA $SUBJECT" --non-interactive

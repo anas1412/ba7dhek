@@ -7,6 +7,7 @@
     "development": {
       "developmentClient": true,
       "distribution": "internal",
+      "channel": "dev",
       "android": {
         "buildType": "apk"
       },
@@ -16,6 +17,7 @@
     },
     "staging": {
       "distribution": "internal",
+      "channel": "dev",
       "android": {
         "buildType": "apk"
       },
@@ -25,6 +27,7 @@
     },
     "preview": {
       "distribution": "internal",
+      "channel": "prod",
       "android": {
         "buildType": "apk"
       },
@@ -34,12 +37,14 @@
     },
     "production": {
       "autoIncrement": true,
+      "channel": "prod",
       "env": {
         "EXPO_PUBLIC_CONVEX_URL": "https://tame-goldfinch-711.convex.cloud"
       }
     },
     "simulator": {
       "distribution": "internal",
+      "channel": "dev",
       "ios": {
         "simulator": true
       },

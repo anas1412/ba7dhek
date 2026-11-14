@@ -7,6 +7,12 @@
     "icon": "./assets/images/icon.png",
     "scheme": "ba7dhek",
     "userInterfaceStyle": "automatic",
+    "runtimeVersion": {
+      "policy": "fingerprint"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/c3103fce-eb15-49b0-aff1-8cc715fb8e72"
+    },
     "ios": {
       "bundleIdentifier": "tn.ba7dhek.app",
       "infoPlist": {
@@ -82,7 +88,7 @@
           "web": true
         }
       },
-      "supportsRTL": true,
+      "supportsRTL": false,
       "eas": {
         "projectId": "c3103fce-eb15-49b0-aff1-8cc715fb8e72"
       }
