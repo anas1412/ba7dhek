@@ -30,7 +30,7 @@
     "whereTitle": "Où elles sont stockées",
     "where": "Sur des serveurs situés hors de Tunisie, dans l'Union européenne et aux États-Unis.",
     "rightsTitle": "Vos droits",
-    "rights": "Vous pouvez corriger vos données, en demander une copie ou supprimer votre compte à tout moment depuis les Paramètres.",
+    "rights": "Vous pouvez corriger vos données ou supprimer votre compte à tout moment depuis les Paramètres. Vous pouvez aussi nous demander une copie de vos données.",
     "adult": "J'ai 18 ans ou plus",
     "accept": "J'accepte",
     "decline": "Je n'accepte pas",
@@ -486,5 +486,17 @@
     "channelJobs": "Nouvelles offres",
     "channelMessages": "Messages",
     "channelActivity": "Candidatures et validations"
+  },
+  "account": {
+    "delete": "Supprimer mon compte",
+    "confirmTitle": "Supprimer votre compte ?",
+    "loseProfile": "Votre profil, votre photo et votre connexion sont supprimés.",
+    "loseApplications": "Votre point de départ et toutes vos candidatures sont supprimés.",
+    "loseBusiness": "Votre établissement, ses offres et les candidatures reçues sont supprimés.",
+    "keptNote": "Vos discussions restent chez les personnes à qui vous avez parlé, fermées et sous le nom « Compte supprimé ».",
+    "noUndo": "Cette action est définitive.",
+    "confirm": "Supprimer définitivement",
+    "keep": "Garder mon compte",
+    "failed": "Votre compte n’a pas été supprimé. Vérifiez votre connexion et réessayez."
   }
 }

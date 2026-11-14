@@ -92,7 +92,7 @@ The privacy notice must contain all of:
 **App response**
 - **Correction:** every profile field is editable in the app.
 - **Erasure:** account deletion in Settings, immediate.
-- **Access and copy:** a "Request my data" action in Settings that sends a request to the support address; answered within one month with an export. Automating the export can wait.
+- **Access and copy:** not automated and with no button in the app (decided 2026-11-14). The right itself remains: a person who asks must get a copy within one month, so requests are answered by hand from the Convex dashboard. Before launch this needs a contact address, shown in the app or the store listing.
 - **Objection:** treated as deletion, since the app has no processing beyond the service itself.
 - A support email address is published in the app, on the store listings and on the website.
 

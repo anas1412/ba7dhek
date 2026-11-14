@@ -72,7 +72,8 @@ The map never sends a candidate's home point to the tile service. It sends which
 - Messages a deleted user sent remain in the other person's chat, attributed to "Deleted user", until the chat's own retention period ends.
 - Reports are kept after deletion of the reported account, without the profile data, to prevent re-registration abuse.
 - **Retention periods** for everything else are in [data-protection.md](data-protection.md): accounts unused for 24 months, and swipes, chats and closed jobs after 12 months. A scheduled job enforces them.
-- **Request my data:** an action in Settings sends an access request, answered within one month with a copy.
+- **Request my data:** no button in the app (Anas's decision, 2026-11-14). The consent notice says a copy can be asked for; a request is answered by hand, within one month. This needs a contact address, which does not exist yet.
+- **Delete my account:** built 2026-11-14. Settings, two presses, immediate. See `convex/account.ts` for what is removed and what is kept.
 
 Apple requires in-app account deletion, and Google requires it plus a web page where deletion can be requested (verified); see [store-readiness.md](store-readiness.md).
 

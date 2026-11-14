@@ -8,7 +8,7 @@ import { cleanText, requireTunisianPoint } from "./lib/validate";
 import { language, point, role } from "./schema";
 
 /** The version of the privacy notice and terms a user accepts. Bump when either changes. */
-export const CONSENT_VERSION = "2026-11-13";
+export const CONSENT_VERSION = "2026-11-14";
 
 /** The signed-in user's own row. Never used to read anyone else. */
 export const me = query({

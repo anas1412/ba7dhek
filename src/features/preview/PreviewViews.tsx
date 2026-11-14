@@ -9,6 +9,7 @@ import { ApplicantsList, type Applicant } from '@/features/employer/ApplicantsLi
 import { CandidateSetupForm } from '@/features/forms/CandidateSetupForm';
 import { ImageGrid } from '@/features/images/ImageGrid';
 import { PhotoEditor } from '@/features/images/PhotoEditor';
+import { DeleteAccount } from '@/features/account/DeleteAccount';
 import { ChatsList, type ChatSummary } from '@/features/chat/ChatsList';
 import { Conversation, type ChatMessage } from '@/features/chat/Conversation';
 import { CompanyForm } from '@/features/forms/CompanyForm';
@@ -19,7 +20,7 @@ import { FeedFilters, NO_FILTERS } from '@/features/jobs/FeedFilters';
 import { JobDetail } from '@/features/jobs/JobDetail';
 import { sampleDetail } from '@/features/jobs/sampleJobs';
 
-export const PREVIEW_VIEWS = ['setup', 'company', 'job', 'detail', 'filters', 'chats', 'chat', 'push', 'applicants', 'applications', 'images', 'photo', 'loading'] as const;
+export const PREVIEW_VIEWS = ['setup', 'company', 'job', 'detail', 'filters', 'chats', 'chat', 'push', 'delete', 'applicants', 'applications', 'images', 'photo', 'loading'] as const;
 export type PreviewView = (typeof PREVIEW_VIEWS)[number];
 
 // Coloured tiles standing in for photos, so the preview needs no files or network.
@@ -128,6 +129,13 @@ export function PreviewViewScreen({ view }: { view: PreviewView }) {
       );
     case 'filters':
       return <FeedFilters filters={NO_FILTERS} onApply={() => {}} onCancel={() => {}} />;
+    case 'delete':
+      return (
+        <Screen scroll underHeader>
+          <AppText variant="display">{t('settings.account')}</AppText>
+          <DeleteAccount role="candidate" onDelete={pretendToSave} />
+        </Screen>
+      );
     case 'push':
       return <PushExplanation role="candidate" busy={false} onAccept={() => {}} onDecline={() => {}} />;
     case 'chats':

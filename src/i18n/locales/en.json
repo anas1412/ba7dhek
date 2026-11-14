@@ -30,7 +30,7 @@
     "whereTitle": "Where it is stored",
     "where": "On servers outside Tunisia, in the European Union and the United States.",
     "rightsTitle": "Your rights",
-    "rights": "You can correct your data, ask for a copy, or delete your account at any time from Settings.",
+    "rights": "You can correct your data or delete your account at any time from Settings. You can also ask us for a copy of your data.",
     "adult": "I am 18 or older",
     "accept": "I agree",
     "decline": "I do not agree",
@@ -479,5 +479,17 @@
     "channelJobs": "New jobs",
     "channelMessages": "Messages",
     "channelActivity": "Applications and approvals"
+  },
+  "account": {
+    "delete": "Delete my account",
+    "confirmTitle": "Delete your account?",
+    "loseProfile": "Your profile, your photo and your sign-in are removed.",
+    "loseApplications": "Your starting point and all your applications are removed.",
+    "loseBusiness": "Your business, its jobs and the applications to them are removed.",
+    "keptNote": "Your chats stay with the people you talked to, closed and under the name \"Deleted account\".",
+    "noUndo": "This cannot be undone.",
+    "confirm": "Delete for good",
+    "keep": "Keep my account",
+    "failed": "Your account was not deleted. Check your connection and try again."
   }
 }

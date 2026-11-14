@@ -9,6 +9,7 @@ import { AppText } from '@/components/AppText';
 import { Button } from '@/components/Button';
 import { Screen } from '@/components/Screen';
 import { useToast } from '@/components/Toast';
+import { DeleteAccount } from '@/features/account/DeleteAccount';
 import { PhotoEditor } from '@/features/images/PhotoEditor';
 import { NotificationSettings } from '@/features/push/NotificationSettings';
 import { useImageUpload } from '@/features/images/useImageUpload';
@@ -22,6 +23,7 @@ export default function Settings() {
   const me = useQuery(api.users.me);
   const saveLanguage = useMutation(api.users.setLanguage);
   const unregisterPush = useMutation(api.push.unregister);
+  const deleteAccount = useMutation(api.account.remove);
 
   const active = currentLanguage();
   // Set when the chosen language flips the layout and needs the user's go-ahead to reload.
@@ -155,6 +157,14 @@ export default function Settings() {
             // First, so this phone stops receiving this person's notifications. Signing out goes ahead either way.
             await unregisterPush().catch(() => {});
             await signOut();
+          }}
+        />
+        <DeleteAccount
+          role={me?.role ?? null}
+          onDelete={async () => {
+            await deleteAccount();
+            // The account is gone, so its session is too; this clears what the phone still holds.
+            await signOut().catch(() => {});
           }}
         />
       </View>

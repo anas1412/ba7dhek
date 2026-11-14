@@ -28,6 +28,7 @@ const VIEW_TITLE = {
   chats: 'preview.chats',
   chat: 'preview.chat',
   push: 'push.title',
+  delete: 'account.delete',
   applicants: 'applicants.title',
   applications: 'applications.title',
   images: 'images.title',
