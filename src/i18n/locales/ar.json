@@ -10,7 +10,8 @@
     "back": "ارجع",
     "optional": "موش لازم",
     "next": "كمّل",
-    "skip": "فوّت"
+    "skip": "تخطّي",
+    "previous": "السابق"
   },
   "welcome": {
     "tagline": "خدمة بحذاك.",

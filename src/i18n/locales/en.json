@@ -10,7 +10,8 @@
     "back": "Back",
     "optional": "Optional",
     "next": "Next",
-    "skip": "Skip"
+    "skip": "Skip",
+    "previous": "Previous"
   },
   "welcome": {
     "tagline": "Jobs next to you.",

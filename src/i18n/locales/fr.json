@@ -10,7 +10,8 @@
     "back": "Retour",
     "optional": "Facultatif",
     "next": "Suivant",
-    "skip": "Passer"
+    "skip": "Passer",
+    "previous": "Précédent"
   },
   "welcome": {
     "tagline": "Des emplois près de chez vous.",

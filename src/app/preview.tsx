@@ -8,6 +8,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { AppText } from '@/components/AppText';
 import { Button } from '@/components/Button';
 import { Chip } from '@/components/Chip';
+import { GoogleButton } from '@/components/GoogleButton';
 import { EmptyState } from '@/components/EmptyState';
 import { RoundButton } from '@/components/RoundButton';
 import { CardStack, type CardStackHandle } from '@/features/jobs/CardStack';
@@ -144,7 +145,7 @@ export default function Preview() {
             <Chip label={t('categories.hospitality')} />
             <Chip label={t('employer.applicants', { count: 3 })} />
           </View>
-          <Button label={t('welcome.google')} onPress={() => {}} />
+          <GoogleButton label={t('welcome.google')} onPress={() => {}} />
           <Button label={t('common.cancel')} variant="neutral" onPress={() => {}} />
           <Button label={t('employer.close')} variant="danger" onPress={() => {}} />
           <Button label={t('common.loading')} loading onPress={() => {}} />

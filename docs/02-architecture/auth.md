@@ -111,3 +111,7 @@ That is the dev deployment's site URL; production will have its own and needs it
 - Whether the private key stored on the deployment is well-formed. It was generated together with the public key that is served correctly; a wrong key would show as a failure at step 6.
 - Whether Android returns from the in-app browser to the app cleanly with Expo Router also listening for links. If the router tries to open `ba7dhek://?code=...` as a page, the fix is a small route or a link filter.
 - Whether creating a Google OAuth client needs billing enabled on the Google Cloud project.
+
+## The sign-in button
+
+The welcome page uses `src/components/GoogleButton.tsx`, built to Google's branding guidelines as read on 2026-11-14 (https://developers.google.com/identity/branding-guidelines): white fill with a `#747775` outline in light mode, `#131314` with `#8E918F` in dark mode, the pill shape, and an approved phrase ("Sign in with Google", translated). The "G" is cut unaltered from Google's pre-approved button images (`signin-assets.zip`), one for each ground. One departure: the text is set in the app's typeface, not Google Sans.

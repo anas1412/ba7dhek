@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { Platform } from 'react-native';
 
 import { AppText } from '@/components/AppText';
-import { Button } from '@/components/Button';
+import { GoogleButton } from '@/components/GoogleButton';
 import { LoadingScreen } from '@/components/Screen';
 import { Intro } from '@/features/onboarding/Intro';
 import { readPreference, writePreference } from '@/lib/storage';
@@ -79,7 +79,7 @@ export default function Welcome() {
               {t('welcome.failed')}
             </AppText>
           ) : null}
-          <Button label={t('welcome.google')} loading={busy} onPress={signInWithGoogle} />
+          <GoogleButton label={t('welcome.google')} loading={busy} onPress={signInWithGoogle} />
         </>
       }
     />

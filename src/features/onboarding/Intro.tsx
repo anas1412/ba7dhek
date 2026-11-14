@@ -157,7 +157,12 @@ export function Intro({ startAtEnd, onSeen, signIn }: Props) {
         ) : (
           <View style={{ gap: theme.space[2] }}>
             <Button label={t('common.next')} onPress={() => goTo(index + 1)} />
-            <Button label={t('common.skip')} variant="neutral" onPress={() => goTo(LAST)} />
+            {/* On the first page there is nothing to go back to, so the second button skips ahead instead. */}
+            {index === 0 ? (
+              <Button label={t('common.skip')} variant="neutral" onPress={() => goTo(LAST)} />
+            ) : (
+              <Button label={t('common.previous')} variant="neutral" onPress={() => goTo(index - 1)} />
+            )}
           </View>
         )}
       </View>
