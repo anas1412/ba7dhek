@@ -82,6 +82,7 @@ export function routeFor(data: unknown): Href | null {
       return matchId ? chatHref(matchId) : null;
     case 'digest':
     case 'company_approved':
+    case 'account_expiry':
       return '/';
     default:
       return null;

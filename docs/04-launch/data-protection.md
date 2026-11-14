@@ -116,6 +116,23 @@ The minimum working age is 16 (Code du travail art. 53), so 16 and 17 year olds 
 ### 8. Keep data only as long as declared (art. 45)
 Data must be destroyed at the end of the declared period or when the purpose is achieved.
 
+**What enforces the periods (built 2026-11-14).** A job runs every night at 02:00 UTC (`convex/retention.ts`), and a second one at 02:30 removes photos that were uploaded and never attached (`convex/cleanup.ts`). Both are covered by tests; neither has yet run against real data old enough to delete.
+
+| Rule | What the job does |
+|---|---|
+| Job post, 30 days after publishing | Closes it. Its owner can publish it again |
+| Closed job post, 12 months after closing | Deletes it, its photos and the applications to it |
+| Conversation, 12 months after its last message | Deletes it and its messages |
+| Account, 23 months without opening the app | Sends a notification: open the app within 30 days to keep the account |
+| Account, 24 months, and warned at least 30 days before | Deletes it, exactly as if the person had deleted it themself |
+| Settled report, 24 months | Deletes it. A report still waiting for a decision is never removed by age |
+
+Three points where the code and the table below differ, for the declaration to settle:
+
+- **The warning is a push notification only.** The app has no way to send e-mail. Someone who removed the app or switched notifications off will not see it. The month of notice still runs.
+- **Consent records are not kept after deletion.** The table below proposes keeping them for the life of the account plus 24 months, as proof. Today, deleting an account deletes its consent record with it. Keeping proof means keeping something that identifies the person after they asked to be deleted, which is a legal choice and not a technical one.
+- **Staff accounts are exempt** from the idle-account rule.
+
 **Retention periods to declare.** These are the developer's proposals; the declaration fixes them.
 
 | Data | Kept for |

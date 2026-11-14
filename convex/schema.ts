@@ -61,6 +61,8 @@ export default defineSchema({
     // Set by `users.ensure` right after sign-in.
     language: v.optional(language),
     lastSeenAt: v.optional(v.number()),
+    // Set when the person was told their unused account will be deleted; cleared when they come back.
+    retentionWarnedAt: v.optional(v.number()),
 
     // Consent comes before any profile data. See docs/04-launch/data-protection.md.
     consentAt: v.optional(v.number()),
@@ -89,7 +91,8 @@ export default defineSchema({
     // Convex Auth looks users up through these two indexes.
     .index("email", ["email"])
     .index("phone", ["phone"])
-    .index("by_banned", ["banned"]),
+    .index("by_banned", ["banned"])
+    .index("by_last_seen", ["lastSeenAt"]),
 
   companies: defineTable({
     ownerId: v.id("users"),
@@ -144,7 +147,10 @@ export default defineSchema({
   })
     .index("by_company_status", ["companyId", "status"])
     .index("by_status", ["status"])
-    .index("by_hidden", ["hidden"]),
+    .index("by_hidden", ["hidden"])
+    // For the retention job: open posts by expiry, closed posts by closing date.
+    .index("by_status_expires", ["status", "expiresAt"])
+    .index("by_status_closed", ["status", "closedAt"]),
 
   swipes: defineTable({
     candidateId: v.id("users"),
@@ -175,7 +181,8 @@ export default defineSchema({
   })
     .index("by_candidate", ["candidateId", "lastMessageAt"])
     .index("by_employer", ["employerId", "lastMessageAt"])
-    .index("by_job_candidate", ["jobId", "candidateId"]),
+    .index("by_job_candidate", ["jobId", "candidateId"])
+    .index("by_last_message", ["lastMessageAt"]),
 
   messages: defineTable({
     matchId: v.id("matches"),

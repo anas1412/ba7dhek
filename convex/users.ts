@@ -48,6 +48,8 @@ export const ensure = mutation({
     await ctx.db.patch(user._id, {
       language: user.language ?? args.language,
       lastSeenAt: Date.now(),
+      // Opening the app is what keeps an account: any warning about deleting it is withdrawn.
+      retentionWarnedAt: undefined,
     });
     return user._id;
   },

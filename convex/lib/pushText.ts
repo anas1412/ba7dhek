@@ -109,6 +109,24 @@ export function applicantsText(lang: Lang, count: number, jobTitle: string): Tex
   }[lang];
 }
 
+/** Sent a month before an unused account is deleted. Opening the app is enough to keep it. */
+export function accountExpiryText(lang: Lang): Text {
+  return {
+    en: {
+      title: "Your Ba7dhek account will be deleted",
+      body: "You have not opened the app for a long time. Open it within 30 days to keep your account.",
+    },
+    fr: {
+      title: "Votre compte Ba7dhek va être supprimé",
+      body: "Vous n’avez pas ouvert l’application depuis longtemps. Ouvrez-la dans les 30 jours pour garder votre compte.",
+    },
+    ar: {
+      title: "سيُحذف حسابك في بحذاك",
+      body: "لم تفتح التطبيق منذ مدة طويلة. افتحه خلال 30 يومًا لتحتفظ بحسابك.",
+    },
+  }[lang];
+}
+
 export function companyApprovedText(lang: Lang, companyName: string): Text {
   return {
     en: { title: `${companyName} is approved`, body: "You can publish your jobs now." },

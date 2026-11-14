@@ -19,7 +19,12 @@ export const remove = mutation({
   args: {},
   handler: async (ctx) => {
     const user = await requireUser(ctx);
+    await deleteAccountData(ctx, user);
+  },
+});
 
+/** Everything `remove` promises, for one account. Also used when an unused account reaches its retention period. */
+export async function deleteAccountData(ctx: MutationCtx, user: Doc<"users">): Promise<void> {
     await closeConversations(ctx, user);
     if (user.role === "candidate") await removeCandidateData(ctx, user);
     if (user.role === "employer") await removeEmployerData(ctx, user);
@@ -35,8 +40,7 @@ export const remove = mutation({
 
     await removeSignIn(ctx, user._id);
     await ctx.db.delete(user._id);
-  },
-});
+}
 
 /** Nobody can write to someone who is gone, so their conversations are closed. */
 async function closeConversations(ctx: MutationCtx, user: Doc<"users">): Promise<void> {

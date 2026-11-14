@@ -11,6 +11,7 @@
 import type * as account from "../account.js";
 import type * as adminTools from "../adminTools.js";
 import type * as auth from "../auth.js";
+import type * as cleanup from "../cleanup.js";
 import type * as companies from "../companies.js";
 import type * as crons from "../crons.js";
 import type * as files from "../files.js";
@@ -32,6 +33,7 @@ import type * as messages from "../messages.js";
 import type * as notify from "../notify.js";
 import type * as push from "../push.js";
 import type * as reports from "../reports.js";
+import type * as retention from "../retention.js";
 import type * as staff from "../staff.js";
 import type * as swipes from "../swipes.js";
 import type * as users from "../users.js";
@@ -46,6 +48,7 @@ declare const fullApi: ApiFromModules<{
   account: typeof account;
   adminTools: typeof adminTools;
   auth: typeof auth;
+  cleanup: typeof cleanup;
   companies: typeof companies;
   crons: typeof crons;
   files: typeof files;
@@ -67,6 +70,7 @@ declare const fullApi: ApiFromModules<{
   notify: typeof notify;
   push: typeof push;
   reports: typeof reports;
+  retention: typeof retention;
   staff: typeof staff;
   swipes: typeof swipes;
   users: typeof users;

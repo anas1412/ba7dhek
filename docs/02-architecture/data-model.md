@@ -149,7 +149,7 @@ Indexes: `by_user_day` on `userId, day`.
 - **Push tokens:** held by the Expo push component, keyed by user id, one token per user. See [push.md](push.md).
 
 ## Retention
-A daily cron job deletes what has passed its declared period: accounts unused for 24 months (after a warning), and swipes, messages and closed jobs after 12 months. The periods and their legal basis are in [data-protection.md](../04-launch/data-protection.md).
+A nightly job (`convex/retention.ts`, built 2026-11-14) deletes what has passed its declared period: accounts unused for 24 months (after a warning), and swipes, messages and closed jobs after 12 months. The periods and their legal basis are in [data-protection.md](../04-launch/data-protection.md).
 
 ## Rules that keep the data consistent
 - A job enters the geo index when it becomes `open` and leaves when it becomes `closed`, expires or is hidden. Both happen in the same mutation as the status change.
