@@ -30,6 +30,7 @@ export const me = query({
       home: user.home ?? null,
       radiusM: user.radiusM ?? null,
       notifyNewJobs: user.notifyNewJobs ?? null,
+      isAdmin: Boolean(user.isAdmin),
     };
   },
 });

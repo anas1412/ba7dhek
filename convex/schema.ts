@@ -184,7 +184,12 @@ export default defineSchema({
     reason: v.string(),
     note: v.optional(v.string()),
     status: v.union(v.literal("open"), v.literal("resolved")),
-  }).index("by_status", ["status"]),
+    // What the admin decided, and when.
+    resolution: v.optional(v.union(v.literal("dismiss"), v.literal("remove"))),
+    resolvedAt: v.optional(v.number()),
+  })
+    .index("by_status", ["status"])
+    .index("by_target", ["targetType", "targetId"]),
 
   pushCounters: defineTable({
     userId: v.id("users"),

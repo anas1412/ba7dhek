@@ -158,7 +158,8 @@
     "applicants_many": "{{count}} de candidats",
     "applicants_other": "{{count}} candidats",
     "business": "Votre établissement",
-    "photos": "Photos"
+    "photos": "Photos",
+    "statusHidden": "Masquée, en cours de vérification"
   },
   "preview": {
     "title": "Aperçu",
@@ -498,5 +499,41 @@
     "confirm": "Supprimer définitivement",
     "keep": "Garder mon compte",
     "failed": "Votre compte n’a pas été supprimé. Vérifiez votre connexion et réessayez."
+  },
+  "report": {
+    "job": "Signaler cette offre",
+    "jobTitle": "Signaler cette offre",
+    "jobBody": "Nous lisons chaque signalement. L’offre quitte votre liste dès l’envoi.",
+    "reason": "Quel est le problème ?",
+    "reasonAsksMoney": "Demande de l’argent ou des documents",
+    "reasonFake": "Fausse ou trompeuse",
+    "reasonInappropriate": "Inappropriée",
+    "reasonOther": "Autre chose",
+    "send": "Envoyer le signalement",
+    "sent": "Signalement envoyé. Merci."
+  },
+  "admin": {
+    "title": "Vérification",
+    "done": "Fait",
+    "companies_one": "{{count}} établissement en attente",
+    "companies_many": "{{count}} d’établissements en attente",
+    "companies_other": "{{count}} établissements en attente",
+    "noCompanies": "Aucun établissement en attente.",
+    "noTaxId": "Aucun matricule fiscal fourni",
+    "approve": "Valider",
+    "reject": "Refuser",
+    "reports_one": "{{count}} signalement en attente",
+    "reports_many": "{{count}} de signalements en attente",
+    "reports_other": "{{count}} signalements en attente",
+    "noReports": "Aucun signalement en attente.",
+    "kindJob": "Offre",
+    "kindPerson": "Personne",
+    "reportCount_one": "{{count}} signalement",
+    "reportCount_many": "{{count}} de signalements",
+    "reportCount_other": "{{count}} signalements",
+    "gone": "N’existe plus",
+    "dismiss": "Rien à signaler",
+    "removeJob": "Retirer l’offre",
+    "banPerson": "Bannir cette personne"
   }
 }

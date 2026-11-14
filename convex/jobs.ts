@@ -102,6 +102,8 @@ export const publish = mutation({
   handler: async (ctx, args) => {
     const { job, company } = await requireOwnJob(ctx, args.jobId);
     if (company.approval !== "approved") throw new ConvexError({ code: "company_not_approved" });
+    // Hidden means reported and under review, or removed after review.
+    if (job.hidden) throw new ConvexError({ code: "job_hidden" });
     if (job.status === "open") return;
 
     const now = Date.now();

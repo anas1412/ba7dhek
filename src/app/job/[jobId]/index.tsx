@@ -14,6 +14,7 @@ import { Screen } from '@/components/Screen';
 import { CardSkeleton } from '@/components/Skeleton';
 import { useToast } from '@/components/Toast';
 import { JobDetail } from '@/features/jobs/JobDetail';
+import { ReportSheet } from '@/features/report/ReportSheet';
 import { useTheme } from '@/theme';
 
 /**
@@ -65,6 +66,8 @@ function Loaded({ jobId }: { jobId: Id<'jobs'> }) {
   const toast = useToast();
   const job = useQuery(api.jobs.detail, { jobId });
   const record = useMutation(api.swipes.record);
+  const report = useMutation(api.reports.job);
+  const [reporting, setReporting] = useState(false);
   const [now] = useState(() => Date.now());
   const [busy, setBusy] = useState<'left' | 'right' | null>(null);
 
@@ -89,6 +92,18 @@ function Loaded({ jobId }: { jobId: Id<'jobs'> }) {
     } catch {
       toast.show(t('jobs.swipeFailed'), 'error');
       setBusy(null);
+    }
+  }
+
+  async function sendReport(reason: 'asks_money' | 'fake' | 'inappropriate' | 'other') {
+    try {
+      await report({ jobId, reason });
+      toast.show(t('report.sent'), 'info');
+      // The job has left this person's stack, so there is nothing more to do here.
+      if (router.canGoBack()) router.back();
+      else router.replace('/');
+    } catch {
+      toast.show(t('errors.generic'), 'error');
     }
   }
 
@@ -123,6 +138,24 @@ function Loaded({ jobId }: { jobId: Id<'jobs'> }) {
   return (
     <Screen scroll underHeader footer={footer}>
       <JobDetail job={job} now={now} />
+      {job.isOwner ? null : (
+        <>
+          <Button label={t('report.job')} variant="danger" onPress={() => setReporting(true)} />
+          <ReportSheet
+            visible={reporting}
+            title={t('report.jobTitle')}
+            body={t('report.jobBody')}
+            reasons={[
+              { value: 'asks_money', label: t('report.reasonAsksMoney') },
+              { value: 'fake', label: t('report.reasonFake') },
+              { value: 'inappropriate', label: t('report.reasonInappropriate') },
+              { value: 'other', label: t('report.reasonOther') },
+            ]}
+            onSend={sendReport}
+            onClose={() => setReporting(false)}
+          />
+        </>
+      )}
     </Screen>
   );
 }

@@ -14,13 +14,14 @@ import { ChatsList, type ChatSummary } from '@/features/chat/ChatsList';
 import { Conversation, type ChatMessage } from '@/features/chat/Conversation';
 import { CompanyForm } from '@/features/forms/CompanyForm';
 import { JobForm } from '@/features/forms/JobForm';
+import { ReportSheet } from '@/features/report/ReportSheet';
 import { PushExplanation } from '@/features/push/PushManager';
 import { ApplicationsList, type Application } from '@/features/jobs/ApplicationsList';
 import { FeedFilters, NO_FILTERS } from '@/features/jobs/FeedFilters';
 import { JobDetail } from '@/features/jobs/JobDetail';
 import { sampleDetail } from '@/features/jobs/sampleJobs';
 
-export const PREVIEW_VIEWS = ['setup', 'company', 'job', 'detail', 'filters', 'chats', 'chat', 'push', 'delete', 'applicants', 'applications', 'images', 'photo', 'loading'] as const;
+export const PREVIEW_VIEWS = ['setup', 'company', 'job', 'detail', 'filters', 'chats', 'chat', 'push', 'delete', 'report', 'applicants', 'applications', 'images', 'photo', 'loading'] as const;
 export type PreviewView = (typeof PREVIEW_VIEWS)[number];
 
 // Coloured tiles standing in for photos, so the preview needs no files or network.
@@ -129,6 +130,25 @@ export function PreviewViewScreen({ view }: { view: PreviewView }) {
       );
     case 'filters':
       return <FeedFilters filters={NO_FILTERS} onApply={() => {}} onCancel={() => {}} />;
+    case 'report':
+      return (
+        <Screen scroll underHeader>
+          <JobDetail job={sampleDetail(now)} now={now} />
+          <ReportSheet
+            visible
+            title={t('report.jobTitle')}
+            body={t('report.jobBody')}
+            reasons={[
+              { value: 'asks_money', label: t('report.reasonAsksMoney') },
+              { value: 'fake', label: t('report.reasonFake') },
+              { value: 'inappropriate', label: t('report.reasonInappropriate') },
+              { value: 'other', label: t('report.reasonOther') },
+            ]}
+            onSend={() => {}}
+            onClose={() => {}}
+          />
+        </Screen>
+      );
     case 'delete':
       return (
         <Screen scroll underHeader>

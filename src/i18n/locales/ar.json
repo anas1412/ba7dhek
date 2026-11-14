@@ -164,7 +164,8 @@
     "applicants_many": "{{count}} مترشحًا",
     "applicants_other": "{{count}} مترشح",
     "business": "مؤسستك",
-    "photos": "الصور"
+    "photos": "الصور",
+    "statusHidden": "مخفية، قيد المراجعة"
   },
   "preview": {
     "title": "معاينة",
@@ -519,5 +520,50 @@
     "confirm": "احذف نهائيًا",
     "keep": "أبقِ حسابي",
     "failed": "لم يُحذف حسابك. تحقق من اتصالك وأعد المحاولة."
+  },
+  "report": {
+    "job": "بلّغ عن هذه الوظيفة",
+    "jobTitle": "بلّغ عن هذه الوظيفة",
+    "jobBody": "نقرأ كل بلاغ. تختفي الوظيفة من قائمتك فور إرساله.",
+    "reason": "ما المشكلة؟",
+    "reasonAsksMoney": "تطلب مالًا أو وثائق",
+    "reasonFake": "وهمية أو مضلّلة",
+    "reasonInappropriate": "غير لائقة",
+    "reasonOther": "شيء آخر",
+    "send": "أرسل البلاغ",
+    "sent": "أُرسل البلاغ. شكرًا لك."
+  },
+  "admin": {
+    "title": "المراجعة",
+    "done": "تم",
+    "companies_zero": "لا مؤسسات في الانتظار",
+    "companies_one": "مؤسسة واحدة في الانتظار",
+    "companies_two": "مؤسستان في الانتظار",
+    "companies_few": "{{count}} مؤسسات في الانتظار",
+    "companies_many": "{{count}} مؤسسة في الانتظار",
+    "companies_other": "{{count}} مؤسسة في الانتظار",
+    "noCompanies": "لا توجد مؤسسة في الانتظار.",
+    "noTaxId": "لم يُقدَّم معرّف جبائي",
+    "approve": "اقبل",
+    "reject": "ارفض",
+    "reports_zero": "لا بلاغات في الانتظار",
+    "reports_one": "بلاغ واحد في الانتظار",
+    "reports_two": "بلاغان في الانتظار",
+    "reports_few": "{{count}} بلاغات في الانتظار",
+    "reports_many": "{{count}} بلاغًا في الانتظار",
+    "reports_other": "{{count}} بلاغ في الانتظار",
+    "noReports": "لا يوجد بلاغ في الانتظار.",
+    "kindJob": "وظيفة",
+    "kindPerson": "شخص",
+    "reportCount_zero": "لا بلاغات",
+    "reportCount_one": "بلاغ واحد",
+    "reportCount_two": "بلاغان",
+    "reportCount_few": "{{count}} بلاغات",
+    "reportCount_many": "{{count}} بلاغًا",
+    "reportCount_other": "{{count}} بلاغ",
+    "gone": "لم يعد موجودًا",
+    "dismiss": "لا مشكلة",
+    "removeJob": "احذف الوظيفة",
+    "banPerson": "احظر هذا الشخص"
   }
 }

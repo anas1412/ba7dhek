@@ -54,7 +54,9 @@ Whether the law requires particular mentions in a job advertisement was not foun
 - Candidates can report a job or a company from the job detail screen.
 - Either side can report a user from the chat.
 - Reasons are a fixed list: asks for money, fake or misleading, inappropriate, harassment, other.
-- Reports land in a table reviewed in the dashboard.
+- Reports land in a table reviewed on the app's own Review screen (Settings, for the admin account only), or in the dashboard.
+
+**Built 2026-11-14.** A candidate reports a job from its detail screen with one of four reasons: asks for money or documents, fake or misleading, inappropriate, something else. Reporting a business apart from one of its jobs is not built; a report on a job is how a business gets looked at. The reported job leaves the reporter's own stack at once. The Review screen lists businesses waiting for approval and open reports, each with two decisions: nothing wrong, or remove the job / ban the person. Removing a job closes it for good and it cannot be published again. Banning a person locks them out, stops their notifications and takes their open jobs down. Not built: telling the reporter what was decided, and undoing a ban from the app.
 
 **Automatic response.** A job with reports from 3 different candidates is hidden until reviewed.
 

@@ -1,6 +1,7 @@
 import { useAuthActions } from '@convex-dev/auth/react';
 import { api } from '@convex/_generated/api';
 import { useMutation, useQuery } from 'convex/react';
+import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Pressable, View } from 'react-native';
@@ -20,6 +21,7 @@ export default function Settings() {
   const { t } = useTranslation();
   const theme = useTheme();
   const { signOut } = useAuthActions();
+  const router = useRouter();
   const me = useQuery(api.users.me);
   const saveLanguage = useMutation(api.users.setLanguage);
   const unregisterPush = useMutation(api.push.unregister);
@@ -144,6 +146,8 @@ export default function Settings() {
           </View>
         ) : null}
       </View>
+
+      {me?.isAdmin ? <Button label={t('admin.title')} variant="neutral" onPress={() => router.push('/admin')} /> : null}
 
       {me?.role ? <NotificationSettings role={me.role} newJobs={me.notifyNewJobs ?? 'all'} /> : null}
 

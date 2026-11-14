@@ -156,7 +156,8 @@
     "applicants_one": "{{count}} applicant",
     "applicants_other": "{{count}} applicants",
     "business": "Your business",
-    "photos": "Photos"
+    "photos": "Photos",
+    "statusHidden": "Hidden, under review"
   },
   "preview": {
     "title": "Preview",
@@ -491,5 +492,38 @@
     "confirm": "Delete for good",
     "keep": "Keep my account",
     "failed": "Your account was not deleted. Check your connection and try again."
+  },
+  "report": {
+    "job": "Report this job",
+    "jobTitle": "Report this job",
+    "jobBody": "We read every report. The job leaves your list as soon as you send it.",
+    "reason": "What is wrong?",
+    "reasonAsksMoney": "Asks for money or documents",
+    "reasonFake": "Fake or misleading",
+    "reasonInappropriate": "Inappropriate",
+    "reasonOther": "Something else",
+    "send": "Send the report",
+    "sent": "Report sent. Thank you."
+  },
+  "admin": {
+    "title": "Review",
+    "done": "Done",
+    "companies_one": "{{count}} business waiting",
+    "companies_other": "{{count}} businesses waiting",
+    "noCompanies": "No business is waiting.",
+    "noTaxId": "No tax ID given",
+    "approve": "Approve",
+    "reject": "Reject",
+    "reports_one": "{{count}} report waiting",
+    "reports_other": "{{count}} reports waiting",
+    "noReports": "No report is waiting.",
+    "kindJob": "Job",
+    "kindPerson": "Person",
+    "reportCount_one": "{{count}} report",
+    "reportCount_other": "{{count}} reports",
+    "gone": "No longer exists",
+    "dismiss": "Nothing wrong",
+    "removeJob": "Remove the job",
+    "banPerson": "Ban this person"
   }
 }

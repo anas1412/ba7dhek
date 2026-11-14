@@ -111,6 +111,7 @@ export function EmployerHome() {
               <Swap key={job.status}>
                 <Chip label={t(STATUS_KEY[job.status])} />
               </Swap>
+              {job.hidden ? <Chip icon="eye-off" label={t('employer.statusHidden')} /> : null}
               <Chip icon="user" label={t('employer.applicants', { count: job.applicantCount })} />
               <Chip label={t('images.count', { count: job.images.length, max: 4 })} />
             </View>
@@ -128,7 +129,7 @@ export function EmployerHome() {
               <Button
                 label={t('employer.publish')}
                 loading={busyId === job._id}
-                disabled={company.approval !== 'approved'}
+                disabled={company.approval !== 'approved' || Boolean(job.hidden)}
                 onPress={() => run(job._id, () => publish({ jobId: job._id }), 'toast.jobLive')}
               />
             ) : (

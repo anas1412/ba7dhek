@@ -29,6 +29,7 @@ import type * as matches from "../matches.js";
 import type * as messages from "../messages.js";
 import type * as notify from "../notify.js";
 import type * as push from "../push.js";
+import type * as reports from "../reports.js";
 import type * as swipes from "../swipes.js";
 import type * as users from "../users.js";
 
@@ -60,6 +61,7 @@ declare const fullApi: ApiFromModules<{
   messages: typeof messages;
   notify: typeof notify;
   push: typeof push;
+  reports: typeof reports;
   swipes: typeof swipes;
   users: typeof users;
 }>;
