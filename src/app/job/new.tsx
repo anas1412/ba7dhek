@@ -3,6 +3,7 @@ import { useMutation } from 'convex/react';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 
+import { useToast } from '@/components/Toast';
 import { formErrorMessage } from '@/features/forms/formError';
 import { JobForm } from '@/features/forms/JobForm';
 
@@ -10,6 +11,7 @@ import { JobForm } from '@/features/forms/JobForm';
 export default function NewJob() {
   const { t } = useTranslation();
   const router = useRouter();
+  const toast = useToast();
   const create = useMutation(api.jobs.create);
 
   return (
@@ -17,6 +19,7 @@ export default function NewJob() {
       errorMessage={(error) => formErrorMessage(error, t, 'job.failed')}
       onSubmit={async (values) => {
         await create(values);
+        toast.show(t('toast.draftSaved'));
         router.back();
       }}
     />

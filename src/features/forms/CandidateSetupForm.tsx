@@ -7,6 +7,7 @@ import { Button } from '@/components/Button';
 import { ChoiceChips } from '@/components/ChoiceChips';
 import { Screen } from '@/components/Screen';
 import { TextField } from '@/components/TextField';
+import { useToast } from '@/components/Toast';
 import { LocationField, type Point } from '@/features/location/LocationField';
 import { currentLanguage } from '@/i18n';
 import { formatDistance } from '@/lib/format';
@@ -32,10 +33,12 @@ export function CandidateSetupForm({ onSubmit, errorMessage }: Props) {
   const [radiusM, setRadiusM] = useState<number>(DEFAULT_RADIUS_M);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const toast = useToast();
 
   async function submit() {
     if (!home) {
       setError(t('setup.needLocation'));
+      toast.show(t('setup.needLocation'), 'error');
       return;
     }
     setBusy(true);

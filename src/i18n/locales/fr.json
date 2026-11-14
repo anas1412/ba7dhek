@@ -74,8 +74,6 @@
   },
   "setup": {
     "title": "Réglez votre recherche",
-    "body": "Il manque des réglages à cette version : elle ne peut encore connecter personne.",
-    "convex": "Manquant : adresse du déploiement Convex",
     "aboutLabel": "À propos de vous",
     "aboutHint": "Deux lignes qu'un employeur lira quand vous postulez. N'indiquez ni votre santé, ni votre religion, ni vos numéros de pièces d'identité.",
     "aboutPlaceholder": "Par exemple : trois ans comme serveur, disponible le soir.",
@@ -115,7 +113,11 @@
     "offline": "Pas de connexion.",
     "blockedText": "Ce texte contient un élément interdit, comme demander de l'argent aux candidats ou un casier judiciaire.",
     "tooShort": "Certains champs sont trop courts.",
-    "tooLong": "Un texte est trop long."
+    "tooLong": "Un texte est trop long.",
+    "required": "Ce champ est nécessaire.",
+    "choose": "Choisissez une option.",
+    "fixFields": "Certains champs demandent votre attention.",
+    "notApproved": "Votre établissement est encore en vérification : l'offre ne peut pas être mise en ligne pour l'instant."
   },
   "contracts": {
     "full_time": "Temps plein",
@@ -258,5 +260,26 @@
     "swipePassed": "Vous avez passé. Essayez maintenant vers la droite.",
     "startTitle": "Quand vous voulez",
     "page": "Page {{current}} sur {{total}}"
+  },
+  "devSetup": {
+    "title": "La configuration n'est pas terminée",
+    "body": "Il manque des réglages à cette version : elle ne peut encore connecter personne.",
+    "convex": "Manquant : adresse du déploiement Convex"
+  },
+  "toast": {
+    "draftSaved": "Brouillon enregistré",
+    "jobLive": "Votre offre est en ligne",
+    "jobClosed": "Offre clôturée",
+    "applied": "Candidature envoyée",
+    "businessAdded": "Établissement ajouté. Nous le vérifions sous peu.",
+    "setupSaved": "Enregistré",
+    "accepted": "Accepté. Une discussion est ouverte.",
+    "rejected": "Marqué comme non retenu",
+    "languageChanged": "Langue modifiée"
+  },
+  "crash": {
+    "title": "Quelque chose s'est cassé",
+    "body": "L'application a rencontré un problème inattendu. Ce que vous avez déjà enregistré est en sécurité.",
+    "reload": "Recharger"
   }
 }

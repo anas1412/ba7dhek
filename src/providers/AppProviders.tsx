@@ -6,7 +6,9 @@ import { useTranslation } from 'react-i18next';
 import { Platform, View } from 'react-native';
 
 import { AppText } from '@/components/AppText';
+import { OfflineBand } from '@/components/OfflineBand';
 import { Screen } from '@/components/Screen';
+import { ToastProvider } from '@/components/Toast';
 import { useTheme } from '@/theme';
 
 const convexUrl = process.env.EXPO_PUBLIC_CONVEX_URL;
@@ -29,7 +31,10 @@ export function AppProviders({ children }: { children: ReactNode }) {
   if (!convex) return <SetupNeeded />;
   return (
     <ConvexAuthProvider client={convex} storage={secureStorage}>
-      {children}
+      <ToastProvider>
+        {children}
+        <OfflineBand />
+      </ToastProvider>
     </ConvexAuthProvider>
   );
 }
@@ -41,9 +46,9 @@ function SetupNeeded() {
   return (
     <Screen>
       <View style={{ flex: 1, justifyContent: 'center', gap: theme.space[4] }}>
-        <AppText variant="title">{t('setup.title')}</AppText>
-        <AppText color="inkMuted">{t('setup.body')}</AppText>
-        <AppText color="danger">{t('setup.convex')}</AppText>
+        <AppText variant="title">{t('devSetup.title')}</AppText>
+        <AppText color="inkMuted">{t('devSetup.body')}</AppText>
+        <AppText color="danger">{t('devSetup.convex')}</AppText>
       </View>
     </Screen>
   );

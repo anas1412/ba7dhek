@@ -74,8 +74,6 @@
   },
   "setup": {
     "title": "Set up your search",
-    "body": "This build is missing configuration, so it cannot sign anyone in yet.",
-    "convex": "Missing: Convex deployment address",
     "aboutLabel": "About you",
     "aboutHint": "Two lines an employer will read when you apply. Do not include your health, religion or ID numbers.",
     "aboutPlaceholder": "For example: three years as a waiter, free in the evenings.",
@@ -114,7 +112,11 @@
     "offline": "No connection.",
     "blockedText": "This text contains something that is not allowed, such as asking candidates for money or for a criminal record.",
     "tooShort": "Some fields are too short.",
-    "tooLong": "Some text is too long."
+    "tooLong": "Some text is too long.",
+    "required": "This is needed.",
+    "choose": "Choose one.",
+    "fixFields": "Some fields need attention.",
+    "notApproved": "Your business is still being checked, so the job cannot go live yet."
   },
   "contracts": {
     "full_time": "Full-time",
@@ -256,5 +258,26 @@
     "swipePassed": "That was a pass. Now try swiping right.",
     "startTitle": "Ready when you are",
     "page": "Page {{current}} of {{total}}"
+  },
+  "devSetup": {
+    "title": "Setup is not finished",
+    "body": "This build is missing configuration, so it cannot sign anyone in yet.",
+    "convex": "Missing: Convex deployment address"
+  },
+  "toast": {
+    "draftSaved": "Draft saved",
+    "jobLive": "Your job is live",
+    "jobClosed": "Job closed",
+    "applied": "Applied",
+    "businessAdded": "Business added. We will check it shortly.",
+    "setupSaved": "Saved",
+    "accepted": "Accepted. A chat is open.",
+    "rejected": "Marked as not selected",
+    "languageChanged": "Language changed"
+  },
+  "crash": {
+    "title": "Something broke",
+    "body": "The app hit a problem it did not expect. What you already saved is safe.",
+    "reload": "Reload"
   }
 }

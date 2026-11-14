@@ -9,6 +9,7 @@ import { ChoiceChips } from '@/components/ChoiceChips';
 import { Icon } from '@/components/Icon';
 import { Screen } from '@/components/Screen';
 import { TextField } from '@/components/TextField';
+import { useToast } from '@/components/Toast';
 import { LocationField, type Point } from '@/features/location/LocationField';
 import { useTheme } from '@/theme';
 
@@ -38,6 +39,7 @@ type Props = {
 export function CompanyForm({ onSubmit, errorMessage }: Props) {
   const { t } = useTranslation();
   const theme = useTheme();
+  const toast = useToast();
   const [kind, setKind] = useState<EmployerKind>('business');
   const [taxId, setTaxId] = useState('');
   const [taxIdTouched, setTaxIdTouched] = useState(false);
@@ -46,21 +48,30 @@ export function CompanyForm({ onSubmit, errorMessage }: Props) {
   const [address, setAddress] = useState('');
   const [location, setLocation] = useState<Point | null>(null);
   const [busy, setBusy] = useState(false);
+  // Field errors stay hidden until the person has tried to save once.
+  const [attempted, setAttempted] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const business = kind === 'business';
   const canonicalTaxId = normaliseTaxId(taxId);
-  const taxIdOk = !business || canonicalTaxId !== null;
-  const complete = name.trim().length >= 2 && category !== null && address.trim().length >= 3 && taxIdOk;
+  const errors = {
+    taxId: business && !canonicalTaxId ? t('company.taxIdInvalid') : undefined,
+    name: name.trim().length < 2 ? t('errors.required') : undefined,
+    category: category === null ? t('errors.choose') : undefined,
+    address: address.trim().length < 3 ? t('errors.required') : undefined,
+    location: location === null ? t('company.needLocation') : undefined,
+  };
+  const valid = !Object.values(errors).some(Boolean);
 
   async function submit() {
-    if (!category) return;
-    if (!location) {
-      setError(t('company.needLocation'));
+    setAttempted(true);
+    setError(null);
+    if (!valid || !category || !location) {
+      // The button stays pressable so it can say what is missing.
+      toast.show(t('errors.fixFields'), 'error');
       return;
     }
     setBusy(true);
-    setError(null);
     try {
       await onSubmit({
         name,
@@ -71,13 +82,17 @@ export function CompanyForm({ onSubmit, errorMessage }: Props) {
         taxId: business ? (canonicalTaxId ?? undefined) : undefined,
       });
     } catch (caught) {
-      setError(errorMessage(caught));
+      const message = errorMessage(caught);
+      setError(message);
+      toast.show(message, 'error');
     } finally {
       setBusy(false);
     }
   }
 
   const rules = ['company.rule1', 'company.rule2', 'company.rule3', 'company.rule4'] as const;
+  // Shown once the person has left the field or tried to save, not while they are still typing.
+  const showTaxIdError = (taxIdTouched && taxId.trim() !== '') || attempted;
 
   return (
     <Screen
@@ -90,7 +105,7 @@ export function CompanyForm({ onSubmit, errorMessage }: Props) {
               {error}
             </AppText>
           ) : null}
-          <Button label={t('company.submit')} disabled={!complete} loading={busy} onPress={submit} />
+          <Button label={t('company.submit')} loading={busy} onPress={submit} />
         </>
       }>
       <AppText variant="display">{t('company.title')}</AppText>
@@ -109,8 +124,7 @@ export function CompanyForm({ onSubmit, errorMessage }: Props) {
         <TextField
           label={t('company.taxId')}
           hint={canonicalTaxId ? t('company.taxIdRead', { taxId: canonicalTaxId }) : t('company.taxIdHint')}
-          // Shown once the person has left the field, not while they are still typing.
-          error={taxIdTouched && taxId.trim() !== '' && !canonicalTaxId ? t('company.taxIdInvalid') : undefined}
+          error={showTaxIdError ? errors.taxId : undefined}
           placeholder="1234567A/A/M/000"
           value={taxId}
           onChangeText={setTaxId}
@@ -125,13 +139,20 @@ export function CompanyForm({ onSubmit, errorMessage }: Props) {
         </AppText>
       )}
 
-      <TextField label={t('company.name')} value={name} onChangeText={setName} maxLength={80} />
+      <TextField
+        label={t('company.name')}
+        value={name}
+        onChangeText={setName}
+        error={attempted ? errors.name : undefined}
+        maxLength={80}
+      />
 
       <ChoiceChips
         label={t('company.category')}
         options={CATEGORIES.map((value) => ({ value, label: t(`categories.${value}`) }))}
         value={category}
         onChange={setCategory}
+        error={attempted ? errors.category : undefined}
       />
 
       <TextField
@@ -139,6 +160,7 @@ export function CompanyForm({ onSubmit, errorMessage }: Props) {
         hint={t('company.addressHint')}
         value={address}
         onChangeText={setAddress}
+        error={attempted ? errors.address : undefined}
         maxLength={200}
       />
 
@@ -146,6 +168,11 @@ export function CompanyForm({ onSubmit, errorMessage }: Props) {
         <AppText variant="heading">{t('company.locationTitle')}</AppText>
         <AppText color="inkMuted">{t('company.locationBody')}</AppText>
         <LocationField value={location} onChange={setLocation} />
+        {attempted && errors.location ? (
+          <AppText variant="caption" color="danger">
+            {errors.location}
+          </AppText>
+        ) : null}
       </View>
 
       <View

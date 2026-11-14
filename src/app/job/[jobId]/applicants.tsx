@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 
 import { AppText } from '@/components/AppText';
 import { LoadingScreen, Screen } from '@/components/Screen';
+import { useToast } from '@/components/Toast';
 import { ApplicantsList, type Applicant } from '@/features/employer/ApplicantsList';
 
 /** Who applied to one of the employer's jobs. The list updates live as people apply. */
@@ -18,6 +19,7 @@ export default function Applicants() {
   const [now] = useState(() => Date.now());
   const [busyId, setBusyId] = useState<string | null>(null);
   const [failed, setFailed] = useState(false);
+  const toast = useToast();
 
   if (!applicants) return <LoadingScreen />;
 
@@ -26,8 +28,10 @@ export default function Applicants() {
     setFailed(false);
     try {
       await decide({ swipeId: applicant._id as Id<'swipes'>, accept });
+      toast.show(t(accept ? 'toast.accepted' : 'toast.rejected'), accept ? 'success' : 'info');
     } catch {
       setFailed(true);
+      toast.show(t('applicants.failed'), 'error');
     } finally {
       setBusyId(null);
     }

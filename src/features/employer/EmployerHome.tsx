@@ -1,5 +1,6 @@
 import { api } from '@convex/_generated/api';
 import { useMutation, useQuery } from 'convex/react';
+import { ConvexError } from 'convex/values';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -10,6 +11,7 @@ import { Button } from '@/components/Button';
 import { Chip } from '@/components/Chip';
 import { EmptyState } from '@/components/EmptyState';
 import { LoadingScreen, Screen } from '@/components/Screen';
+import { useToast } from '@/components/Toast';
 import { currentLanguage } from '@/i18n';
 import { formatPay } from '@/lib/format';
 import { useTheme } from '@/theme';
@@ -27,6 +29,7 @@ export function EmployerHome() {
   const publish = useMutation(api.jobs.publish);
   const close = useMutation(api.jobs.close);
   const [busyId, setBusyId] = useState<string | null>(null);
+  const toast = useToast();
 
   if (company === undefined || jobs === undefined) return <LoadingScreen />;
 
@@ -40,12 +43,15 @@ export function EmployerHome() {
     );
   }
 
-  async function run(id: string, action: () => Promise<unknown>) {
+  /** Runs one job action and always says how it ended. */
+  async function run(id: string, action: () => Promise<unknown>, doneKey: string) {
     setBusyId(id);
     try {
       await action();
-    } catch {
-      // Publishing fails while the business is still being checked; the banner says why.
+      toast.show(t(doneKey));
+    } catch (error) {
+      const code = error instanceof ConvexError ? (error.data as { code?: string }).code : undefined;
+      toast.show(t(code === 'company_not_approved' ? 'errors.notApproved' : 'errors.generic'), 'error');
     } finally {
       setBusyId(null);
     }
@@ -97,7 +103,7 @@ export function EmployerHome() {
                 label={t('employer.publish')}
                 loading={busyId === job._id}
                 disabled={company.approval !== 'approved'}
-                onPress={() => run(job._id, () => publish({ jobId: job._id }))}
+                onPress={() => run(job._id, () => publish({ jobId: job._id }), 'toast.jobLive')}
               />
             ) : (
               <Button
@@ -111,7 +117,7 @@ export function EmployerHome() {
                 label={t('employer.close')}
                 variant="danger"
                 loading={busyId === job._id}
-                onPress={() => run(job._id, () => close({ jobId: job._id }))}
+                onPress={() => run(job._id, () => close({ jobId: job._id }), 'toast.jobClosed')}
               />
             ) : null}
           </View>

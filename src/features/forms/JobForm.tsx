@@ -8,6 +8,7 @@ import { ChoiceChips } from '@/components/ChoiceChips';
 import { Icon } from '@/components/Icon';
 import { Screen } from '@/components/Screen';
 import { TextField } from '@/components/TextField';
+import { useToast } from '@/components/Toast';
 import { useTheme } from '@/theme';
 
 import { CATEGORIES, CONTRACTS, PAY_PERIODS, type Category, type Contract, type PayPeriodOption } from './options';
@@ -38,6 +39,7 @@ function parsePay(text: string): number | null {
 export function JobForm({ onSubmit, errorMessage }: Props) {
   const { t } = useTranslation();
   const theme = useTheme();
+  const toast = useToast();
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState<Category | null>(null);
   const [contractType, setContractType] = useState<Contract | null>(null);
@@ -45,24 +47,41 @@ export function JobForm({ onSubmit, errorMessage }: Props) {
   const [payPeriod, setPayPeriod] = useState<PayPeriodOption>('month');
   const [description, setDescription] = useState('');
   const [busy, setBusy] = useState(false);
+  // Field errors stay hidden until the person has tried to save once.
+  const [attempted, setAttempted] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const payAmount = parsePay(pay);
-  const payInvalid = pay.trim() !== '' && payAmount === null;
-  const complete = title.trim().length >= 3 && category !== null && contractType !== null && payAmount !== null;
+  const errors = {
+    title: title.trim().length < 3 ? t('errors.required') : undefined,
+    pay: payAmount === null ? t('job.needPay') : undefined,
+    contract: contractType === null ? t('errors.choose') : undefined,
+    category: category === null ? t('errors.choose') : undefined,
+  };
+  const valid = !Object.values(errors).some(Boolean);
 
   async function submit() {
-    if (!category || !contractType || payAmount === null) return;
-    setBusy(true);
+    setAttempted(true);
     setError(null);
+    if (!valid || !category || !contractType || payAmount === null) {
+      // The button stays pressable so it can say what is missing.
+      toast.show(t('errors.fixFields'), 'error');
+      return;
+    }
+    setBusy(true);
     try {
       await onSubmit({ title, description, category, contractType, payAmount, payPeriod });
     } catch (caught) {
-      setError(errorMessage(caught));
+      const message = errorMessage(caught);
+      setError(message);
+      toast.show(message, 'error');
     } finally {
       setBusy(false);
     }
   }
+
+  // A typed-in pay that cannot be read is flagged at once; an empty one waits for a save attempt.
+  const payError = pay.trim() !== '' && payAmount === null ? t('job.needPay') : attempted ? errors.pay : undefined;
 
   return (
     <Screen
@@ -75,7 +94,7 @@ export function JobForm({ onSubmit, errorMessage }: Props) {
               {error}
             </AppText>
           ) : null}
-          <Button label={t('job.submit')} disabled={!complete} loading={busy} onPress={submit} />
+          <Button label={t('job.submit')} loading={busy} onPress={submit} />
         </>
       }>
       <AppText variant="display">{t('job.title')}</AppText>
@@ -85,6 +104,7 @@ export function JobForm({ onSubmit, errorMessage }: Props) {
         placeholder={t('job.jobTitlePlaceholder')}
         value={title}
         onChangeText={setTitle}
+        error={attempted ? errors.title : undefined}
         maxLength={80}
       />
 
@@ -93,7 +113,7 @@ export function JobForm({ onSubmit, errorMessage }: Props) {
         value={pay}
         onChangeText={setPay}
         keyboardType="decimal-pad"
-        error={payInvalid ? t('job.needPay') : undefined}
+        error={payError}
         maxLength={10}
       />
 
@@ -109,6 +129,7 @@ export function JobForm({ onSubmit, errorMessage }: Props) {
         options={CONTRACTS.map((value) => ({ value, label: t(`contracts.${value}`) }))}
         value={contractType}
         onChange={setContractType}
+        error={attempted ? errors.contract : undefined}
       />
 
       <ChoiceChips
@@ -116,6 +137,7 @@ export function JobForm({ onSubmit, errorMessage }: Props) {
         options={CATEGORIES.map((value) => ({ value, label: t(`categories.${value}`) }))}
         value={category}
         onChange={setCategory}
+        error={attempted ? errors.category : undefined}
       />
 
       <TextField

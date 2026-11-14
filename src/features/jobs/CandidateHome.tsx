@@ -10,6 +10,7 @@ import { AppText } from '@/components/AppText';
 import { EmptyState } from '@/components/EmptyState';
 import { RoundButton } from '@/components/RoundButton';
 import { LoadingScreen, Screen } from '@/components/Screen';
+import { useToast } from '@/components/Toast';
 import { DEFAULT_RADIUS_M } from '@/features/forms/options';
 import { currentLanguage } from '@/i18n';
 import { formatDistance } from '@/lib/format';
@@ -28,6 +29,7 @@ export function CandidateHome({ radiusM }: { radiusM: number | null }) {
   const stack = useRef<CardStackHandle>(null);
   const [now] = useState(() => Date.now());
   const [failed, setFailed] = useState(false);
+  const toast = useToast();
 
   if (!feed) return <LoadingScreen />;
 
@@ -38,9 +40,12 @@ export function CandidateHome({ radiusM }: { radiusM: number | null }) {
     setFailed(false);
     try {
       await record({ jobId: job._id as Id<'jobs'>, direction });
+      // Applying is confirmed; passing is quiet.
+      if (direction === 'right') toast.show(t('toast.applied'));
     } catch {
       // The card is already gone from the screen; say so rather than fail silently.
       setFailed(true);
+      toast.show(t('jobs.swipeFailed'), 'error');
     }
   }
 

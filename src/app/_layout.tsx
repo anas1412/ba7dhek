@@ -10,6 +10,9 @@ import { initI18n } from '@/i18n';
 import { AppProviders } from '@/providers/AppProviders';
 import { fontAssets, useTheme } from '@/theme';
 
+// Expo Router shows this in place of any screen that throws.
+export { CrashScreen as ErrorBoundary } from '@/components/CrashScreen';
+
 SplashScreen.preventAutoHideAsync();
 
 // Screens the person cannot leave by going back: the gate, the tabs, and the

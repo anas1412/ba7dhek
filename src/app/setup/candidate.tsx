@@ -3,6 +3,7 @@ import { useMutation } from 'convex/react';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 
+import { useToast } from '@/components/Toast';
 import { CandidateSetupForm } from '@/features/forms/CandidateSetupForm';
 import { formErrorMessage } from '@/features/forms/formError';
 
@@ -10,6 +11,7 @@ import { formErrorMessage } from '@/features/forms/formError';
 export default function CandidateSetup() {
   const { t } = useTranslation();
   const router = useRouter();
+  const toast = useToast();
   const setHome = useMutation(api.users.setHome);
   const updateProfile = useMutation(api.users.updateProfile);
 
@@ -19,6 +21,7 @@ export default function CandidateSetup() {
       onSubmit={async ({ about, home, radiusM }) => {
         if (about.trim()) await updateProfile({ about });
         await setHome({ home, radiusM });
+        toast.show(t('toast.setupSaved'));
         router.replace('/');
       }}
     />

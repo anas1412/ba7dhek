@@ -1,4 +1,5 @@
 import { ActivityIndicator, Pressable, StyleSheet, type PressableProps } from 'react-native';
+import Animated, { useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
 
 import { useTheme } from '@/theme';
 
@@ -11,30 +12,47 @@ type Props = Omit<PressableProps, 'children' | 'style'> & {
   loading?: boolean;
 };
 
-export function Button({ label, variant = 'primary', loading, disabled, ...rest }: Props) {
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
+
+/** Every button dips when pressed and springs back, so a tap is always felt. */
+export function Button({ label, variant = 'primary', loading, disabled, onPressIn, onPressOut, ...rest }: Props) {
   const theme = useTheme();
   const inactive = disabled || loading;
+  const pressed = useSharedValue(0);
 
   const background = variant === 'primary' ? theme.colors.brand : theme.colors.surfaceRaised;
   const textColor = variant === 'primary' ? 'onBrand' : variant === 'danger' ? 'danger' : 'ink';
   // Control borders use ink-muted; `line` is too faint for them.
   const borderColor = variant === 'primary' ? theme.colors.brand : theme.colors.inkMuted;
 
+  const motion = useAnimatedStyle(() => ({
+    transform: [{ scale: 1 - 0.03 * pressed.get() }],
+    opacity: 1 - 0.12 * pressed.get(),
+  }));
+
   return (
-    <Pressable
+    <AnimatedPressable
       accessibilityRole="button"
       accessibilityState={{ disabled: Boolean(inactive), busy: Boolean(loading) }}
       disabled={inactive}
       {...rest}
-      style={({ pressed }) => [
+      onPressIn={(event) => {
+        pressed.set(withTiming(1, { duration: 80 }));
+        onPressIn?.(event);
+      }}
+      onPressOut={(event) => {
+        pressed.set(withSpring(0, { damping: 14, stiffness: 260 }));
+        onPressOut?.(event);
+      }}
+      style={[
         styles.base,
         {
           backgroundColor: background,
           borderColor,
           borderRadius: theme.radius.sm,
           paddingHorizontal: theme.space[4],
-          opacity: inactive ? 0.5 : pressed ? 0.85 : 1,
         },
+        inactive ? styles.inactive : motion,
       ]}>
       {loading ? (
         <ActivityIndicator color={theme.colors[textColor]} />
@@ -43,7 +61,7 @@ export function Button({ label, variant = 'primary', loading, disabled, ...rest 
           {label}
         </AppText>
       )}
-    </Pressable>
+    </AnimatedPressable>
   );
 }
 
@@ -54,4 +72,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderWidth: 1,
   },
+  inactive: { opacity: 0.5 },
 });

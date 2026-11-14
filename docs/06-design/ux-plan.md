@@ -149,6 +149,21 @@ Phases A to E can be seen in the browser as they land. F and G are grouped so on
 
 Chat, push notifications, report and block, and account deletion are still owed for the MVP. They come after phase D, built with these patterns from the start.
 
+## Progress
+| Phase | State | Checked how |
+|---|---|---|
+| A. Language follows place | Built 2026-11-14 | Browser set to English on Tunisian time opened in Darija, right to left |
+| Swipe onboarding | Built 2026-11-14 | Swiped between pages and on the practice card in the browser, in Arabic |
+| B. Headers, back, sheets, keyboard | Built 2026-11-14 | Back and forward between screens in the browser. Sheet presentation and keyboard behaviour need a phone |
+| C. Feedback, field errors, offline, crash screen | Built 2026-11-14 | Empty job form marks its fields and shows a message. The offline band and crash screen were not triggered |
+| Tax ID for businesses | Built 2026-11-14 | Backend tests, and the form in the browser |
+| D. Placeholders and motion | Not started | |
+| E. Fuller job form, job detail, filters | Not started | |
+| F. Map picker, vibration | Not started | |
+| G. Icon, logo, illustrations | Not started | |
+
+Not built from phases B and C: the warning before leaving a form with unsaved text, "Undo" on result messages, and scrolling to the first field in error.
+
 ## Open questions
 - **Place search on the map.** It needs a geocoding service. Google's is paid and needs a billing account, which is the problem that ruled out Google Maps. Free services built on OpenStreetMap exist; their terms, limits and coverage of Tunisian streets are unverified. If none fits, the map ships without search.
 - **Pay range.** Showing "900 to 1,100" is more honest for some jobs and vaguer for others. The plan allows it as an option; it could be left out.

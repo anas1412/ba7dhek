@@ -3,6 +3,7 @@ import { useMutation } from 'convex/react';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 
+import { useToast } from '@/components/Toast';
 import { CompanyForm } from '@/features/forms/CompanyForm';
 import { formErrorMessage } from '@/features/forms/formError';
 
@@ -10,6 +11,7 @@ import { formErrorMessage } from '@/features/forms/formError';
 export default function CompanySetup() {
   const { t } = useTranslation();
   const router = useRouter();
+  const toast = useToast();
   const create = useMutation(api.companies.create);
 
   return (
@@ -17,6 +19,7 @@ export default function CompanySetup() {
       errorMessage={(error) => formErrorMessage(error, t, 'company.failed')}
       onSubmit={async (values) => {
         await create(values);
+        toast.show(t('toast.businessAdded'));
         router.replace('/');
       }}
     />
