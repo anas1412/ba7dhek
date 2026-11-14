@@ -3,6 +3,7 @@ import { useConvexAuth, useQuery } from 'convex/react';
 import { Redirect, Tabs } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Icon, type IconName } from '@/components/Icon';
 import { PushManager } from '@/features/push/PushManager';
@@ -32,6 +33,7 @@ function TabIcon({ name, focused }: { name: IconName; focused: boolean }) {
 export default function TabsLayout() {
   const { t } = useTranslation();
   const theme = useTheme();
+  const insets = useSafeAreaInsets();
   const { isLoading, isAuthenticated } = useConvexAuth();
   const me = useQuery(api.users.me, isAuthenticated ? {} : 'skip');
   const unread = useQuery(api.matches.unreadCount, me?.role ? {} : 'skip');
@@ -52,8 +54,10 @@ export default function TabsLayout() {
           tabBarActiveTintColor: theme.colors.ink,
           tabBarInactiveTintColor: theme.colors.inkMuted,
           tabBarStyle: {
-            height: 80,
+            // 80 is the bar itself; the system navigation bar (gesture line or buttons) sits below it.
+            height: 80 + insets.bottom,
             paddingTop: 12,
+            paddingBottom: insets.bottom,
             backgroundColor: theme.colors.surfaceContainer,
             borderTopWidth: 0,
           },
