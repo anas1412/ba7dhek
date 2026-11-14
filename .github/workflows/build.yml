@@ -9,9 +9,15 @@ name: Build apps
 #   prod       standalone app, talks to the production backend                    (.apk)
 #   store      the file Google Play asks for, production backend                  (.aab)
 #
-# Started by hand from the Actions tab (choose what to build), or by pushing a
-# tag such as v0.1.0, which builds dev, prod and store and attaches them to a
-# GitHub release.
+# Where the file goes:
+#   - started by hand: a pre-release per variant ("build-dev", "build-prod", ...),
+#     replaced by each new build of that variant, so its page always holds the latest;
+#   - started by pushing a tag such as v0.1.0: dev, prod and store, attached to
+#     a release of that name.
+#
+# Files go to releases, not to Actions artifacts: the account's artifact storage
+# is shared with other repositories and full, and release files do not count
+# against it.
 #
 # Needs one repository secret, EXPO_TOKEN: the build uses it to fetch the
 # Android signing key that Expo keeps for the project. See docs/03-build/ci.md.
@@ -73,8 +79,10 @@ jobs:
     name: Android ${{ matrix.variant }}
     needs: plan
     runs-on: ubuntu-latest
-    # A first build with an empty cache is slow; later ones reuse the cache.
+    # A first build with an empty cache takes about 40 minutes; later ones reuse the cache.
     timeout-minutes: 120
+    permissions:
+      contents: write
     strategy:
       fail-fast: false
       matrix:
@@ -112,8 +120,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # Gradle's downloads and compiled outputs, kept between runs. The first build fills it; later ones are much faster.
-      - uses: actions/cache@v6
+      # Gradle's downloads and compiled outputs, kept between runs.
+      - name: Restore the Gradle cache
+        uses: actions/cache/restore@v6
         with:
           path: |
             ~/.gradle/caches
@@ -122,7 +131,8 @@ jobs:
           restore-keys: gradle-${{ runner.os }}-
 
       - name: Build ${{ env.FILE }}
-        # Shorter than the job's limit, so a build that runs too long fails here and the log below is still kept.
+        id: build
+        # Shorter than the job's limit, so a build that runs too long fails here and its log is still kept.
         timeout-minutes: 100
         env:
           # Real phones only: 64-bit and 32-bit ARM. Leaving out the two emulator architectures halves the native compile.
@@ -132,29 +142,63 @@ jobs:
           set -o pipefail
           eas build --platform android --profile "${{ matrix.profile }}" --local --non-interactive --output "build/$FILE" 2>&1 | tee build/build.log
 
-      - uses: actions/upload-artifact@v7
+      # Saved as soon as the build has worked, even if publishing then fails, so the next build starts warm.
+      - name: Save the Gradle cache
+        if: steps.build.outcome == 'success'
+        uses: actions/cache/save@v6
         with:
-          name: ${{ env.FILE }}
-          path: build/${{ env.FILE }}
-          if-no-files-found: error
-          retention-days: 30
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
 
-      # Kept whether the build worked, failed or ran out of time, so a failure can always be read.
-      - name: Keep the build log
-        if: always()
-        uses: actions/upload-artifact@v7
-        with:
-          name: log-${{ matrix.variant }}-${{ needs.plan.outputs.sha }}
-          path: build/build.log
-          if-no-files-found: ignore
-          retention-days: 14
+      - name: Publish ${{ env.FILE }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EVENT: ${{ github.event_name }}
+          VARIANT: ${{ matrix.variant }}
+          PROFILE: ${{ matrix.profile }}
+        run: |
+          if [ "$EVENT" = "push" ]; then
+            TAG="$GITHUB_REF_NAME"
+            # Several builds run at once for one tag; whichever is first creates the release.
+            gh release view "$TAG" >/dev/null 2>&1 || gh release create "$TAG" --verify-tag --title "Ba7dhek $TAG" --generate-notes || true
+            gh release upload "$TAG" "build/$FILE" --clobber
+          else
+            TAG="build-$VARIANT"
+            # One pre-release per variant, replaced each time, so its page always holds the newest build.
+            gh release delete "$TAG" --cleanup-tag --yes >/dev/null 2>&1 || true
+            gh release create "$TAG" "build/$FILE" \
+              --target "$GITHUB_SHA" \
+              --prerelease \
+              --latest=false \
+              --title "Latest $VARIANT build" \
+              --notes "Built from \`$(git rev-parse --short=7 HEAD)\` with the \`$PROFILE\` profile. Replaced by the next \`$VARIANT\` build."
+          fi
+          echo "### Published \`$FILE\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/releases/tag/$TAG" >> "$GITHUB_STEP_SUMMARY"
+
+      # On failure, the end of the build log in the run's summary page, where it is quickest to read.
+      - name: Show the end of the build log
+        if: failure()
+        run: |
+          if [ -f build/build.log ]; then
+            {
+              echo "### End of the build log"
+              echo '```'
+              tail -n 120 build/build.log
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi
 
   ios-simulator:
     name: iOS simulator
     if: github.event_name == 'workflow_dispatch' && inputs.ios_simulator
     needs: plan
     runs-on: macos-latest
-    timeout-minutes: 90
+    timeout-minutes: 120
+    permissions:
+      contents: write
     env:
       FILE: ba7dhek-v${{ needs.plan.outputs.version }}-ios-simulator-${{ needs.plan.outputs.sha }}.tar.gz
     steps:
@@ -175,31 +219,17 @@ jobs:
         run: npm ci
 
       - name: Build ${{ env.FILE }}
+        timeout-minutes: 100
         run: |
           mkdir -p build
           eas build --platform ios --profile simulator --local --non-interactive --output "build/$FILE"
 
-      - uses: actions/upload-artifact@v7
-        with:
-          name: ${{ env.FILE }}
-          path: build/${{ env.FILE }}
-          if-no-files-found: error
-          retention-days: 30
-
-  release:
-    name: Attach to the release
-    if: github.event_name == 'push'
-    needs: android
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/download-artifact@v8
-        with:
-          path: files
-          merge-multiple: true
-
-      - uses: softprops/action-gh-release@v3
-        with:
-          files: files/*
-          generate_release_notes: true
+      - name: Publish ${{ env.FILE }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="build-ios-simulator"
+          gh release delete "$TAG" --cleanup-tag --yes >/dev/null 2>&1 || true
+          gh release create "$TAG" "build/$FILE" --target "$GITHUB_SHA" --prerelease --latest=false \
+            --title "Latest iOS simulator build" \
+            --notes "For the iOS simulator on a Mac. Cannot be installed on an iPhone."

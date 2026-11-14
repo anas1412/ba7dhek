@@ -1,6 +1,6 @@
 # Automated checks and builds on GitHub
 
-**Status (2026-11-14):** the checks workflow runs on every push. The build workflow is written and has **never run**: it needs a secret only Anas can create (below), so whether it produces a working file is unverified.
+**Status (2026-11-14):** the checks workflow runs on every push and has passed. The build workflow has built a working `dev` APK (67.6 MB, about 36 minutes with an empty cache); the first publish of a file failed for the storage reason below and the workflow was changed to publish to releases.
 
 Two workflows, in `.github/workflows/`.
 
@@ -27,7 +27,7 @@ Example: `ba7dhek-v0.1.0-prod-06efbde.apk`.
 
 **Two ways to start it**
 
-- **By hand:** GitHub, Actions tab, "Build apps", "Run workflow", choose a variant (or `all`). The file appears under the run as an artifact, kept 30 days.
+- **By hand:** GitHub, Actions tab, "Build apps", "Run workflow", choose a variant (or `all`). The file is published to a pre-release named after the variant (`build-dev`, `build-prod`, `build-devclient`, `build-store`), which each new build of that variant replaces. So the page `github.com/anas1412/ba7dhek/releases/tag/build-dev` always holds the newest dev build.
 - **By tag:** push a tag such as `v0.1.0`. It builds `dev`, `prod` and `store` and attaches all three to a GitHub release of that name.
 
 ```bash
@@ -39,6 +39,16 @@ git push origin v0.1.0
 ```
 
 The version in the file name comes from `version` in `app.json`; change it there before tagging.
+
+## Why releases and not Actions artifacts
+
+GitHub's storage for Actions artifacts is counted per account, across every repository, and on 2026-11-14 it was full: three other repositories held about 35 GB between them (copland-os about 28 GB, tackora-app about 5.4 GB, bootleg16 about 1.7 GB). Files attached to releases do not count against that storage. The repository is private, so its releases are visible only to people with access to it.
+
+## Speed
+
+- Only the two architectures real phones use are compiled (64-bit and 32-bit ARM), not the two emulator ones.
+- Gradle's cache is saved after each successful build and restored by the next.
+- The build step stops at 100 minutes and the job at 120, so a slow build fails with its log intact; on failure the end of the log is shown on the run's summary page.
 
 ## What Anas has to do once
 
