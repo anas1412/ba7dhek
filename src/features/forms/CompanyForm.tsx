@@ -82,6 +82,7 @@ export function CompanyForm({ onSubmit, errorMessage }: Props) {
   return (
     <Screen
       scroll
+      underHeader
       footer={
         <>
           {error ? (

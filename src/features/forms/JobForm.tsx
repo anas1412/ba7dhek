@@ -67,6 +67,7 @@ export function JobForm({ onSubmit, errorMessage }: Props) {
   return (
     <Screen
       scroll
+      underHeader
       footer={
         <>
           {error ? (

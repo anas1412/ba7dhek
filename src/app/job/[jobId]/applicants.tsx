@@ -34,7 +34,7 @@ export default function Applicants() {
   }
 
   return (
-    <Screen scroll>
+    <Screen scroll underHeader>
       <AppText variant="display">{t('applicants.title')}</AppText>
       {failed ? <AppText color="danger">{t('applicants.failed')}</AppText> : null}
       <ApplicantsList applicants={applicants} now={now} busyId={busyId} onDecide={onDecide} />

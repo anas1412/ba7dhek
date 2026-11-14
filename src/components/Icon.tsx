@@ -1,7 +1,7 @@
 import Feather from '@expo/vector-icons/Feather';
 import type { ComponentProps } from 'react';
-import { I18nManager } from 'react-native';
 
+import { isLayoutRtl } from '@/i18n';
 import { useTheme, type ColorTokens } from '@/theme';
 
 export type IconName = ComponentProps<typeof Feather>['name'];
@@ -23,7 +23,7 @@ export function Icon({ name, size = 24, color = 'ink', directional }: Props) {
       name={name}
       size={size}
       color={theme.colors[color]}
-      style={directional && I18nManager.isRTL ? { transform: [{ scaleX: -1 }] } : undefined}
+      style={directional && isLayoutRtl() ? { transform: [{ scaleX: -1 }] } : undefined}
     />
   );
 }

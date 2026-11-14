@@ -74,7 +74,7 @@ export function PreviewViewScreen({ view }: { view: PreviewView }) {
       return <JobForm onSubmit={pretendToSave} errorMessage={errorMessage} />;
     case 'applicants':
       return (
-        <Screen scroll>
+        <Screen scroll underHeader>
           <AppText variant="display">{t('applicants.title')}</AppText>
           <ApplicantsList
             applicants={applicants}
@@ -92,7 +92,7 @@ export function PreviewViewScreen({ view }: { view: PreviewView }) {
       );
     case 'applications':
       return (
-        <Screen scroll>
+        <Screen scroll underHeader>
           <AppText variant="display">{t('applications.title')}</AppText>
           <ApplicationsList applications={sampleApplications(now)} now={now} />
         </Screen>

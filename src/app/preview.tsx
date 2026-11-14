@@ -54,7 +54,7 @@ export default function Preview() {
   const language = currentLanguage();
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.surface }}>
+    <SafeAreaView edges={['bottom', 'left', 'right']} style={{ flex: 1, backgroundColor: theme.colors.surface }}>
       <ScrollView contentContainerStyle={{ padding: theme.space[4], gap: theme.space[6] }}>
         <View style={{ gap: theme.space[2] }}>
           <AppText variant="display">{t('preview.title')}</AppText>

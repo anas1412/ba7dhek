@@ -5,11 +5,18 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
+import { AppHeader } from '@/components/AppHeader';
 import { initI18n } from '@/i18n';
 import { AppProviders } from '@/providers/AppProviders';
 import { fontAssets, useTheme } from '@/theme';
 
 SplashScreen.preventAutoHideAsync();
+
+// Screens the person cannot leave by going back: the gate, the tabs, and the
+// steps every new account must complete.
+const noHeader = { headerShown: false } as const;
+// Forms slide up as a sheet and are dismissed with a cross.
+const sheet = { presentation: 'modal', header: () => <AppHeader kind="close" /> } as const;
 
 export default function RootLayout() {
   const theme = useTheme();
@@ -36,10 +43,19 @@ export default function RootLayout() {
         <StatusBar style={theme.dark ? 'light' : 'dark'} />
         <Stack
           screenOptions={{
-            headerShown: false,
+            // Every other screen gets a bar with a way back.
+            header: () => <AppHeader kind="back" />,
             contentStyle: { backgroundColor: theme.colors.surface },
-          }}
-        />
+          }}>
+          <Stack.Screen name="index" options={noHeader} />
+          <Stack.Screen name="(tabs)" options={noHeader} />
+          <Stack.Screen name="(auth)/welcome" options={noHeader} />
+          <Stack.Screen name="(auth)/consent" options={noHeader} />
+          <Stack.Screen name="(auth)/role" options={noHeader} />
+          <Stack.Screen name="setup/candidate" options={noHeader} />
+          <Stack.Screen name="setup/company" options={sheet} />
+          <Stack.Screen name="job/new" options={sheet} />
+        </Stack>
       </AppProviders>
     </GestureHandlerRootView>
   );
