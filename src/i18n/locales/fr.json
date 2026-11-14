@@ -56,7 +56,8 @@
   "tabs": {
     "home": "Accueil",
     "settings": "Paramètres",
-    "applications": "Candidatures"
+    "applications": "Candidatures",
+    "chats": "Discussions"
   },
   "settings": {
     "title": "Paramètres",
@@ -169,7 +170,9 @@
     "forms": "Formulaires",
     "lists": "Listes",
     "detail": "Détails de l'offre",
-    "filters": "Filtres"
+    "filters": "Filtres",
+    "chats": "Liste des discussions",
+    "chat": "Une discussion"
   },
   "location": {
     "useCurrent": "Utiliser ma position actuelle",
@@ -415,5 +418,43 @@
     "apply": "Voir les offres",
     "emptyTitle": "Aucune offre ne correspond à vos filtres",
     "emptyBody": "Il y a peut-être d'autres offres près de vous. Effacez les filtres pour les voir."
+  },
+  "chat": {
+    "title": "Discussions",
+    "open": "Ouvrir la discussion",
+    "empty": "Aucune discussion",
+    "emptyCandidate": "Quand un employeur accepte votre candidature, une discussion s’ouvre ici.",
+    "emptyEmployer": "Quand vous acceptez un candidat, une discussion s’ouvre ici.",
+    "noMessages": "Aucun message",
+    "you": "Vous : {{text}}",
+    "unread": "Non lu",
+    "closed": "Discussion fermée",
+    "closedLong": "Cette discussion est fermée. Personne ne peut y écrire.",
+    "deletedUser": "Compte supprimé",
+    "safety": "Ne payez jamais pour obtenir un emploi, et n’envoyez jamais de pièces d’identité ni de coordonnées bancaires ici.",
+    "start": "Dites bonjour et convenez de la suite.",
+    "placeholder": "Écrire un message",
+    "send": "Envoyer",
+    "sendFailed": "Votre message n’a pas été envoyé. Vérifiez votre connexion et réessayez.",
+    "tooFast": "Cela fait beaucoup de messages d’un coup. Attendez une minute, puis continuez.",
+    "menu": "Plus",
+    "seeJob": "Voir l’offre",
+    "block": "Bloquer cette discussion",
+    "unblock": "Débloquer",
+    "blockedByMe": "Vous avez bloqué cette discussion. Personne ne peut y écrire.",
+    "blockedToast": "Discussion bloquée",
+    "unblockedToast": "Discussion débloquée",
+    "report": "Signaler cette personne",
+    "reportTitle": "Signaler cette personne",
+    "reportBody": "Nous lisons chaque signalement. La discussion est bloquée dès l’envoi.",
+    "reportReason": "Que s’est-il passé ?",
+    "reasonHarassment": "Insultes ou harcèlement",
+    "reasonScam": "Fausse offre ou arnaque",
+    "reasonAsksMoney": "M’a demandé de l’argent ou des documents",
+    "reasonOther": "Autre chose",
+    "reportSend": "Envoyer le signalement",
+    "reportedToast": "Signalement envoyé. La discussion est bloquée.",
+    "missingTitle": "Cette discussion n’est pas disponible",
+    "missingBody": "Elle a peut-être été retirée."
   }
 }

@@ -35,6 +35,18 @@ export function formatPay(
   return t(`pay.${period}`, { amount: formatNumber(amount, language, 3) });
 }
 
+/** "14:05", for a message. */
+export function formatClock(timestamp: number, language: Language): string {
+  return new Intl.DateTimeFormat(formatLocale(language), { hour: '2-digit', minute: '2-digit' }).format(timestamp);
+}
+
+/** "14 November 2026", for the line above a day's first message. */
+export function formatDay(timestamp: number, language: Language): string {
+  return new Intl.DateTimeFormat(formatLocale(language), { day: 'numeric', month: 'long', year: 'numeric' }).format(
+    timestamp,
+  );
+}
+
 const RELATIVE_STEPS: [limitSeconds: number, divisor: number, unit: Intl.RelativeTimeFormatUnit][] = [
   [60, 1, 'second'],
   [3600, 60, 'minute'],

@@ -16,6 +16,7 @@ export type Applicant = {
   _id: string;
   appliedAt: number;
   decision: 'pending' | 'accepted' | 'rejected';
+  matchId?: string | null;
   name: string;
   photoUrl: string | null;
   about: string | null;
@@ -28,13 +29,15 @@ type Props = {
   now: number;
   busyId: string | null;
   onDecide: (applicant: Applicant, accept: boolean) => void;
+  /** Opens the conversation with an accepted applicant. */
+  onOpenChat?: (matchId: string) => void;
 };
 
 /**
  * People who applied to one job, in the order they applied. The app does not
  * rank or recommend anyone; the employer decides.
  */
-export function ApplicantsList({ applicants, now, busyId, onDecide }: Props) {
+export function ApplicantsList({ applicants, now, busyId, onDecide, onOpenChat }: Props) {
   const { t } = useTranslation();
   const theme = useTheme();
   const language = currentLanguage();
@@ -118,6 +121,9 @@ export function ApplicantsList({ applicants, now, busyId, onDecide }: Props) {
               </AppText>
             </Swap>
           )}
+          {onOpenChat && applicant.matchId ? (
+            <Button label={t('chat.open')} onPress={() => onOpenChat(applicant.matchId as string)} />
+          ) : null}
         </Appear>
       ))}
     </View>

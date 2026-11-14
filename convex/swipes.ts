@@ -1,5 +1,6 @@
 import { ConvexError, v } from "convex/values";
-import { mutation, query } from "./_generated/server";
+import type { Doc, Id } from "./_generated/dataModel";
+import { mutation, query, type QueryCtx } from "./_generated/server";
 import { requireRole } from "./lib/auth";
 import { userPhotoUrl } from "./lib/images";
 import { distanceBucket, haversineM } from "./lib/geoMath";
@@ -35,6 +36,16 @@ export const record = mutation({
   },
 });
 
+/** The conversation an accepted application opened, if any. */
+async function matchIdFor(ctx: QueryCtx, swipe: Doc<"swipes">): Promise<Id<"matches"> | null> {
+  if (swipe.decision !== "accepted") return null;
+  const match = await ctx.db
+    .query("matches")
+    .withIndex("by_job_candidate", (q) => q.eq("jobId", swipe.jobId).eq("candidateId", swipe.candidateId))
+    .first();
+  return match?._id ?? null;
+}
+
 /** The candidate's applications, newest first. */
 export const mine = query({
   args: {},
@@ -58,6 +69,7 @@ export const mine = query({
           jobId: job?._id ?? null,
           appliedAt: swipe._creationTime,
           decision: swipe.decision ?? "pending",
+          matchId: await matchIdFor(ctx, swipe),
           jobTitle: job?.title ?? null,
           jobStatus: job?.status ?? "closed",
           companyName: company?.name ?? null,
@@ -94,6 +106,7 @@ export const forJob = query({
           _id: swipe._id,
           appliedAt: swipe._creationTime,
           decision: swipe.decision ?? "pending",
+          matchId: await matchIdFor(ctx, swipe),
           name: candidate?.name ?? "",
           photoUrl: candidate ? await userPhotoUrl(ctx, candidate) : null,
           about: candidate?.about ?? null,
@@ -124,11 +137,17 @@ export const decide = mutation({
     });
     if (!args.accept) return null;
 
+    const now = Date.now();
     return await ctx.db.insert("matches", {
       jobId: job._id,
       companyId: company._id,
       candidateId: swipe.candidateId,
       employerId: user._id,
+      // Dated from the acceptance, so a new conversation sits at the top of both lists.
+      lastMessageAt: now,
+      // The employer opened it; for the candidate it is news until they look.
+      lastSenderId: user._id,
+      employerReadAt: now,
     });
   },
 });

@@ -8,8 +8,8 @@ Route paths follow Expo Router's file-based layout; see [project-structure.md](.
 | Welcome | `/(auth)/welcome` | Logo, one-line pitch, "Continue with Google"; on iOS also "Continue with Apple" |
 | Consent | `/(auth)/consent` | Privacy notice and terms, 18-or-over declaration, accept button |
 | Role choice | `/(auth)/role` | Two large buttons: looking for work, hiring |
-| Matches | `/(tabs)/matches` | List of matches with last message and unread dot |
-| Chat | `/chat/[matchId]` | Messages, input, menu with block and report |
+| Chats | `/(tabs)/chats` | List of conversations with last message and unread dot; a count on the tab |
+| Chat | `/chat/[matchId]` | Messages, input, a fixed safety notice, menu with "See the job", block and report |
 | Settings | `/(tabs)/settings` | Profile, language, location (candidate), notifications, privacy (notice, request my data, delete account), support address, sign out |
 
 ## Candidate
@@ -31,7 +31,7 @@ Route paths follow Expo Router's file-based layout; see [project-structure.md](.
 | Applicants | `/job/[jobId]/applicants` | Applicant rows with accept and reject |
 | Applicant detail | `/applicant/[swipeId]` | Photo, about, tags, distance bucket |
 
-The tab bar differs by role: candidates get Jobs, Applications, Matches, Settings; employers get My jobs, Matches, Settings.
+The tab bar differs by role: candidates get Jobs, Applications, Chats, Settings; employers get My jobs, Chats, Settings.
 
 ## Job card spec
 The card is the product. In order of visual weight:

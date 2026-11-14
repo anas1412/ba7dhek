@@ -158,10 +158,15 @@ export default defineSchema({
     employerId: v.id("users"),
     lastMessageAt: v.optional(v.number()),
     lastMessagePreview: v.optional(v.string()),
+    lastSenderId: v.optional(v.id("users")),
+    // When each side last had the conversation open; a later message from the other side is unread.
+    candidateReadAt: v.optional(v.number()),
+    employerReadAt: v.optional(v.number()),
     blockedBy: v.optional(v.id("users")),
   })
     .index("by_candidate", ["candidateId", "lastMessageAt"])
-    .index("by_employer", ["employerId", "lastMessageAt"]),
+    .index("by_employer", ["employerId", "lastMessageAt"])
+    .index("by_job_candidate", ["jobId", "candidateId"]),
 
   messages: defineTable({
     matchId: v.id("matches"),

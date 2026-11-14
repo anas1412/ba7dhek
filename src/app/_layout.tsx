@@ -58,6 +58,8 @@ export default function RootLayout() {
           <Stack.Screen name="setup/candidate" options={noHeader} />
           <Stack.Screen name="setup/company" options={sheet} />
           <Stack.Screen name="job/new" options={sheet} />
+          {/* A conversation draws its own bar: who it is with, and a menu. */}
+          <Stack.Screen name="chat/[matchId]" options={noHeader} />
         </Stack>
       </AppProviders>
     </GestureHandlerRootView>

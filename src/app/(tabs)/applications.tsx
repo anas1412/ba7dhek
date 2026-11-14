@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { AppText } from '@/components/AppText';
 import { Screen } from '@/components/Screen';
 import { ListSkeleton } from '@/components/Skeleton';
-import { jobHref } from '@/lib/routes';
+import { chatHref, jobHref } from '@/lib/routes';
 import { ApplicationsList } from '@/features/jobs/ApplicationsList';
 
 /** The candidate's applications and their answers. Hidden from the tab bar for employers. */
@@ -34,6 +34,7 @@ export default function Applications() {
         applications={applications}
         now={now}
         onOpen={(jobId) => router.push(jobHref(jobId))}
+        onOpenChat={(matchId) => router.push(chatHref(matchId))}
       />
     </Screen>
   );

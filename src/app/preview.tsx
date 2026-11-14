@@ -24,6 +24,8 @@ const VIEW_TITLE = {
   job: 'job.title',
   detail: 'preview.detail',
   filters: 'preview.filters',
+  chats: 'preview.chats',
+  chat: 'preview.chat',
   applicants: 'applicants.title',
   applications: 'applications.title',
   images: 'images.title',

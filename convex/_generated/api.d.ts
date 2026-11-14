@@ -21,6 +21,8 @@ import type * as lib_redirect from "../lib/redirect.js";
 import type * as lib_taxId from "../lib/taxId.js";
 import type * as lib_validate from "../lib/validate.js";
 import type * as lib_wordFilter from "../lib/wordFilter.js";
+import type * as matches from "../matches.js";
+import type * as messages from "../messages.js";
 import type * as swipes from "../swipes.js";
 import type * as users from "../users.js";
 
@@ -44,6 +46,8 @@ declare const fullApi: ApiFromModules<{
   "lib/taxId": typeof lib_taxId;
   "lib/validate": typeof lib_validate;
   "lib/wordFilter": typeof lib_wordFilter;
+  matches: typeof matches;
+  messages: typeof messages;
   swipes: typeof swipes;
   users: typeof users;
 }>;

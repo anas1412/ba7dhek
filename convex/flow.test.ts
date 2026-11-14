@@ -329,7 +329,8 @@ describe("privacy", () => {
     const [applicant] = await employer.query(api.swipes.forJob, { jobId });
     const serialised = JSON.stringify(applicant);
     expect(Object.keys(applicant).sort()).toEqual(
-      ["_id", "about", "appliedAt", "decision", "distanceBucket", "name", "photoUrl"].sort(),
+      // matchId is the conversation an acceptance opens; it says nothing about where anyone is.
+      ["_id", "about", "appliedAt", "decision", "distanceBucket", "matchId", "name", "photoUrl"].sort(),
     );
     expect(serialised).not.toContain("latitude");
     expect(serialised).not.toContain("distanceM");

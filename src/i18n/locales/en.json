@@ -56,7 +56,8 @@
   "tabs": {
     "home": "Home",
     "settings": "Settings",
-    "applications": "Applications"
+    "applications": "Applications",
+    "chats": "Chats"
   },
   "settings": {
     "title": "Settings",
@@ -167,7 +168,9 @@
     "forms": "Forms",
     "lists": "Lists",
     "detail": "Job details",
-    "filters": "Filters"
+    "filters": "Filters",
+    "chats": "Chats list",
+    "chat": "A chat"
   },
   "location": {
     "useCurrent": "Use my current location",
@@ -408,5 +411,43 @@
     "apply": "Show jobs",
     "emptyTitle": "No jobs match your filters",
     "emptyBody": "There may be other jobs near you. Clear the filters to see them."
+  },
+  "chat": {
+    "title": "Chats",
+    "open": "Open the chat",
+    "empty": "No chats yet",
+    "emptyCandidate": "When an employer accepts your application, a chat opens here.",
+    "emptyEmployer": "When you accept an applicant, a chat opens here.",
+    "noMessages": "No messages yet",
+    "you": "You: {{text}}",
+    "unread": "Unread",
+    "closed": "Chat closed",
+    "closedLong": "This chat is closed. Nobody can write in it.",
+    "deletedUser": "Deleted account",
+    "safety": "Never pay to get a job, and never send identity documents or bank details here.",
+    "start": "Say hello and agree on the next step.",
+    "placeholder": "Write a message",
+    "send": "Send",
+    "sendFailed": "Your message was not sent. Check your connection and try again.",
+    "tooFast": "That is a lot of messages at once. Wait a minute, then continue.",
+    "menu": "More",
+    "seeJob": "See the job",
+    "block": "Block this chat",
+    "unblock": "Unblock",
+    "blockedByMe": "You blocked this chat. Nobody can write in it.",
+    "blockedToast": "Chat blocked",
+    "unblockedToast": "Chat unblocked",
+    "report": "Report this person",
+    "reportTitle": "Report this person",
+    "reportBody": "We read every report. The chat is blocked as soon as you send it.",
+    "reportReason": "What happened?",
+    "reasonHarassment": "Insults or harassment",
+    "reasonScam": "A fake job or a scam",
+    "reasonAsksMoney": "Asked me for money or documents",
+    "reasonOther": "Something else",
+    "reportSend": "Send the report",
+    "reportedToast": "Report sent. The chat is blocked.",
+    "missingTitle": "This chat is not available",
+    "missingBody": "It may have been removed."
   }
 }

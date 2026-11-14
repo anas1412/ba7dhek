@@ -104,10 +104,14 @@ Indexes: `by_candidate_job` on `candidateId, jobId` (uniqueness is enforced in t
 | `candidateId` | id of users | |
 | `employerId` | id of users | Denormalised from the company owner |
 | `lastMessageAt` | number, optional | Sort key for the matches list |
-| `lastMessagePreview` | string, optional | |
+| `lastMessagePreview` | string, optional | First 80 characters of the latest message |
+| `lastSenderId` | id of users, optional | Who wrote last. At creation it is the employer, so the new conversation is news to the candidate |
+| `candidateReadAt`, `employerReadAt` | number, optional | When each side last had the conversation open. A later message from the other side is unread |
 | `blockedBy` | id of users, optional | Set when either side blocks |
 
-Indexes: `by_candidate` on `candidateId, lastMessageAt`; `by_employer` on `employerId, lastMessageAt`.
+Indexes: `by_candidate` on `candidateId, lastMessageAt`; `by_employer` on `employerId, lastMessageAt`; `by_job_candidate` on `jobId, candidateId`, used to find the conversation an accepted application opened.
+
+`lastMessageAt` is set when the match is created, so a new conversation sorts to the top before anyone has written.
 
 ## messages
 | Field | Type | Notes |

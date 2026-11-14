@@ -1,7 +1,7 @@
 import { api } from '@convex/_generated/api';
 import type { Id } from '@convex/_generated/dataModel';
 import { useMutation, useQuery } from 'convex/react';
-import { useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -10,6 +10,7 @@ import { Screen } from '@/components/Screen';
 import { ListSkeleton } from '@/components/Skeleton';
 import { useToast } from '@/components/Toast';
 import { ApplicantsList, type Applicant } from '@/features/employer/ApplicantsList';
+import { chatHref } from '@/lib/routes';
 
 /** Who applied to one of the employer's jobs. The list updates live as people apply. */
 export default function Applicants() {
@@ -21,6 +22,7 @@ export default function Applicants() {
   const [busyId, setBusyId] = useState<string | null>(null);
   const [failed, setFailed] = useState(false);
   const toast = useToast();
+  const router = useRouter();
 
   if (!applicants) {
     return (
@@ -49,7 +51,13 @@ export default function Applicants() {
     <Screen scroll underHeader>
       <AppText variant="display">{t('applicants.title')}</AppText>
       {failed ? <AppText color="danger">{t('applicants.failed')}</AppText> : null}
-      <ApplicantsList applicants={applicants} now={now} busyId={busyId} onDecide={onDecide} />
+      <ApplicantsList
+        applicants={applicants}
+        now={now}
+        busyId={busyId}
+        onDecide={onDecide}
+        onOpenChat={(matchId) => router.push(chatHref(matchId))}
+      />
     </Screen>
   );
 }

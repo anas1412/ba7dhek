@@ -11,6 +11,7 @@ export default function TabsLayout() {
   const theme = useTheme();
   const { isLoading, isAuthenticated } = useConvexAuth();
   const me = useQuery(api.users.me, isAuthenticated ? {} : 'skip');
+  const unread = useQuery(api.matches.unreadCount, me?.role ? {} : 'skip');
 
   // Signing out anywhere inside the tabs lands back on the gate.
   if (!isLoading && !isAuthenticated) return <Redirect href="/" />;
@@ -41,6 +42,16 @@ export default function TabsLayout() {
           // Only candidates apply to jobs, so employers do not get this tab.
           href: candidate ? undefined : null,
           tabBarIcon: ({ focused }) => <Icon name="briefcase" color={focused ? 'brand' : 'inkMuted'} />,
+        }}
+      />
+      <Tabs.Screen
+        name="chats"
+        options={{
+          title: t('tabs.chats'),
+          // A number on the tab says there is something to read without opening it.
+          tabBarBadge: unread ? unread : undefined,
+          tabBarBadgeStyle: { backgroundColor: theme.colors.brand, color: theme.colors.onBrand },
+          tabBarIcon: ({ focused }) => <Icon name="message-circle" color={focused ? 'brand' : 'inkMuted'} />,
         }}
       />
       <Tabs.Screen

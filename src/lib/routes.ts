@@ -10,3 +10,8 @@ import type { Href } from 'expo-router';
 export function jobHref(jobId: string): Href {
   return `/job/${jobId}` as Href;
 }
+
+/** The address of one conversation. */
+export function chatHref(matchId: string): Href {
+  return `/chat/${matchId}` as Href;
+}
