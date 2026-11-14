@@ -1,12 +1,12 @@
 import { ConvexError, v } from "convex/values";
 import type { Doc, Id } from "./_generated/dataModel";
 import { mutation, query, type MutationCtx, type QueryCtx } from "./_generated/server";
-import { requireRole } from "./lib/auth";
+import { requireConsentedUser, requireRole } from "./lib/auth";
 import { indexJob, jobsGeo, unindexJob } from "./lib/geo";
-import { DEFAULT_RADIUS_M } from "./lib/geoMath";
+import { DEFAULT_RADIUS_M, haversineM } from "./lib/geoMath";
 import { MAX_JOB_IMAGES, checkUpload, companyLogoUrl, jobImages } from "./lib/images";
 import { cleanText, requireCategory, requireTunisianPoint } from "./lib/validate";
-import { contractType, payPeriod, point } from "./schema";
+import { benefit, contractType, experience, payPeriod, point, spokenLanguage, workingTime } from "./schema";
 
 export const JOB_LIFETIME_MS = 30 * 24 * 60 * 60 * 1000;
 
@@ -14,6 +14,18 @@ export const JOB_LIFETIME_MS = 30 * 24 * 60 * 60 * 1000;
 // thin the result. See docs/02-architecture/geo-matching.md.
 const FEED_SIZE = 20;
 const FEED_LIMITS = [50, 100, 200];
+
+/** A whole number inside a range, or undefined when none was given. */
+function clampWhole(value: number | undefined, min: number, max: number): number | undefined {
+  if (value === undefined || !Number.isFinite(value)) return undefined;
+  return Math.min(max, Math.max(min, Math.round(value)));
+}
+
+/** The list without repeats, or undefined when it is empty. */
+function unique<T>(values: T[] | undefined): T[] | undefined {
+  if (!values || values.length === 0) return undefined;
+  return [...new Set(values)];
+}
 
 async function ownCompany(ctx: QueryCtx | MutationCtx, ownerId: Id<"users">) {
   return await ctx.db
@@ -42,6 +54,13 @@ export const create = mutation({
     payAmount: v.number(),
     payPeriod,
     location: v.optional(point),
+    openings: v.optional(v.number()),
+    startsNow: v.optional(v.boolean()),
+    workingTimes: v.optional(v.array(workingTime)),
+    daysPerWeek: v.optional(v.number()),
+    benefits: v.optional(v.array(benefit)),
+    experience: v.optional(experience),
+    languages: v.optional(v.array(spokenLanguage)),
   },
   handler: async (ctx, args) => {
     const user = await requireRole(ctx, "employer");
@@ -65,6 +84,13 @@ export const create = mutation({
         : company.location,
       status: "draft",
       notifiedCount: 0,
+      openings: clampWhole(args.openings, 1, 99) ?? 1,
+      startsNow: args.startsNow,
+      workingTimes: unique(args.workingTimes),
+      daysPerWeek: clampWhole(args.daysPerWeek, 1, 7),
+      benefits: unique(args.benefits),
+      experience: args.experience,
+      languages: unique(args.languages),
     });
   },
 });
@@ -145,6 +171,10 @@ export type JobCard = {
   companyLogoUrl: string | null;
   /** The job's photos, main one first. Empty when it has none. */
   imageUrls: string[];
+  openings: number;
+  startsNow: boolean;
+  workingTimes: NonNullable<Doc<"jobs">["workingTimes"]>;
+  benefits: NonNullable<Doc<"jobs">["benefits"]>;
 };
 
 /**
@@ -195,6 +225,10 @@ export const feed = query({
           companyName: company.name,
           companyLogoUrl: await companyLogoUrl(ctx, company),
           imageUrls: (await jobImages(ctx, job)).map((image) => image.url),
+          openings: job.openings ?? 1,
+          startsNow: job.startsNow ?? false,
+          workingTimes: job.workingTimes ?? [],
+          benefits: job.benefits ?? [],
         });
         if (cards.length >= FEED_SIZE) break;
       }
@@ -261,5 +295,67 @@ export const mineOne = query({
   handler: async (ctx, args) => {
     const { job } = await requireOwnJob(ctx, args.jobId);
     return { _id: job._id, title: job.title, status: job.status, images: await jobImages(ctx, job) };
+  },
+});
+
+/**
+ * Everything about one job, for its detail screen. A candidate sees any open
+ * job; an employer sees their own in any state. A job's place is public, so
+ * the exact location is included. The candidate's own location never is.
+ */
+export const detail = query({
+  args: { jobId: v.id("jobs") },
+  handler: async (ctx, args) => {
+    const user = await requireConsentedUser(ctx);
+    const job = await ctx.db.get(args.jobId);
+    if (!job) throw new ConvexError({ code: "not_found" });
+    const company = await ctx.db.get(job.companyId);
+    if (!company) throw new ConvexError({ code: "not_found" });
+
+    const owner = company.ownerId === user._id;
+    if (!owner) {
+      const visible = job.status === "open" && !job.hidden && company.approval === "approved";
+      // A candidate who already applied can still open the job after it closes.
+      const applied = await ctx.db
+        .query("swipes")
+        .withIndex("by_candidate_job", (q) => q.eq("candidateId", user._id).eq("jobId", job._id))
+        .unique();
+      if (!visible && applied?.direction !== "right") throw new ConvexError({ code: "not_found" });
+    }
+
+    const swipe = owner
+      ? null
+      : await ctx.db
+          .query("swipes")
+          .withIndex("by_candidate_job", (q) => q.eq("candidateId", user._id).eq("jobId", job._id))
+          .unique();
+
+    return {
+      _id: job._id,
+      title: job.title,
+      description: job.description,
+      category: job.category,
+      contractType: job.contractType,
+      payAmount: job.payAmount,
+      payPeriod: job.payPeriod,
+      status: job.status,
+      publishedAt: job.publishedAt ?? job._creationTime,
+      openings: job.openings ?? 1,
+      startsNow: job.startsNow ?? false,
+      workingTimes: job.workingTimes ?? [],
+      daysPerWeek: job.daysPerWeek ?? null,
+      benefits: job.benefits ?? [],
+      experience: job.experience ?? null,
+      languages: job.languages ?? [],
+      location: job.location,
+      imageUrls: (await jobImages(ctx, job)).map((image) => image.url),
+      companyName: company.name,
+      companyAddress: company.address,
+      companyLogoUrl: await companyLogoUrl(ctx, company),
+      // Straight-line distance from the candidate's own starting point, for them alone.
+      distanceM: !owner && user.home ? Math.round(haversineM(user.home, job.location)) : null,
+      mySwipe: swipe?.direction ?? null,
+      isOwner: owner,
+    };
   },
 });

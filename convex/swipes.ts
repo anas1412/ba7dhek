@@ -54,6 +54,8 @@ export const mine = query({
         const company = job ? await ctx.db.get(job.companyId) : null;
         return {
           _id: swipe._id,
+          // Null once the job itself has been deleted.
+          jobId: job?._id ?? null,
           appliedAt: swipe._creationTime,
           decision: swipe.decision ?? "pending",
           jobTitle: job?.title ?? null,

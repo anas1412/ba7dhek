@@ -174,7 +174,8 @@
     "reset": "عاود من الأول",
     "last": "آخر حركة: {{direction}} على {{title}}",
     "forms": "الاستمارات",
-    "lists": "القوايم"
+    "lists": "القوايم",
+    "detail": "تفاصيل الخدمة"
   },
   "location": {
     "useCurrent": "استعمل البلاصة اللي أنا فيها توّا",
@@ -228,7 +229,23 @@
     "locationNote": "العرض يستعمل بلاصة المحل متاعك.",
     "submit": "سجّل كمسودّة",
     "needPay": "اكتب الخلاص، رقم أكبر من صفر.",
-    "failed": "العرض ما تسجّلش. ثبّت في الخانات و عاود جرّب."
+    "failed": "العرض ما تسجّلش. ثبّت في الخانات و عاود جرّب.",
+    "step": "المرحلة {{current}} من {{total}}",
+    "stepJob": "الخدمة",
+    "stepPay": "الخلاص و الوقت",
+    "stepPerson": "شكون تلوّج عليه",
+    "openings": "قدّاش من واحد تحب؟",
+    "fewer": "نقّص واحد",
+    "more": "زيد واحد",
+    "start": "وقتاش تبدا الخدمة؟",
+    "startNow": "توّا",
+    "startLater": "نتفاهمو",
+    "workingTimes": "وقت الخدمة",
+    "chooseAny": "اختار الكل اللي يصلح.",
+    "daysPerWeek": "أيام في الجمعة",
+    "benefits": "شنوّة يجي مع الخدمة",
+    "experience": "الخبرة",
+    "languages": "اللغات المطلوبة"
   },
   "applicants": {
     "title": "المترشّحين",
@@ -340,5 +357,58 @@
     "remove": "نحّي اللوغو",
     "changed": "اللوغو تسجّل",
     "removed": "اللوغو تنحّى"
+  },
+  "workingTimes": {
+    "morning": "الصباح",
+    "afternoon": "العشية",
+    "evening": "السهرية",
+    "night": "الليل",
+    "shifts": "بالتناوب"
+  },
+  "benefits": {
+    "transport": "النقل",
+    "meals": "الماكلة",
+    "housing": "السكنى",
+    "insurance": "التأمين",
+    "tips": "البوربوار"
+  },
+  "experience": {
+    "none": "من غير خبرة",
+    "some": "شوية خبرة",
+    "experienced": "عندو خبرة"
+  },
+  "spoken": {
+    "ar": "العربية",
+    "fr": "الفرنسية",
+    "en": "الإنجليزية",
+    "de": "الألمانية",
+    "it": "الإيطالية"
+  },
+  "detail": {
+    "open": "التفاصيل",
+    "startsNow": "تبدا توّا",
+    "openings_zero": "حتى بلاصة",
+    "openings_one": "بلاصة وحدة",
+    "openings_two": "زوز بلايص",
+    "openings_few": "{{count}} بلايص",
+    "openings_many": "{{count}} بلاصة",
+    "openings_other": "{{count}} بلاصة",
+    "daysPerWeek_zero": "حتى نهار في الجمعة",
+    "daysPerWeek_one": "نهار في الجمعة",
+    "daysPerWeek_two": "نهارين في الجمعة",
+    "daysPerWeek_few": "{{count}} أيام في الجمعة",
+    "daysPerWeek_many": "{{count}} نهار في الجمعة",
+    "daysPerWeek_other": "{{count}} نهار في الجمعة",
+    "place": "وين",
+    "showOnMap": "شوفها على الخريطة",
+    "about": "على الخدمة",
+    "photo": "تصويرة {{current}} من {{total}}",
+    "applied": "قدّمت على الخدمة هذي",
+    "passed": "فوّتّ الخدمة هذي",
+    "closed": "تسكّرت",
+    "ownerNote": "هكّا يشوفو الناس القراب العرض متاعك.",
+    "preview": "شوفها كيما المترشّح",
+    "goneTitle": "الخدمة هذي ما عادش موجودة",
+    "goneBody": "تسكّرت ولا تنحّات."
   }
 }

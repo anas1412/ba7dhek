@@ -361,3 +361,113 @@ describe("privacy", () => {
     expect((await candidate.query(api.jobs.feed, {})).jobs).toHaveLength(0);
   });
 });
+
+describe("the fuller job description", () => {
+  const FULL = {
+    ...JOB,
+    openings: 3,
+    startsNow: true,
+    workingTimes: ["evening" as const, "night" as const, "night" as const],
+    daysPerWeek: 5,
+    benefits: ["meals" as const, "housing" as const],
+    experience: "some" as const,
+    languages: ["fr" as const, "en" as const],
+  };
+
+  test("the extra fields are stored, cleaned, and returned on the detail", async () => {
+    const t = setupBackend();
+    const { employer } = await approvedEmployer(t, "sindbad", 800);
+    const jobId = await employer.mutation(api.jobs.create, FULL);
+
+    const detail = await employer.query(api.jobs.detail, { jobId });
+    expect(detail).toMatchObject({
+      openings: 3,
+      startsNow: true,
+      // A repeated choice is stored once.
+      workingTimes: ["evening", "night"],
+      daysPerWeek: 5,
+      benefits: ["meals", "housing"],
+      experience: "some",
+      languages: ["fr", "en"],
+      isOwner: true,
+      distanceM: null,
+    });
+  });
+
+  test("openings and days per week are kept inside sensible ranges", async () => {
+    const t = setupBackend();
+    const { employer } = await approvedEmployer(t, "sindbad");
+    const many = await employer.mutation(api.jobs.create, { ...JOB, openings: 5000, daysPerWeek: 9 });
+    const none = await employer.mutation(api.jobs.create, { ...JOB, openings: 0 });
+    const plain = await employer.mutation(api.jobs.create, JOB);
+
+    expect(await employer.query(api.jobs.detail, { jobId: many })).toMatchObject({ openings: 99, daysPerWeek: 7 });
+    expect((await employer.query(api.jobs.detail, { jobId: none })).openings).toBe(1);
+    expect(await employer.query(api.jobs.detail, { jobId: plain })).toMatchObject({
+      openings: 1,
+      startsNow: false,
+      workingTimes: [],
+      benefits: [],
+      experience: null,
+      languages: [],
+      daysPerWeek: null,
+    });
+  });
+
+  test("a candidate sees an open job's exact place and their own distance to it", async () => {
+    const t = setupBackend();
+    const { employer } = await approvedEmployer(t, "sindbad", 1_200);
+    const jobId = await employer.mutation(api.jobs.create, FULL);
+    await employer.mutation(api.jobs.publish, { jobId });
+
+    const candidate = await person(t, "amine", "candidate");
+    await candidate.mutation(api.users.setHome, { home: HAMMAMET, radiusM: 5_000 });
+
+    const detail = await candidate.query(api.jobs.detail, { jobId });
+    expect(detail.isOwner).toBe(false);
+    expect(detail.mySwipe).toBeNull();
+    expect(detail.companyName).toBe("Hotel sindbad");
+    expect(detail.companyAddress).toBe("Avenue des Nations Unies, Hammamet");
+    expect(detail.location.latitude).toBeGreaterThan(HAMMAMET.latitude);
+    expect(detail.distanceM).toBeGreaterThan(1_150);
+    expect(detail.distanceM).toBeLessThan(1_250);
+
+    // The card carries the fields that help a decision.
+    const [card] = (await candidate.query(api.jobs.feed, {})).jobs;
+    expect(card).toMatchObject({ openings: 3, startsNow: true, benefits: ["meals", "housing"] });
+  });
+
+  test("a draft is visible to its owner only", async () => {
+    const t = setupBackend();
+    const { employer } = await approvedEmployer(t, "owner");
+    const { employer: other } = await approvedEmployer(t, "other");
+    const jobId = await employer.mutation(api.jobs.create, JOB);
+    const candidate = await person(t, "amine", "candidate");
+
+    expect((await employer.query(api.jobs.detail, { jobId })).status).toBe("draft");
+    await expect(candidate.query(api.jobs.detail, { jobId })).rejects.toThrow();
+    await expect(other.query(api.jobs.detail, { jobId })).rejects.toThrow();
+  });
+
+  test("after a job closes, someone who applied can still open it and others cannot", async () => {
+    const t = setupBackend();
+    const { employer } = await approvedEmployer(t, "sindbad", 500);
+    const jobId = await employer.mutation(api.jobs.create, JOB);
+    await employer.mutation(api.jobs.publish, { jobId });
+
+    const applicant = await person(t, "amine", "candidate");
+    await applicant.mutation(api.users.setHome, { home: HAMMAMET, radiusM: 5_000 });
+    await applicant.mutation(api.swipes.record, { jobId, direction: "right" });
+    const passer = await person(t, "sami", "candidate");
+    await passer.mutation(api.users.setHome, { home: HAMMAMET, radiusM: 5_000 });
+    await passer.mutation(api.swipes.record, { jobId, direction: "left" });
+    const stranger = await person(t, "leila", "candidate");
+
+    await employer.mutation(api.jobs.close, { jobId });
+
+    const detail = await applicant.query(api.jobs.detail, { jobId });
+    expect(detail).toMatchObject({ status: "closed", mySwipe: "right" });
+    await expect(passer.query(api.jobs.detail, { jobId })).rejects.toThrow();
+    await expect(stranger.query(api.jobs.detail, { jobId })).rejects.toThrow();
+  });
+});

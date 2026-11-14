@@ -16,6 +16,7 @@ import { ListSkeleton } from '@/components/Skeleton';
 import { useToast } from '@/components/Toast';
 import { currentLanguage } from '@/i18n';
 import { formatPay } from '@/lib/format';
+import { jobHref } from '@/lib/routes';
 import { useTheme } from '@/theme';
 
 const STATUS_KEY = { draft: 'employer.statusDraft', open: 'employer.statusOpen', closed: 'employer.statusClosed' } as const;
@@ -113,6 +114,11 @@ export function EmployerHome() {
               <Chip icon="user" label={t('employer.applicants', { count: job.applicantCount })} />
               <Chip label={t('images.count', { count: job.images.length, max: 4 })} />
             </View>
+            <Button
+              label={t('detail.preview')}
+              variant="neutral"
+              onPress={() => router.push(jobHref(job._id))}
+            />
             <Button
               label={t('employer.photos')}
               variant="neutral"

@@ -1,4 +1,5 @@
 import type { JobCardData } from './JobCard';
+import type { JobDetailData } from './JobDetail';
 
 /** A plain coloured rectangle, standing in for a photo so the preview needs no files. */
 const tile = (colour: string) =>
@@ -9,6 +10,26 @@ const tile = (colour: string) =>
  * three languages employers will write in, to check that mixed-language
  * content sits correctly on the card.
  */
+/** One job in full, for the detail screen in the preview. */
+export function sampleDetail(now: number): JobDetailData {
+  const [first] = sampleJobs(now);
+  return {
+    ...first,
+    status: 'open',
+    openings: 2,
+    startsNow: true,
+    workingTimes: ['evening', 'night'],
+    daysPerWeek: 5,
+    benefits: ['meals', 'transport', 'insurance'],
+    experience: 'some',
+    languages: ['fr', 'en'],
+    location: { latitude: 36.4, longitude: 10.6167 },
+    imageUrls: first.imageUrls ?? [],
+    companyAddress: 'Avenue des Nations Unies, Hammamet',
+    companyLogoUrl: first.companyLogoUrl ?? null,
+  };
+}
+
 export function sampleJobs(now: number): JobCardData[] {
   const minutes = (n: number) => now - n * 60_000;
   return [
@@ -27,6 +48,9 @@ export function sampleJobs(now: number): JobCardData[] {
       // Plain coloured tiles stand in for a logo and three photos.
       companyLogoUrl: tile('%23FFD166'),
       imageUrls: [tile('%231557B8'), tile('%230E7A4B'), tile('%2351607A')],
+      openings: 2,
+      startsNow: true,
+      benefits: ['meals', 'transport', 'insurance'],
     },
     {
       _id: 'sample-2',

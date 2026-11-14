@@ -168,7 +168,8 @@
     "reset": "Recommencer",
     "last": "Dernier geste : {{direction}} sur {{title}}",
     "forms": "Formulaires",
-    "lists": "Listes"
+    "lists": "Listes",
+    "detail": "Détails de l'offre"
   },
   "location": {
     "useCurrent": "Utiliser ma position actuelle",
@@ -222,7 +223,23 @@
     "locationNote": "L'offre utilise l'emplacement de votre établissement.",
     "submit": "Enregistrer en brouillon",
     "needPay": "Indiquez le salaire, un nombre supérieur à zéro.",
-    "failed": "L'offre n'a pas été enregistrée. Vérifiez les champs et réessayez."
+    "failed": "L'offre n'a pas été enregistrée. Vérifiez les champs et réessayez.",
+    "step": "Étape {{current}} sur {{total}}",
+    "stepJob": "Le poste",
+    "stepPay": "Salaire et horaires",
+    "stepPerson": "Le profil recherché",
+    "openings": "Combien de personnes ?",
+    "fewer": "Une de moins",
+    "more": "Une de plus",
+    "start": "Quand commence le poste ?",
+    "startNow": "Tout de suite",
+    "startLater": "À convenir",
+    "workingTimes": "Horaires",
+    "chooseAny": "Choisissez tout ce qui convient.",
+    "daysPerWeek": "Jours par semaine",
+    "benefits": "Ce qui est inclus",
+    "experience": "Expérience",
+    "languages": "Langues demandées"
   },
   "applicants": {
     "title": "Candidats",
@@ -328,5 +345,52 @@
     "remove": "Retirer le logo",
     "changed": "Logo enregistré",
     "removed": "Logo retiré"
+  },
+  "workingTimes": {
+    "morning": "Matin",
+    "afternoon": "Après-midi",
+    "evening": "Soir",
+    "night": "Nuit",
+    "shifts": "Par roulement"
+  },
+  "benefits": {
+    "transport": "Transport",
+    "meals": "Repas",
+    "housing": "Logement",
+    "insurance": "Assurance",
+    "tips": "Pourboires"
+  },
+  "experience": {
+    "none": "Sans expérience",
+    "some": "Un peu d'expérience",
+    "experienced": "Expérimenté(e)"
+  },
+  "spoken": {
+    "ar": "Arabe",
+    "fr": "Français",
+    "en": "Anglais",
+    "de": "Allemand",
+    "it": "Italien"
+  },
+  "detail": {
+    "open": "Détails",
+    "startsNow": "Commence tout de suite",
+    "openings_one": "{{count}} poste",
+    "openings_many": "{{count}} de postes",
+    "openings_other": "{{count}} postes",
+    "daysPerWeek_one": "{{count}} jour par semaine",
+    "daysPerWeek_many": "{{count}} de jours par semaine",
+    "daysPerWeek_other": "{{count}} jours par semaine",
+    "place": "Où",
+    "showOnMap": "Voir sur une carte",
+    "about": "À propos du poste",
+    "photo": "Photo {{current}} sur {{total}}",
+    "applied": "Vous avez postulé à cette offre",
+    "passed": "Vous avez passé cette offre",
+    "closed": "Clôturée",
+    "ownerNote": "Voici comment les gens à proximité voient votre offre.",
+    "preview": "Voir comme un candidat",
+    "goneTitle": "Cette offre n'est plus disponible",
+    "goneBody": "Elle a été clôturée ou retirée."
   }
 }

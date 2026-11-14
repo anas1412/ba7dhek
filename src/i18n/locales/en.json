@@ -166,7 +166,8 @@
     "reset": "Start again",
     "last": "Last swipe: {{direction}} on {{title}}",
     "forms": "Forms",
-    "lists": "Lists"
+    "lists": "Lists",
+    "detail": "Job details"
   },
   "location": {
     "useCurrent": "Use my current location",
@@ -220,7 +221,23 @@
     "locationNote": "The job uses your business location.",
     "submit": "Save as draft",
     "needPay": "Enter the pay as a number above zero.",
-    "failed": "The job was not saved. Check the fields and try again."
+    "failed": "The job was not saved. Check the fields and try again.",
+    "step": "Step {{current}} of {{total}}",
+    "stepJob": "The job",
+    "stepPay": "Pay and hours",
+    "stepPerson": "Who you need",
+    "openings": "How many people?",
+    "fewer": "One fewer",
+    "more": "One more",
+    "start": "When does it start?",
+    "startNow": "Right away",
+    "startLater": "To be agreed",
+    "workingTimes": "Working time",
+    "chooseAny": "Choose all that apply.",
+    "daysPerWeek": "Days per week",
+    "benefits": "What comes with the job",
+    "experience": "Experience",
+    "languages": "Languages needed"
   },
   "applicants": {
     "title": "Applicants",
@@ -324,5 +341,50 @@
     "remove": "Remove logo",
     "changed": "Logo saved",
     "removed": "Logo removed"
+  },
+  "workingTimes": {
+    "morning": "Morning",
+    "afternoon": "Afternoon",
+    "evening": "Evening",
+    "night": "Night",
+    "shifts": "Rotating shifts"
+  },
+  "benefits": {
+    "transport": "Transport",
+    "meals": "Meals",
+    "housing": "Housing",
+    "insurance": "Insurance",
+    "tips": "Tips"
+  },
+  "experience": {
+    "none": "No experience needed",
+    "some": "Some experience",
+    "experienced": "Experienced"
+  },
+  "spoken": {
+    "ar": "Arabic",
+    "fr": "French",
+    "en": "English",
+    "de": "German",
+    "it": "Italian"
+  },
+  "detail": {
+    "open": "Details",
+    "startsNow": "Starts right away",
+    "openings_one": "{{count}} position",
+    "openings_other": "{{count}} positions",
+    "daysPerWeek_one": "{{count}} day a week",
+    "daysPerWeek_other": "{{count}} days a week",
+    "place": "Where",
+    "showOnMap": "Show on a map",
+    "about": "About the job",
+    "photo": "Photo {{current}} of {{total}}",
+    "applied": "You applied to this job",
+    "passed": "You passed on this job",
+    "closed": "Closed",
+    "ownerNote": "This is how people nearby see your job.",
+    "preview": "See it as a candidate",
+    "goneTitle": "This job is no longer available",
+    "goneBody": "It was closed or removed."
   }
 }

@@ -22,6 +22,7 @@ const VIEW_TITLE = {
   setup: 'setup.title',
   company: 'company.title',
   job: 'job.title',
+  detail: 'preview.detail',
   applicants: 'applicants.title',
   applications: 'applications.title',
   images: 'images.title',
@@ -90,6 +91,7 @@ export default function Preview() {
                 ref={stack}
                 jobs={jobs}
                 now={now}
+                onOpen={() => router.push({ pathname: '/preview', params: { view: 'detail' } })}
                 onSwipe={(job, direction) => {
                   setLeft((count) => count - 1);
                   setLast(

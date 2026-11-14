@@ -160,7 +160,7 @@ Chat, push notifications, report and block, and account deletion are still owed 
 | Tax ID for businesses | Built 2026-11-14 | Backend tests, and the form in the browser |
 | Images: profile photo, business logo, up to 4 photos per job offer | Built 2026-11-14 | Backend limits by tests; the grid and the card in the browser with sample tiles. Picking, shrinking and sending a real photo has not been run anywhere |
 | D. Placeholders and motion | Built 2026-11-14 | Placeholders seen in the browser preview; rows fade in and a decision swaps in place. Chip fill, the drawn check mark and "still loading" after a delay are not built |
-| E. Fuller job form, job detail, filters | Not started | |
+| E. Fuller job form, job detail, filters | Form and detail built; filters not started | Three-step form with openings, start, working time, days per week, benefits, experience and languages. Detail screen opens from the card, an application, or the employer's list. Checked in the browser preview only; the signed-in detail screen is covered by backend tests, not yet seen with real data |
 | F. Map picker, vibration | Not started | |
 | G. Icon, logo, illustrations | Not started | |
 

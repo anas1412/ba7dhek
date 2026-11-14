@@ -1,6 +1,6 @@
 import { Image } from 'expo-image';
 import { useTranslation } from 'react-i18next';
-import { View } from 'react-native';
+import { Pressable, View } from 'react-native';
 
 import { AppText } from '@/components/AppText';
 import { Chip } from '@/components/Chip';
@@ -24,14 +24,20 @@ export type JobCardData = {
   companyLogoUrl?: string | null;
   /** The job's photos, main one first. */
   imageUrls?: string[];
+  openings?: number;
+  startsNow?: boolean;
+  benefits?: string[];
 };
+
+/** How many benefits fit on the card before the rest are left to the detail screen. */
+const CARD_BENEFITS = 2;
 
 /**
  * The card is the product, so its order is fixed: distance, title, pay,
  * company, contract and category, time since posting, then the description.
  * See docs/06-design/design-system.md.
  */
-export function JobCard({ job, now }: { job: JobCardData; now: number }) {
+export function JobCard({ job, now, onOpen }: { job: JobCardData; now: number; onOpen?: () => void }) {
   const { t } = useTranslation();
   const theme = useTheme();
   const language = currentLanguage();
@@ -104,10 +110,19 @@ export function JobCard({ job, now }: { job: JobCardData; now: number }) {
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: theme.space[2] }}>
         <Chip label={t(`contracts.${job.contractType}`)} />
         <Chip label={t(`categories.${job.category}`)} />
+        {job.startsNow ? <Chip icon="zap" label={t('detail.startsNow')} /> : null}
+        {job.openings && job.openings > 1 ? (
+          <Chip icon="users" label={t('detail.openings', { count: job.openings })} />
+        ) : null}
+        {/* A photo takes the room the benefits would use; they are on the detail screen either way. */}
+        {(mainPhoto ? [] : (job.benefits ?? [])).slice(0, CARD_BENEFITS).map((value) => (
+          <Chip key={value} label={t(`benefits.${value}`)} />
+        ))}
       </View>
 
       {/* Takes the spare height, so the posting time always sits at the bottom of the card. */}
-      <View style={{ flex: 1 }}>
+      {/* Clipped, so on a short screen the description gives way rather than running over the row below. */}
+      <View style={{ flex: 1, overflow: 'hidden' }}>
         {job.description ? (
           // Written by the employer, in whatever language they used; shown as written.
           <AppText color="inkMuted" numberOfLines={mainPhoto ? 2 : 3}>
@@ -118,9 +133,29 @@ export function JobCard({ job, now }: { job: JobCardData; now: number }) {
 
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: theme.space[1] }}>
         <Icon name="clock" size={16} color="inkMuted" />
-        <AppText variant="caption" color="inkMuted">
+        <AppText variant="caption" color="inkMuted" style={{ flex: 1 }}>
           {t('jobs.posted', { time: formatRelativeTime(job.publishedAt, now, language) })}
         </AppText>
+        {onOpen ? (
+          <Pressable
+            accessibilityRole="button"
+            hitSlop={12}
+            onPress={onOpen}
+            style={({ pressed }) => ({
+              minHeight: 36,
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: theme.space[1],
+              paddingHorizontal: theme.space[2] + theme.space[1],
+              borderRadius: theme.radius.full,
+              borderWidth: 1,
+              borderColor: theme.colors.inkMuted,
+              backgroundColor: pressed ? theme.colors.brandSoft : theme.colors.surfaceRaised,
+            })}>
+            <AppText variant="label">{t('detail.open')}</AppText>
+            <Icon name="chevron-right" size={16} directional />
+          </Pressable>
+        ) : null}
       </View>
     </View>
   );

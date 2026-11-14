@@ -18,6 +18,28 @@ export const contractType = v.union(
   v.literal("temporary"),
   v.literal("internship"),
 );
+export const workingTime = v.union(
+  v.literal("morning"),
+  v.literal("afternoon"),
+  v.literal("evening"),
+  v.literal("night"),
+  v.literal("shifts"),
+);
+export const benefit = v.union(
+  v.literal("transport"),
+  v.literal("meals"),
+  v.literal("housing"),
+  v.literal("insurance"),
+  v.literal("tips"),
+);
+export const experience = v.union(v.literal("none"), v.literal("some"), v.literal("experienced"));
+export const spokenLanguage = v.union(
+  v.literal("ar"),
+  v.literal("fr"),
+  v.literal("en"),
+  v.literal("de"),
+  v.literal("it"),
+);
 export const employerKind = v.union(v.literal("business"), v.literal("individual"));
 export const payPeriod =v.union(v.literal("hour"), v.literal("day"), v.literal("month"));
 
@@ -105,6 +127,14 @@ export default defineSchema({
     isDemo: v.optional(v.boolean()),
     // Up to four photos of the job or workplace, in display order. The first leads the card.
     imageIds: v.optional(v.array(v.id("_storage"))),
+    // The fuller description of the job. All optional, so older jobs stay valid.
+    openings: v.optional(v.number()),
+    startsNow: v.optional(v.boolean()),
+    workingTimes: v.optional(v.array(workingTime)),
+    daysPerWeek: v.optional(v.number()),
+    benefits: v.optional(v.array(benefit)),
+    experience: v.optional(experience),
+    languages: v.optional(v.array(spokenLanguage)),
   }).index("by_company_status", ["companyId", "status"]),
 
   swipes: defineTable({

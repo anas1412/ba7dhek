@@ -67,6 +67,13 @@ One company per employer in the MVP.
 | `expiresAt` | number, optional | 30 days after publishing; renewable |
 | `closedAt` | number, optional | |
 | `notifiedCount` | number | Candidates pushed at publish time |
+| `openings` | number, optional | How many people are wanted, 1 to 99. Read as 1 when absent |
+| `startsNow` | boolean, optional | True when the job starts right away; otherwise the start is agreed later |
+| `workingTimes` | list of `"morning"` | `"afternoon"` | `"evening"` | `"night"` | `"shifts"`, optional | Any number; duplicates are dropped |
+| `daysPerWeek` | number, optional | 1 to 7 |
+| `benefits` | list of `"transport"` | `"meals"` | `"housing"` | `"insurance"` | `"tips"`, optional | |
+| `experience` | `"none"` | `"some"` | `"experienced"`, optional | |
+| `languages` | list of `"ar"` | `"fr"` | `"en"` | `"de"` | `"it"`, optional | Languages the job needs spoken |
 | `imageIds` | storage ids, optional | Up to 4 photos of the job or workplace, in display order. The first sits at the top of the card |
 | `hidden` | boolean, optional | Set automatically after 3 reports, pending review |
 | `isDemo` | boolean, optional | Seeded jobs for store reviewers; shown only to reviewer accounts |

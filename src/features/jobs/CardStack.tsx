@@ -30,6 +30,8 @@ type Props = {
   jobs: JobCardData[];
   /** Called once the card has left the screen. */
   onSwipe: (job: JobCardData, direction: SwipeDirection) => void;
+  /** Opens the full description of a job. Without it the card has no details button. */
+  onOpen?: (job: JobCardData) => void;
   now: number;
   ref?: Ref<CardStackHandle>;
 };
@@ -47,7 +49,7 @@ const SPRING = { damping: 13, stiffness: 190 };
  * Shared values are read and written with get() and set(), which is the form
  * the React Compiler accepts.
  */
-export function CardStack({ jobs, onSwipe, now, ref }: Props) {
+export function CardStack({ jobs, onSwipe, onOpen, now, ref }: Props) {
   // Cards the person has swiped are hidden at once, before the server confirms.
   const [dismissed, setDismissed] = useState<ReadonlySet<string>>(new Set());
   const visible = jobs.filter((job) => !dismissed.has(job._id));
@@ -68,7 +70,7 @@ export function CardStack({ jobs, onSwipe, now, ref }: Props) {
   return (
     <View style={styles.fill}>
       {next ? <NextCard key={next._id} job={next} now={now} drag={drag} /> : null}
-      <TopCard key={top._id} job={top} now={now} drag={drag} onSwiped={handleSwiped} ref={ref} />
+      <TopCard key={top._id} job={top} now={now} drag={drag} onSwiped={handleSwiped} onOpen={onOpen} ref={ref} />
     </View>
   );
 }
@@ -95,12 +97,14 @@ function TopCard({
   now,
   drag,
   onSwiped,
+  onOpen,
   ref,
 }: {
   job: JobCardData;
   now: number;
   drag: SharedValue<number>;
   onSwiped: (job: JobCardData, direction: SwipeDirection) => void;
+  onOpen?: (job: JobCardData) => void;
   ref?: Ref<CardStackHandle>;
 }) {
   const { t } = useTranslation();
@@ -190,7 +194,7 @@ function TopCard({
   return (
     <GestureDetector gesture={pan}>
       <Animated.View style={[styles.fill, cardStyle]}>
-        <JobCard job={job} now={now} />
+        <JobCard job={job} now={now} onOpen={onOpen ? () => onOpen(job) : undefined} />
         <Animated.View
           pointerEvents="none"
           style={[stampBase, { right: theme.space[6], backgroundColor: theme.colors.brand }, applyStamp]}>

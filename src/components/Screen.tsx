@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { ComponentRef, ReactNode, Ref } from 'react';
 import { ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView, type Edge } from 'react-native-safe-area-context';
 
@@ -14,10 +14,12 @@ type Props = {
    * the top of the phone. Without it the top gap would be doubled.
    */
   underHeader?: boolean;
+  /** For a scrolling screen that needs to jump back to its top, such as a form changing step. */
+  scrollRef?: Ref<ComponentRef<typeof ScrollView>>;
 };
 
 /** The frame every screen sits in: ground colour, safe areas, side padding and keyboard room. */
-export function Screen({ children, footer, scroll, underHeader }: Props) {
+export function Screen({ children, footer, scroll, underHeader, scrollRef }: Props) {
   const theme = useTheme();
   const padding = { paddingHorizontal: theme.space[4], gap: theme.space[4] };
   const edges: Edge[] = underHeader ? ['bottom', 'left', 'right'] : ['top', 'bottom', 'left', 'right'];
@@ -29,6 +31,7 @@ export function Screen({ children, footer, scroll, underHeader }: Props) {
       <KeyboardAvoidingView style={styles.fill} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
         {scroll ? (
           <ScrollView
+            ref={scrollRef}
             style={styles.fill}
             // A tap on a button while the keyboard is open presses the button, not just the keyboard away.
             keyboardShouldPersistTaps="handled"

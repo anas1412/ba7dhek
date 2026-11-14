@@ -1,7 +1,7 @@
 import { api } from '@convex/_generated/api';
 import type { Id } from '@convex/_generated/dataModel';
 import { useMutation, useQuery } from 'convex/react';
-import { Redirect } from 'expo-router';
+import { Redirect, useRouter } from 'expo-router';
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
@@ -15,6 +15,7 @@ import { useToast } from '@/components/Toast';
 import { DEFAULT_RADIUS_M } from '@/features/forms/options';
 import { currentLanguage } from '@/i18n';
 import { formatDistance } from '@/lib/format';
+import { jobHref } from '@/lib/routes';
 import { useTheme } from '@/theme';
 
 import { CardStack, type CardStackHandle, type SwipeDirection } from './CardStack';
@@ -31,6 +32,7 @@ export function CandidateHome({ radiusM }: { radiusM: number | null }) {
   const [now] = useState(() => Date.now());
   const [failed, setFailed] = useState(false);
   const toast = useToast();
+  const router = useRouter();
 
   if (!feed) {
     return (
@@ -90,7 +92,13 @@ export function CandidateHome({ radiusM }: { radiusM: number | null }) {
       }>
       <AppText variant="heading">{t('jobs.nearby', { count: feed.jobs.length })}</AppText>
       <View style={{ flex: 1 }}>
-        <CardStack ref={stack} jobs={feed.jobs} now={now} onSwipe={onSwipe} />
+        <CardStack
+          ref={stack}
+          jobs={feed.jobs}
+          now={now}
+          onSwipe={onSwipe}
+          onOpen={(job) => router.push(jobHref(job._id))}
+        />
       </View>
     </Screen>
   );
