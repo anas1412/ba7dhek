@@ -1,21 +1,18 @@
 import { Image } from 'expo-image';
 import { useTranslation } from 'react-i18next';
 
-import { useTheme } from '@/theme';
-
 const MARK = require('../../assets/images/logo-mark.png');
-const MARK_DARK = require('../../assets/images/logo-mark-dark.png');
 
 /**
- * The Ba7dhek mark: a pin with an amber dot beside it, "next to you".
- * It does not mirror in Arabic. Rules and source files: docs/06-design/logo.md.
+ * The Ba7dhek mark in its blue tile: the name بحذاك with the dot under the ب in amber.
+ * The tile is the same in light and dark mode, and the mark never mirrors.
+ * Rules and source files: docs/06-design/logo.md.
  */
 export function Logo({ size = 72 }: { size?: number }) {
   const { t } = useTranslation();
-  const theme = useTheme();
   return (
     <Image
-      source={theme.dark ? MARK_DARK : MARK}
+      source={MARK}
       accessibilityLabel={t('common.appName')}
       style={{ width: size, height: size }}
       contentFit="contain"

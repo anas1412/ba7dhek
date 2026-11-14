@@ -162,7 +162,7 @@ Chat, push notifications, report and block, and account deletion are still owed 
 | D. Placeholders and motion | Built 2026-11-14 | Placeholders seen in the browser preview; rows fade in and a decision swaps in place. Chip fill, the drawn check mark and "still loading" after a delay are not built |
 | E. Fuller job form, job detail, filters | Built | Three-step form with openings, start, working time, days per week, benefits, experience and languages. Filters on the stack by category, contract and immediate start, kept for the session only. Detail screen opens from the card, an application, or the employer's list. Checked in the browser preview only; the signed-in detail screen is covered by backend tests, not yet seen with real data |
 | F. Map picker, vibration | Not started | |
-| G. Icon, logo, illustrations | Logo and icon done; illustrations not started | See `logo.md`. App icon, Android adaptive and themed icons, splash, favicon, and the mark on the welcome page. Seen as image files and in the browser; not yet on a phone, which needs a new build |
+| G. Icon, logo, illustrations | Logo and icon done; illustrations not started | See `logo.md`. The name بحذاك in white on blue with the ب's dot in amber, chosen by Anas. App icon, Android adaptive and themed icons, splash, favicon, and the mark on the welcome page. A lockup with the Latin name is in assets/brand. Seen as image files and in the browser; not yet on a phone, which needs a new build |
 
 Not built from phases B and C: the warning before leaving a form with unsaved text, "Undo" on result messages, and scrolling to the first field in error.
 
