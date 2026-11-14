@@ -63,9 +63,6 @@
   "settings": {
     "title": "Paramètres",
     "language": "Langue",
-    "reloadTitle": "L'application va redémarrer",
-    "reloadBody": "Passer à l'arabe ou le quitter inverse la mise en page : l'application redémarre.",
-    "reload": "Changer et redémarrer",
     "account": "Compte",
     "signOut": "Se déconnecter"
   },

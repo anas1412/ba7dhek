@@ -49,7 +49,7 @@ npx expo start --web --port 8081
 
 Then open `http://localhost:8081`. Google sign-in works there on the dev deployment, because that deployment has `DEV_WEB_ORIGIN` set to this address. Production does not, so there a sign-in can only finish in the phone app.
 
-What the browser does not show: vibration, the phone's own screen transitions, push notifications, and the right-to-left reload.
+What the browser does not show: vibration, the phone's own screen transitions, push notifications, and how Arabic text aligns on a phone.
 
 ## Steps that need you
 
@@ -95,7 +95,7 @@ npx expo start --dev-client
 3. The consent screen. "I agree" stays disabled until the 18-or-over box is ticked.
 4. Role choice.
 5. A placeholder home and a Settings tab.
-6. In Settings, switching to Arabic warns that the app will reload, then comes back mirrored.
+6. In Settings or on the first screen, switching to Arabic mirrors the layout at once, with no restart. Arabic text should sit on the right.
 
 If the build has no Convex address, it shows a "Setup is not finished" screen instead of crashing.
 

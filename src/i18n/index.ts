@@ -4,7 +4,7 @@ import { getLocales } from 'expo-localization';
 import * as Updates from 'expo-updates';
 // `use` is renamed because the hooks lint rule treats any call named `use` as a React hook.
 import i18n, { changeLanguage, use as registerPlugin } from 'i18next';
-import { initReactI18next } from 'react-i18next';
+import { initReactI18next, useTranslation } from 'react-i18next';
 import { DevSettings, I18nManager, Platform } from 'react-native';
 
 import { readPreference, writePreference } from '@/lib/storage';
@@ -24,9 +24,9 @@ function languageFromDevice(): Language {
 
 /**
  * Loads the saved language (or works one out from the device), starts i18next,
- * and makes sure the layout direction matches. Resolves to `false` when the app
- * is about to reload to apply a direction change, in which case the caller
- * renders nothing.
+ * and sets the page direction on the web. Resolves to `false` when the app is
+ * about to restart once to leave the phone's own right-to-left mode, in which
+ * case the caller renders nothing.
  */
 export async function initI18n(): Promise<boolean> {
   const stored = await readPreference(STORAGE_KEY);
@@ -44,30 +44,27 @@ export async function initI18n(): Promise<boolean> {
     returnNull: false,
   });
 
-  return await applyDirection(language);
+  setDocumentDirection(language);
+  return await leaveNativeRtl();
 }
 
-/**
- * A direction change only takes effect after a restart, so the app reloads.
- * Returns `true` when no reload was needed.
+/*
+ * The layout direction follows the chosen language and changes while the app
+ * runs: the root layout sets `direction` on the view that holds every screen,
+ * and Expo Router's LocaleProvider turns headers, transitions and gestures.
+ * The phone's own right-to-left switch is never used, because it only takes
+ * effect after a restart; app.json turns it off (`supportsRTL: false`).
  */
-async function applyDirection(language: Language): Promise<boolean> {
-  const wantRtl = isRtl(language);
 
-  if (isWeb) {
-    // A browser page takes its direction from the document, and can change it live.
-    const root = globalThis.document?.documentElement;
-    if (root) {
-      root.dir = wantRtl ? 'rtl' : 'ltr';
-      root.lang = language;
-    }
-    return true;
-  }
-
-  if (I18nManager.isRTL === wantRtl) return true;
-
-  I18nManager.allowRTL(wantRtl);
-  I18nManager.forceRTL(wantRtl);
+/**
+ * Builds made before the live switch may still have the phone's own switch on,
+ * which would mirror the layout a second time. Turns it off and restarts once.
+ * Returns `true` when no restart was needed.
+ */
+async function leaveNativeRtl(): Promise<boolean> {
+  if (isWeb || !I18nManager.isRTL) return true;
+  I18nManager.allowRTL(false);
+  I18nManager.forceRTL(false);
   try {
     await Updates.reloadAsync();
   } catch {
@@ -77,26 +74,36 @@ async function applyDirection(language: Language): Promise<boolean> {
   return false;
 }
 
+/** A browser page takes its direction and language from the document. */
+function setDocumentDirection(language: Language) {
+  if (!isWeb) return;
+  const root = globalThis.document?.documentElement;
+  if (root) {
+    root.dir = isRtl(language) ? 'rtl' : 'ltr';
+    root.lang = language;
+  }
+}
+
 export function currentLanguage(): Language {
   return isLanguage(i18n.language) ? i18n.language : 'en';
 }
 
-/** Whether the layout currently runs right to left. */
+/** Whether the layout currently runs right to left. Outside React; components use `useLayoutDirection`. */
 export function isLayoutRtl(): boolean {
-  return isWeb ? isRtl(currentLanguage()) : I18nManager.isRTL;
+  return isRtl(currentLanguage());
 }
 
-/** Whether switching to this language restarts the app. Only the phone needs to. */
-export function willReload(next: Language): boolean {
-  if (isWeb) return false;
-  return isRtl(next) !== I18nManager.isRTL;
+/** The layout direction for the current language, re-rendering when the language changes. */
+export function useLayoutDirection(): 'rtl' | 'ltr' {
+  const { i18n: instance } = useTranslation();
+  return isLanguage(instance.language) && isRtl(instance.language) ? 'rtl' : 'ltr';
 }
 
 /** Switches language and remembers the choice, which then overrides the device rule. */
 export async function setLanguage(next: Language): Promise<void> {
   await writePreference(STORAGE_KEY, next);
   await changeLanguage(next);
-  await applyDirection(next);
+  setDocumentDirection(next);
 }
 
 export default i18n;

@@ -63,9 +63,6 @@
   "settings": {
     "title": "Settings",
     "language": "Language",
-    "reloadTitle": "The app will reload",
-    "reloadBody": "Changing to or from Arabic flips the layout, so the app restarts.",
-    "reload": "Change and reload",
     "account": "Account",
     "signOut": "Sign out"
   },

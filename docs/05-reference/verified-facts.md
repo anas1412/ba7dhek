@@ -196,6 +196,7 @@ Source: Code du travail, 2010 consolidated edition (https://a-mla.org/sites/defa
 ## Languages and right-to-left
 - `I18nManager.forceRTL` "requires a full app restart to take effect" (https://reactnative.dev/docs/i18nmanager).
 - Expo: right-to-left is on by default; configured through the `expo-localization` plugin; runtime switching is `allowRTL` and `forceRTL` followed by `Updates.reloadAsync()`; it does not work in Expo Go (https://docs.expo.dev/guides/localization/).
+- Expo: for apps that change language without restarting, wrap the navigator in `LocaleProvider` (from `expo-router`) with the direction, and set the content's direction separately; `supportsRTL: false` opts out of the native right-to-left layout (https://docs.expo.dev/guides/localization/, checked 2026-11-14).
 - Unicode locale data: `ar-TN` and `ar` default to Western digits; `ar-EG` to Arabic-Indic (cldr-json, `cldr-numbers-full`).
 - Hermes `Intl`: `PluralRules` and `RelativeTimeFormat` are listed as planned (https://github.com/facebook/hermes/blob/main/doc/Features.md). Sources disagree on whether `PluralRules` has landed.
 - i18next needs `Intl.PluralRules` for plural forms and has no fallback since version 24 (https://www.i18next.com/translation-function/plurals).

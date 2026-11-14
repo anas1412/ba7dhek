@@ -1,4 +1,3 @@
-import { changeLanguage } from 'i18next';
 import { Redirect, useLocalSearchParams, useRouter } from 'expo-router';
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -16,7 +15,7 @@ import { sampleJobs } from '@/features/jobs/sampleJobs';
 import { PREVIEW_VIEWS, PreviewViewScreen, type PreviewView } from '@/features/preview/PreviewViews';
 import { LANGUAGES, formatLocale } from '@/i18n/languages';
 import { formatDistance } from '@/lib/format';
-import { currentLanguage } from '@/i18n';
+import { currentLanguage, setLanguage } from '@/i18n';
 import { useTheme } from '@/theme';
 
 const VIEW_TITLE = {
@@ -79,8 +78,7 @@ export default function Preview() {
                 <Button
                   label={t(`languages.${code}`)}
                   variant={code === language ? 'primary' : 'neutral'}
-                  // Language only: the right-to-left flip needs the reload that Settings does.
-                  onPress={() => changeLanguage(code)}
+                  onPress={() => void setLanguage(code)}
                 />
               </View>
             ))}

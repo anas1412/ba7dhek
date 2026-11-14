@@ -1,12 +1,12 @@
 import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
+import { LocaleProvider, Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { AppHeader } from '@/components/AppHeader';
-import { initI18n } from '@/i18n';
+import { initI18n, useLayoutDirection } from '@/i18n';
 import { AppProviders } from '@/providers/AppProviders';
 import { fontAssets, useTheme } from '@/theme';
 
@@ -22,9 +22,8 @@ const noHeader = { headerShown: false } as const;
 const sheet = { presentation: 'modal', header: () => <AppHeader kind="close" /> } as const;
 
 export default function RootLayout() {
-  const theme = useTheme();
   const [fontsLoaded, fontError] = useFonts(fontAssets);
-  // null: still starting. false: the app is reloading to flip the layout direction.
+  // null: still starting. false: restarting once to leave the phone's own right-to-left mode.
   const [i18nReady, setI18nReady] = useState<boolean | null>(null);
 
   useEffect(() => {
@@ -38,12 +37,22 @@ export default function RootLayout() {
   }, [ready]);
 
   if (!ready) return null;
+  return <App />;
+}
+
+/** Everything once fonts and languages are loaded. The direction follows the language, live. */
+function App() {
+  const theme = useTheme();
+  const direction = useLayoutDirection();
 
   return (
     // Needed once at the root for swipe gestures to work anywhere in the app.
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    // `direction` here mirrors every screen inside when the language is Arabic.
+    <GestureHandlerRootView style={{ flex: 1, direction }}>
       <AppProviders>
         <StatusBar style={theme.dark ? 'light' : 'dark'} />
+        {/* Headers, transitions and back gestures follow the same direction. */}
+        <LocaleProvider direction={direction}>
         <Stack
           screenOptions={{
             // Every other screen gets a bar with a way back.
@@ -62,6 +71,7 @@ export default function RootLayout() {
           {/* A conversation draws its own bar: who it is with, and a menu. */}
           <Stack.Screen name="chat/[matchId]" options={noHeader} />
         </Stack>
+        </LocaleProvider>
       </AppProviders>
     </GestureHandlerRootView>
   );

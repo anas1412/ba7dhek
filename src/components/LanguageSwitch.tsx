@@ -14,8 +14,8 @@ type Props = {
 
 /**
  * Three languages side by side, each named in its own language so it can be
- * found by someone who cannot read the current one. On a phone, switching to or
- * from Arabic reloads the app to flip the layout.
+ * found by someone who cannot read the current one. The layout flips for Arabic
+ * on the spot, without a restart.
  */
 export function LanguageSwitch({ onChanged }: Props) {
   const { t } = useTranslation();

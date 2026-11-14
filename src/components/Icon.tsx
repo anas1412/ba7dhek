@@ -1,7 +1,7 @@
 import Feather from '@expo/vector-icons/Feather';
 import type { ComponentProps } from 'react';
 
-import { isLayoutRtl } from '@/i18n';
+import { useLayoutDirection } from '@/i18n';
 import { useTheme, type ColorTokens } from '@/theme';
 
 export type IconName = ComponentProps<typeof Feather>['name'];
@@ -18,12 +18,13 @@ type Props = {
 /** One outline icon set for the whole app. Icons take the colour of the text beside them. */
 export function Icon({ name, size = 24, color = 'ink', directional }: Props) {
   const theme = useTheme();
+  const rtl = useLayoutDirection() === 'rtl';
   return (
     <Feather
       name={name}
       size={size}
       color={theme.colors[color]}
-      style={directional && isLayoutRtl() ? { transform: [{ scaleX: -1 }] } : undefined}
+      style={directional && rtl ? { transform: [{ scaleX: -1 }] } : undefined}
     />
   );
 }

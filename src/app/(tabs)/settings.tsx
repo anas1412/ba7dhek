@@ -14,7 +14,7 @@ import { DeleteAccount } from '@/features/account/DeleteAccount';
 import { PhotoEditor } from '@/features/images/PhotoEditor';
 import { NotificationSettings } from '@/features/push/NotificationSettings';
 import { useImageUpload } from '@/features/images/useImageUpload';
-import { LANGUAGES, currentLanguage, setLanguage, willReload, type Language } from '@/i18n';
+import { LANGUAGES, currentLanguage, setLanguage, type Language } from '@/i18n';
 import { useTheme } from '@/theme';
 
 export default function Settings() {
@@ -28,8 +28,6 @@ export default function Settings() {
   const deleteAccount = useMutation(api.account.remove);
 
   const active = currentLanguage();
-  // Set when the chosen language flips the layout and needs the user's go-ahead to reload.
-  const [pending, setPending] = useState<Language | null>(null);
   const [busy, setBusy] = useState(false);
 
   const toast = useToast();
@@ -54,7 +52,8 @@ export default function Settings() {
     }
   }
 
-  async function apply(language: Language) {
+  async function choose(language: Language) {
+    if (language === active) return;
     setBusy(true);
     try {
       // The server keeps the language so push notifications arrive in it.
@@ -62,14 +61,7 @@ export default function Settings() {
       await setLanguage(language);
     } finally {
       setBusy(false);
-      setPending(null);
     }
-  }
-
-  function choose(language: Language) {
-    if (language === active) return;
-    if (willReload(language)) setPending(language);
-    else void apply(language);
   }
 
   return (
@@ -130,21 +122,6 @@ export default function Settings() {
             );
           })}
         </View>
-
-        {pending ? (
-          <View
-            style={{
-              gap: theme.space[2],
-              padding: theme.space[4],
-              borderRadius: theme.radius.sm,
-              backgroundColor: theme.colors.brandSoft,
-            }}>
-            <AppText variant="bodyStrong">{t('settings.reloadTitle')}</AppText>
-            <AppText>{t('settings.reloadBody')}</AppText>
-            <Button label={t('settings.reload')} loading={busy} onPress={() => apply(pending)} />
-            <Button label={t('common.cancel')} variant="neutral" onPress={() => setPending(null)} />
-          </View>
-        ) : null}
       </View>
 
       {me?.staffRole ? <Button label={t('admin.title')} variant="neutral" onPress={() => router.push('/admin')} /> : null}
