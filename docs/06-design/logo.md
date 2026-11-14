@@ -46,13 +46,13 @@ The Android adaptive icon's back layer is the plain brand blue, set as a colour 
 
 ## In the app
 
-- **Welcome page:** the tile above the name.
+- **Welcome page:** the tile above the name. In Arabic the name under it is left out, since the tile already spells it.
 - **Splash screen:** the mark centred on brand blue; in dark mode, on the dark ground.
 - Nowhere else. The header bar stays quiet, and a logo on every screen would be decoration.
 
 ## Not done
 
-- **Other people's eyes.** Only its author has judged it. Show it to a few people in Hammamet before any printing.
+- **Other people's eyes.** Only Anas and its author have judged it. Show it to a few people in Hammamet before any printing.
 - **iOS.** The icon uses the single `icon.png`. Dark and tinted variants, or an Icon Composer file, are left for when iOS is decided.
 - **Store graphics** (Play feature graphic, screenshots): made at store-listing time, from the lockup.
 - **Illustrations** for empty states: a separate piece of phase G.

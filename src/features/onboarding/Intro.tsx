@@ -105,7 +105,8 @@ export function Intro({ startAtEnd, onSeen, signIn }: Props) {
 
     <View key="start" style={{ flex: 1, justifyContent: 'center', gap: theme.space[2], padding: theme.space[4] }}>
       <Logo size={96} />
-      <AppText variant="display">{t('common.appName')}</AppText>
+      {/* The tile already spells the name in Arabic; repeating it underneath would say it twice. */}
+      {language === 'ar' ? null : <AppText variant="display">{t('common.appName')}</AppText>}
       <AppText variant="title" color="brand">
         {t('welcome.tagline')}
       </AppText>
