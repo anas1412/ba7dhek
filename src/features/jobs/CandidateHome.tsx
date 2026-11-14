@@ -128,7 +128,8 @@ export function CandidateHome({ radiusM }: { radiusM: number | null }) {
               {t('jobs.swipeFailed')}
             </AppText>
           ) : null}
-          <View style={{ flexDirection: 'row', justifyContent: 'center', gap: theme.space[6] * 2 }}>
+          {/* Pass on the left, apply on the right, in every language: the same sides as the swipe. */}
+          <View style={{ flexDirection: 'row', direction: 'ltr', justifyContent: 'center', gap: theme.space[6] * 2 }}>
             <RoundButton icon="x" label={t('jobs.pass')} variant="neutral" onPress={() => stack.current?.swipe('left')} />
             <RoundButton icon="check" label={t('jobs.apply')} variant="primary" onPress={() => stack.current?.swipe('right')} />
           </View>
