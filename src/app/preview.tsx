@@ -23,6 +23,7 @@ const VIEW_TITLE = {
   company: 'company.title',
   job: 'job.title',
   detail: 'preview.detail',
+  filters: 'preview.filters',
   applicants: 'applicants.title',
   applications: 'applications.title',
   images: 'images.title',

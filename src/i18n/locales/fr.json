@@ -169,7 +169,8 @@
     "last": "Dernier geste : {{direction}} sur {{title}}",
     "forms": "Formulaires",
     "lists": "Listes",
-    "detail": "Détails de l'offre"
+    "detail": "Détails de l'offre",
+    "filters": "Filtres"
   },
   "location": {
     "useCurrent": "Utiliser ma position actuelle",
@@ -392,5 +393,18 @@
     "preview": "Voir comme un candidat",
     "goneTitle": "Cette offre n'est plus disponible",
     "goneBody": "Elle a été clôturée ou retirée."
+  },
+  "filters": {
+    "button": "Filtres",
+    "buttonActive_one": "Filtres, {{count}} actif",
+    "buttonActive_many": "Filtres, {{count}} actifs",
+    "buttonActive_other": "Filtres, {{count}} actifs",
+    "title": "Filtrer les offres",
+    "body": "Affichez seulement le type de travail que vous cherchez. Les offres restent classées par distance.",
+    "anyHint": "Ne choisissez rien pour tout voir.",
+    "clear": "Effacer les filtres",
+    "apply": "Voir les offres",
+    "emptyTitle": "Aucune offre ne correspond à vos filtres",
+    "emptyBody": "Il y a peut-être d'autres offres près de vous. Effacez les filtres pour les voir."
   }
 }

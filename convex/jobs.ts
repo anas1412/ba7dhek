@@ -182,8 +182,15 @@ export type JobCard = {
  * swiped on, nearest first. Ranking is distance only, the same for everyone.
  */
 export const feed = query({
-  args: {},
-  handler: async (ctx): Promise<{ reason: "ok" | "no_home"; jobs: JobCard[] }> => {
+  // Filters narrow the stack; an empty or absent list means "any". Distance still decides the order.
+  args: {
+    categories: v.optional(v.array(v.string())),
+    contractTypes: v.optional(v.array(contractType)),
+    startsNow: v.optional(v.boolean()),
+  },
+  handler: async (ctx, args): Promise<{ reason: "ok" | "no_home"; jobs: JobCard[] }> => {
+    const categories = args.categories?.length ? new Set(args.categories.slice(0, 20)) : null;
+    const contracts = args.contractTypes?.length ? new Set<string>(args.contractTypes) : null;
     const user = await requireRole(ctx, "candidate");
     if (!user.home) return { reason: "no_home", jobs: [] };
     const radiusM = user.radiusM ?? DEFAULT_RADIUS_M;
@@ -209,6 +216,9 @@ export const feed = query({
         // The index should only hold open jobs; these checks cover a stale entry.
         if (!job || job.status !== "open" || job.hidden || job.isDemo) continue;
         if (job.expiresAt !== undefined && job.expiresAt <= now) continue;
+        if (categories && !categories.has(job.category)) continue;
+        if (contracts && !contracts.has(job.contractType)) continue;
+        if (args.startsNow && !job.startsNow) continue;
         const company = await ctx.db.get(job.companyId);
         if (!company || company.approval !== "approved") continue;
 

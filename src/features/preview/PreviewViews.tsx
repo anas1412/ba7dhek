@@ -12,10 +12,11 @@ import { PhotoEditor } from '@/features/images/PhotoEditor';
 import { CompanyForm } from '@/features/forms/CompanyForm';
 import { JobForm } from '@/features/forms/JobForm';
 import { ApplicationsList, type Application } from '@/features/jobs/ApplicationsList';
+import { FeedFilters, NO_FILTERS } from '@/features/jobs/FeedFilters';
 import { JobDetail } from '@/features/jobs/JobDetail';
 import { sampleDetail } from '@/features/jobs/sampleJobs';
 
-export const PREVIEW_VIEWS = ['setup', 'company', 'job', 'detail', 'applicants', 'applications', 'images', 'photo', 'loading'] as const;
+export const PREVIEW_VIEWS = ['setup', 'company', 'job', 'detail', 'filters', 'applicants', 'applications', 'images', 'photo', 'loading'] as const;
 export type PreviewView = (typeof PREVIEW_VIEWS)[number];
 
 // Coloured tiles standing in for photos, so the preview needs no files or network.
@@ -98,6 +99,8 @@ export function PreviewViewScreen({ view }: { view: PreviewView }) {
           <JobDetail job={sampleDetail(now)} now={now} />
         </Screen>
       );
+    case 'filters':
+      return <FeedFilters filters={NO_FILTERS} onApply={() => {}} onCancel={() => {}} />;
     case 'applicants':
       return (
         <Screen scroll underHeader>

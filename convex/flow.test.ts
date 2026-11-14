@@ -471,3 +471,32 @@ describe("the fuller job description", () => {
     await expect(stranger.query(api.jobs.detail, { jobId })).rejects.toThrow();
   });
 });
+
+describe("filters on the stack", () => {
+  test("the stack can be narrowed by category, contract and an immediate start", async () => {
+    const t = setupBackend();
+    const { employer } = await approvedEmployer(t, "sindbad", 500);
+    const post = async (extra: Record<string, unknown>) => {
+      const jobId = await employer.mutation(api.jobs.create, { ...JOB, ...extra });
+      await employer.mutation(api.jobs.publish, { jobId });
+      return jobId;
+    };
+    const hotelNow = await post({ category: "hospitality", contractType: "seasonal", startsNow: true });
+    const cafe = await post({ category: "restaurant", contractType: "part_time" });
+    const shop = await post({ category: "retail", contractType: "seasonal" });
+
+    const candidate = await person(t, "amine", "candidate");
+    await candidate.mutation(api.users.setHome, { home: HAMMAMET, radiusM: 5_000 });
+    const ids = async (filters: Record<string, unknown>) =>
+      (await candidate.query(api.jobs.feed, filters)).jobs.map((job) => job._id).sort();
+
+    expect(await ids({})).toEqual([hotelNow, cafe, shop].sort());
+    // Empty lists mean "any", the same as leaving them out.
+    expect(await ids({ categories: [], contractTypes: [], startsNow: false })).toHaveLength(3);
+    expect(await ids({ categories: ["restaurant", "retail"] })).toEqual([cafe, shop].sort());
+    expect(await ids({ contractTypes: ["seasonal"] })).toEqual([hotelNow, shop].sort());
+    expect(await ids({ startsNow: true })).toEqual([hotelNow]);
+    // Filters combine: every one must match.
+    expect(await ids({ categories: ["retail"], contractTypes: ["seasonal"], startsNow: true })).toEqual([]);
+  });
+});

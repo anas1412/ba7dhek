@@ -167,7 +167,8 @@
     "last": "Last swipe: {{direction}} on {{title}}",
     "forms": "Forms",
     "lists": "Lists",
-    "detail": "Job details"
+    "detail": "Job details",
+    "filters": "Filters"
   },
   "location": {
     "useCurrent": "Use my current location",
@@ -386,5 +387,17 @@
     "preview": "See it as a candidate",
     "goneTitle": "This job is no longer available",
     "goneBody": "It was closed or removed."
+  },
+  "filters": {
+    "button": "Filters",
+    "buttonActive_one": "Filters, {{count}} on",
+    "buttonActive_other": "Filters, {{count}} on",
+    "title": "Filter jobs",
+    "body": "Show only the kinds of work you want. Jobs stay ordered by distance.",
+    "anyHint": "Choose none to see all.",
+    "clear": "Clear filters",
+    "apply": "Show jobs",
+    "emptyTitle": "No jobs match your filters",
+    "emptyBody": "There may be other jobs near you. Clear the filters to see them."
   }
 }
