@@ -1,3 +1,4 @@
+import { Image } from 'expo-image';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 
@@ -19,6 +20,8 @@ export type JobCardData = {
   publishedAt: number;
   distanceM: number;
   companyName: string;
+  /** The business's main photo, when it has one. */
+  companyImageUrl?: string | null;
 };
 
 /**
@@ -59,7 +62,16 @@ export function JobCard({ job, now }: { job: JobCardData; now: number }) {
       </View>
 
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: theme.space[2] }}>
-        <Icon name="briefcase" size={20} color="inkMuted" />
+        {job.companyImageUrl ? (
+          <Image
+            source={{ uri: job.companyImageUrl }}
+            style={{ width: 40, height: 40, borderRadius: theme.radius.sm, backgroundColor: theme.colors.line }}
+            contentFit="cover"
+            transition={200}
+          />
+        ) : (
+          <Icon name="briefcase" size={20} color="inkMuted" />
+        )}
         <AppText variant="bodyStrong" numberOfLines={1} style={{ flex: 1 }}>
           {job.companyName}
         </AppText>

@@ -2,6 +2,7 @@ import { ConvexError, v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import { getUserOrNull, requireConsentedUser, requireRole, requireUser } from "./lib/auth";
 import { indexCandidate } from "./lib/geo";
+import { checkUpload, userPhotoUrl } from "./lib/images";
 import { clampRadiusM } from "./lib/geoMath";
 import { cleanText, requireTunisianPoint } from "./lib/validate";
 import { language, point, role } from "./schema";
@@ -18,7 +19,8 @@ export const me = query({
     return {
       _id: user._id,
       name: user.name ?? "",
-      photoUrl: user.image ?? null,
+      photoUrl: await userPhotoUrl(ctx, user),
+      hasOwnPhoto: Boolean(user.photoId),
       language: user.language ?? null,
       role: user.role ?? null,
       hasConsented: Boolean(user.consentAt && user.adultDeclared),
@@ -110,5 +112,41 @@ export const setLanguage = mutation({
   handler: async (ctx, args) => {
     const user = await requireUser(ctx);
     await ctx.db.patch(user._id, { language: args.language });
+  },
+});
+
+/**
+ * Replaces the person's photo with one they uploaded. The previous upload, if
+ * any, is deleted. Returns the problem when the file is not an acceptable image.
+ */
+export const setPhoto = mutation({
+  args: { storageId: v.id("_storage") },
+  handler: async (ctx, args) => {
+    const user = await requireConsentedUser(ctx);
+    const problem = await checkUpload(ctx, args.storageId);
+    if (problem) return { ok: false as const, problem };
+    if (user.photoId) await ctx.storage.delete(user.photoId);
+    await ctx.db.patch(user._id, { photoId: args.storageId, photoRemoved: undefined });
+    return { ok: true as const };
+  },
+});
+
+/** Shows no photo at all: the upload is deleted and the Google photo is no longer used. */
+export const removePhoto = mutation({
+  args: {},
+  handler: async (ctx) => {
+    const user = await requireConsentedUser(ctx);
+    if (user.photoId) await ctx.storage.delete(user.photoId);
+    await ctx.db.patch(user._id, { photoId: undefined, photoRemoved: true });
+  },
+});
+
+/** Goes back to the photo from the person's Google account. */
+export const useAccountPhoto = mutation({
+  args: {},
+  handler: async (ctx) => {
+    const user = await requireConsentedUser(ctx);
+    if (user.photoId) await ctx.storage.delete(user.photoId);
+    await ctx.db.patch(user._id, { photoId: undefined, photoRemoved: undefined });
   },
 });

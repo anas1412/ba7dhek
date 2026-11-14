@@ -72,6 +72,8 @@ export function EmployerHome() {
       footer={<Button label={t('employer.newJob')} onPress={() => router.push('/job/new')} />}>
       <AppText variant="display">{t('employer.title')}</AppText>
 
+      <Button label={t('employer.businessPhotos')} variant="neutral" onPress={() => router.push('/business')} />
+
       {company.approval !== 'approved' ? (
         <View
           style={{

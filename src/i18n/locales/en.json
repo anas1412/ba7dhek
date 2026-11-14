@@ -153,7 +153,9 @@
     "publish": "Publish",
     "close": "Close job",
     "applicants_one": "{{count}} applicant",
-    "applicants_other": "{{count}} applicants"
+    "applicants_other": "{{count}} applicants",
+    "business": "Your business",
+    "businessPhotos": "Business photos"
   },
   "preview": {
     "title": "Preview",
@@ -279,5 +281,36 @@
     "title": "Something broke",
     "body": "The app hit a problem it did not expect. What you already saved is safe.",
     "reload": "Reload"
+  },
+  "images": {
+    "title": "Photos of your business",
+    "body": "Up to 4 photos. The first one appears beside your name on every job you post.",
+    "add": "Add a photo",
+    "adding": "Sending",
+    "remove": "Remove this photo",
+    "main": "Main photo",
+    "makeMain": "Make main",
+    "count_one": "{{count}} of {{max}} photo",
+    "count_other": "{{count}} of {{max}} photos",
+    "added": "Photo added",
+    "removed": "Photo removed",
+    "mainChanged": "Main photo changed",
+    "invalid": "That file is not a photo the app can use. Try a JPEG or PNG.",
+    "tooLarge": "That photo is too large even after shrinking. Try another.",
+    "tooMany": "You already have 4 photos. Remove one to add another.",
+    "failed": "The photo was not saved. Check your connection and try again.",
+    "shrinkNote": "Photos are shrunk on your phone before they are sent."
+  },
+  "photo": {
+    "title": "Your photo",
+    "shownNote": "Employers you apply to see this photo.",
+    "noneNote": "You are showing no photo. You can still apply to any job.",
+    "add": "Add a photo",
+    "change": "Change photo",
+    "remove": "Show no photo",
+    "useAccount": "Use my Google photo",
+    "changed": "Photo changed",
+    "removed": "Your photo is no longer shown",
+    "restored": "Back to your Google photo"
   }
 }

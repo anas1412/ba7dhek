@@ -47,6 +47,10 @@ export default defineSchema({
 
     role: v.optional(role),
     about: v.optional(v.string()),
+    // A photo the person uploaded, replacing the one from their Google account.
+    photoId: v.optional(v.id("_storage")),
+    // Set when the person chose to show no photo at all.
+    photoRemoved: v.optional(v.boolean()),
     tags: v.optional(v.array(v.string())),
 
     // Candidates only. Never returned to another user.
@@ -68,7 +72,8 @@ export default defineSchema({
     category: v.string(),
     address: v.string(),
     location: point,
-    logoId: v.optional(v.id("_storage")),
+    // Up to four images, in display order. The first is the main one, shown on job cards.
+    imageIds: v.optional(v.array(v.id("_storage"))),
     // A registered business gives its tax ID; a person hiring for themselves has none.
     kind: v.optional(employerKind),
     // Canonical matricule fiscal. Shown to its owner and to admins only, never to candidates.

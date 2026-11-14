@@ -10,11 +10,13 @@
 
 import type * as auth from "../auth.js";
 import type * as companies from "../companies.js";
+import type * as files from "../files.js";
 import type * as http from "../http.js";
 import type * as jobs from "../jobs.js";
 import type * as lib_auth from "../lib/auth.js";
 import type * as lib_geo from "../lib/geo.js";
 import type * as lib_geoMath from "../lib/geoMath.js";
+import type * as lib_images from "../lib/images.js";
 import type * as lib_redirect from "../lib/redirect.js";
 import type * as lib_taxId from "../lib/taxId.js";
 import type * as lib_validate from "../lib/validate.js";
@@ -31,11 +33,13 @@ import type {
 declare const fullApi: ApiFromModules<{
   auth: typeof auth;
   companies: typeof companies;
+  files: typeof files;
   http: typeof http;
   jobs: typeof jobs;
   "lib/auth": typeof lib_auth;
   "lib/geo": typeof lib_geo;
   "lib/geoMath": typeof lib_geoMath;
+  "lib/images": typeof lib_images;
   "lib/redirect": typeof lib_redirect;
   "lib/taxId": typeof lib_taxId;
   "lib/validate": typeof lib_validate;

@@ -24,6 +24,8 @@ const VIEW_TITLE = {
   job: 'job.title',
   applicants: 'applicants.title',
   applications: 'applications.title',
+  images: 'images.title',
+  photo: 'photo.title',
   loading: 'common.loading',
 } as const;
 

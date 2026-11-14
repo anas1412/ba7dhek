@@ -155,7 +155,9 @@
     "close": "Clôturer l'offre",
     "applicants_one": "{{count}} candidat",
     "applicants_many": "{{count}} de candidats",
-    "applicants_other": "{{count}} candidats"
+    "applicants_other": "{{count}} candidats",
+    "business": "Votre établissement",
+    "businessPhotos": "Photos de l'établissement"
   },
   "preview": {
     "title": "Aperçu",
@@ -281,5 +283,37 @@
     "title": "Quelque chose s'est cassé",
     "body": "L'application a rencontré un problème inattendu. Ce que vous avez déjà enregistré est en sécurité.",
     "reload": "Recharger"
+  },
+  "images": {
+    "title": "Photos de votre établissement",
+    "body": "Jusqu'à 4 photos. La première apparaît à côté de votre nom sur chaque offre publiée.",
+    "add": "Ajouter une photo",
+    "adding": "Envoi",
+    "remove": "Retirer cette photo",
+    "main": "Photo principale",
+    "makeMain": "Mettre en premier",
+    "count_one": "{{count}} photo sur {{max}}",
+    "count_many": "{{count}} de photos sur {{max}}",
+    "count_other": "{{count}} photos sur {{max}}",
+    "added": "Photo ajoutée",
+    "removed": "Photo retirée",
+    "mainChanged": "Photo principale modifiée",
+    "invalid": "Ce fichier n'est pas une photo utilisable. Essayez un JPEG ou un PNG.",
+    "tooLarge": "Cette photo reste trop lourde même réduite. Essayez-en une autre.",
+    "tooMany": "Vous avez déjà 4 photos. Retirez-en une pour en ajouter une autre.",
+    "failed": "La photo n'a pas été enregistrée. Vérifiez votre connexion et réessayez.",
+    "shrinkNote": "Les photos sont réduites sur votre téléphone avant l'envoi."
+  },
+  "photo": {
+    "title": "Votre photo",
+    "shownNote": "Les employeurs auprès desquels vous postulez voient cette photo.",
+    "noneNote": "Vous n'affichez aucune photo. Vous pouvez postuler à toutes les offres.",
+    "add": "Ajouter une photo",
+    "change": "Changer de photo",
+    "remove": "N'afficher aucune photo",
+    "useAccount": "Utiliser ma photo Google",
+    "changed": "Photo modifiée",
+    "removed": "Votre photo n'est plus affichée",
+    "restored": "Retour à votre photo Google"
   }
 }

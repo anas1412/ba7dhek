@@ -4,6 +4,7 @@ import { mutation, query, type MutationCtx, type QueryCtx } from "./_generated/s
 import { requireRole } from "./lib/auth";
 import { indexJob, jobsGeo, unindexJob } from "./lib/geo";
 import { DEFAULT_RADIUS_M } from "./lib/geoMath";
+import { companyMainImageUrl } from "./lib/images";
 import { cleanText, requireCategory, requireTunisianPoint } from "./lib/validate";
 import { contractType, payPeriod, point } from "./schema";
 
@@ -141,6 +142,7 @@ export type JobCard = {
   publishedAt: number;
   distanceM: number;
   companyName: string;
+  companyImageUrl: string | null;
 };
 
 /**
@@ -189,6 +191,7 @@ export const feed = query({
           publishedAt: job.publishedAt ?? job._creationTime,
           distanceM: Math.round(hit.distance),
           companyName: company.name,
+          companyImageUrl: await companyMainImageUrl(ctx, company),
         });
         if (cards.length >= FEED_SIZE) break;
       }

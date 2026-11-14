@@ -12,6 +12,8 @@ One row per signed-in person.
 | `name` | string | Prefilled from Google |
 | `photoUrl` | string, optional | |
 | `about` | string, optional | Candidate's two-line text |
+| `photoId` | storage id, optional | A photo the person uploaded, replacing the one from Google |
+| `photoRemoved` | boolean, optional | Set when the person chose to show no photo |
 | `tags` | string[], optional | Candidate experience tags |
 | `language` | `"ar"` \| `"fr"` \| `"en"` | Used to localise pushes |
 | `home` | `{ latitude, longitude }`, optional | Candidates only. Never returned to other users. |
@@ -39,7 +41,7 @@ Indexes: `email` and `phone`, which Convex Auth requires. Users are looked up by
 | `category` | string | From a fixed list |
 | `address` | string | Free text, as written |
 | `location` | `{ latitude, longitude }` | |
-| `logoId` | storage id, optional | Convex file storage |
+| `imageIds` | storage ids, optional | Up to 4 images in display order. The first is the main one, shown on job cards |
 | `kind` | `"business"` \| `"individual"`, optional | A registered business, or a person hiring for themselves |
 | `taxId` | string, optional | The matricule fiscal in canonical form. Required for a business. Owner and admins only |
 | `taxIdBase` | string, optional | Its first eight characters, shared by all establishments of one taxpayer |
@@ -144,3 +146,11 @@ A daily cron job deletes what has passed its declared period: accounts unused fo
 - A candidate's geo entry is rewritten whenever `home` changes.
 - Deleting an account removes the user, their swipes, their geo entry and their push tokens, and closes their jobs.
 - Fixed lists (job categories, company categories, report reasons) are stored as stable keys such as `hospitality`, and translated in the app. They are never stored as display text.
+
+## Images
+- **Profile photo:** a candidate's photo comes from their Google account. They can replace it with one of their own, show none, or go back to the Google one. A photo is never required to apply.
+- **Business photos:** up to 4. The first is the main one and appears beside the business's name on every job card. The limit is enforced on the server, not only hidden in the interface.
+- **Shrunk before sending:** every image is resized on the device to at most 1280 pixels on its longer side and saved as JPEG, stepping down in size and quality until it is under about 400 KB. Re-encoding also drops the data embedded in the photo, such as where it was taken.
+- **Server checks:** only JPEG, PNG and WebP, and nothing over 1 MB. A file that fails is deleted at once.
+- **Deletion:** replacing or removing an image deletes the file, not just the reference to it.
+- **Not handled yet:** an upload that is sent but never attached stays in storage. A cleanup job is owed.

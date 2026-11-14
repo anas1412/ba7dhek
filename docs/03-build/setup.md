@@ -21,7 +21,7 @@ How to run what exists, and the steps that only the developer can do.
 | Map to place a point by hand | Not built. Location comes from "Use my current location" only |
 | Push fan-out, chat messages, reports, retention job, account deletion | Not started |
 
-**A new development build is needed.** `expo-location` was added after the first EAS build, and it contains native code. Until the app is rebuilt, "Use my current location" will fail on the phone. In development builds, a "Use central Hammamet (testing only)" button sets a fixed point instead, so the rest can be tested on the old build.
+**A new development build is needed.** `expo-location`, `expo-image-picker` and `expo-image-manipulator` were added after the first EAS build, and they contain native code. On the old build, choosing a photo will also fail. Until the app is rebuilt, "Use my current location" will fail on the phone. In development builds, a "Use central Hammamet (testing only)" button sets a fixed point instead, so the rest can be tested on the old build.
 
 **The browser preview.** Signed-in screens cannot be opened in a browser, because Google sign-in only returns to the phone app. The forms and lists are therefore split into display components, which the preview page renders with sample data and a pretend backend. What the preview does not prove: that each screen is wired to the right backend function. The backend functions themselves are covered by tests.
 

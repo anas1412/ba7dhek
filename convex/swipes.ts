@@ -1,6 +1,7 @@
 import { ConvexError, v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import { requireRole } from "./lib/auth";
+import { userPhotoUrl } from "./lib/images";
 import { distanceBucket, haversineM } from "./lib/geoMath";
 
 /**
@@ -92,7 +93,7 @@ export const forJob = query({
           appliedAt: swipe._creationTime,
           decision: swipe.decision ?? "pending",
           name: candidate?.name ?? "",
-          photoUrl: candidate?.image ?? null,
+          photoUrl: candidate ? await userPhotoUrl(ctx, candidate) : null,
           about: candidate?.about ?? null,
           distanceBucket: distanceBucket(swipe.distanceM),
         };

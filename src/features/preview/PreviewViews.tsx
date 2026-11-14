@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 
@@ -7,12 +7,25 @@ import { Screen } from '@/components/Screen';
 import { CardSkeleton, ListSkeleton } from '@/components/Skeleton';
 import { ApplicantsList, type Applicant } from '@/features/employer/ApplicantsList';
 import { CandidateSetupForm } from '@/features/forms/CandidateSetupForm';
+import { ImageGrid } from '@/features/images/ImageGrid';
+import { PhotoEditor } from '@/features/images/PhotoEditor';
 import { CompanyForm } from '@/features/forms/CompanyForm';
 import { JobForm } from '@/features/forms/JobForm';
 import { ApplicationsList, type Application } from '@/features/jobs/ApplicationsList';
 
-export const PREVIEW_VIEWS = ['setup', 'company', 'job', 'applicants', 'applications', 'loading'] as const;
+export const PREVIEW_VIEWS = ['setup', 'company', 'job', 'applicants', 'applications', 'images', 'photo', 'loading'] as const;
 export type PreviewView = (typeof PREVIEW_VIEWS)[number];
+
+// Coloured tiles standing in for photos, so the preview needs no files or network.
+const TILE_COLOURS = ['%231557B8', '%23FFD166', '%230E7A4B', '%2351607A', '%23B3261E', '%236EA8FF'];
+function sampleTile(index: number) {
+  const colour = TILE_COLOURS[index % TILE_COLOURS.length];
+  return {
+    id: `tile-${index}`,
+    url: `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Crect width='300' height='300' fill='${colour}'/%3E%3C/svg%3E`,
+  };
+}
+const GOOGLE_PHOTO = sampleTile(5).url;
 
 // Stands in for the backend: waits a moment, then succeeds.
 const pretendToSave = () => new Promise<void>((resolve) => setTimeout(resolve, 600));
@@ -66,6 +79,9 @@ export function PreviewViewScreen({ view }: { view: PreviewView }) {
   const [now] = useState(() => Date.now());
   const [applicants, setApplicants] = useState(() => sampleApplicants(now));
   const errorMessage = () => t('errors.generic');
+  const [images, setImages] = useState(() => [sampleTile(0), sampleTile(1)]);
+  const nextTile = useRef(0);
+  const [photo, setPhoto] = useState<string | null>(GOOGLE_PHOTO);
 
   switch (view) {
     case 'setup':
@@ -89,6 +105,39 @@ export function PreviewViewScreen({ view }: { view: PreviewView }) {
                 ),
               )
             }
+          />
+        </Screen>
+      );
+    case 'images':
+      return (
+        <Screen scroll underHeader>
+          <AppText variant="display">{t('images.title')}</AppText>
+          <AppText color="inkMuted">{t('images.body')}</AppText>
+          <ImageGrid
+            images={images}
+            max={4}
+            adding={false}
+            busyId={null}
+            // The preview has no photo library; adding cycles through sample tiles.
+            onAdd={() => setImages((current) => [...current, sampleTile(current.length + nextTile.current++)])}
+            onRemove={(image) => setImages((current) => current.filter((item) => item.id !== image.id))}
+            onMakeMain={(image) =>
+              setImages((current) => [image, ...current.filter((item) => item.id !== image.id)])
+            }
+          />
+        </Screen>
+      );
+    case 'photo':
+      return (
+        <Screen scroll underHeader>
+          <AppText variant="display">{t('photo.title')}</AppText>
+          <PhotoEditor
+            photoUrl={photo}
+            hasOwnPhoto={photo !== null && photo !== GOOGLE_PHOTO}
+            busy={false}
+            onChange={() => setPhoto(sampleTile(3).url)}
+            onRemove={() => setPhoto(null)}
+            onUseAccountPhoto={() => setPhoto(GOOGLE_PHOTO)}
           />
         </Screen>
       );
