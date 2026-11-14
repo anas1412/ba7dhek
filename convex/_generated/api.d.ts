@@ -23,6 +23,7 @@ import type * as lib_images from "../lib/images.js";
 import type * as lib_pushRules from "../lib/pushRules.js";
 import type * as lib_pushText from "../lib/pushText.js";
 import type * as lib_redirect from "../lib/redirect.js";
+import type * as lib_staffLog from "../lib/staffLog.js";
 import type * as lib_taxId from "../lib/taxId.js";
 import type * as lib_validate from "../lib/validate.js";
 import type * as lib_wordFilter from "../lib/wordFilter.js";
@@ -31,6 +32,7 @@ import type * as messages from "../messages.js";
 import type * as notify from "../notify.js";
 import type * as push from "../push.js";
 import type * as reports from "../reports.js";
+import type * as staff from "../staff.js";
 import type * as swipes from "../swipes.js";
 import type * as users from "../users.js";
 
@@ -56,6 +58,7 @@ declare const fullApi: ApiFromModules<{
   "lib/pushRules": typeof lib_pushRules;
   "lib/pushText": typeof lib_pushText;
   "lib/redirect": typeof lib_redirect;
+  "lib/staffLog": typeof lib_staffLog;
   "lib/taxId": typeof lib_taxId;
   "lib/validate": typeof lib_validate;
   "lib/wordFilter": typeof lib_wordFilter;
@@ -64,6 +67,7 @@ declare const fullApi: ApiFromModules<{
   notify: typeof notify;
   push: typeof push;
   reports: typeof reports;
+  staff: typeof staff;
   swipes: typeof swipes;
   users: typeof users;
 }>;

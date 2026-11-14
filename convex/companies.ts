@@ -1,7 +1,8 @@
 import { ConvexError, v } from "convex/values";
 import { internal } from "./_generated/api";
 import { mutation, query, type MutationCtx } from "./_generated/server";
-import { requireAdmin, requireRole } from "./lib/auth";
+import { requireRole, requireStaff, staffRoleOf } from "./lib/auth";
+import { logStaffAction } from "./lib/staffLog";
 import { unindexJob } from "./lib/geo";
 import { checkUpload, companyLogoUrl } from "./lib/images";
 import { normaliseTaxId, taxIdBase } from "./lib/taxId";
@@ -73,13 +74,14 @@ export const create = mutation({
   },
 });
 
-// Admin functions: run from the Convex dashboard by a user with `isAdmin`.
+// Back-office functions, for moderators and admins.
 
 /** Companies waiting for a decision, with what is needed to check them. */
 export const pending = query({
   args: {},
   handler: async (ctx) => {
-    await requireAdmin(ctx);
+    const staff = await requireStaff(ctx, "moderator");
+    const admin = staffRoleOf(staff) === "admin";
     const companies = await ctx.db
       .query("companies")
       .withIndex("by_approval", (q) => q.eq("approval", "pending"))
@@ -87,7 +89,7 @@ export const pending = query({
     return await Promise.all(
       companies.map(async (company) => {
         const owner = await ctx.db.get(company.ownerId);
-        return { ...company, ownerName: owner?.name ?? "", ownerEmail: owner?.email ?? null };
+        return { ...company, ownerName: owner?.name ?? "", ownerEmail: admin ? (owner?.email ?? null) : null };
       }),
     );
   },
@@ -96,8 +98,11 @@ export const pending = query({
 export const approve = mutation({
   args: { companyId: v.id("companies") },
   handler: async (ctx, args) => {
-    await requireAdmin(ctx);
+    const staff = await requireStaff(ctx, "moderator");
+    const company = await ctx.db.get(args.companyId);
+    if (!company) throw new ConvexError({ code: "not_found" });
     await ctx.db.patch(args.companyId, { approval: "approved", rejectionReason: undefined });
+    await logStaffAction(ctx, staff, "approve_business", "company", company._id, company.name);
     await ctx.scheduler.runAfter(0, internal.notify.companyApproved, { companyId: args.companyId });
   },
 });
@@ -106,8 +111,11 @@ export const approve = mutation({
 export const reject = mutation({
   args: { companyId: v.id("companies"), reason: v.string() },
   handler: async (ctx, args) => {
-    await requireAdmin(ctx);
+    const staff = await requireStaff(ctx, "moderator");
+    const company = await ctx.db.get(args.companyId);
+    if (!company) throw new ConvexError({ code: "not_found" });
     await ctx.db.patch(args.companyId, { approval: "rejected", rejectionReason: args.reason });
+    await logStaffAction(ctx, staff, "reject_business", "company", company._id, company.name);
     const open = await ctx.db
       .query("jobs")
       .withIndex("by_company_status", (q) => q.eq("companyId", args.companyId).eq("status", "open"))

@@ -1,7 +1,8 @@
 import { ConvexError, v } from "convex/values";
 import type { Doc, Id } from "./_generated/dataModel";
 import { mutation, query, type MutationCtx, type QueryCtx } from "./_generated/server";
-import { requireAdmin, requireRole } from "./lib/auth";
+import { requireRole, requireStaff } from "./lib/auth";
+import { logStaffAction } from "./lib/staffLog";
 import { indexJob, unindexJob } from "./lib/geo";
 import { haversineM } from "./lib/geoMath";
 import { cleanText } from "./lib/validate";
@@ -75,7 +76,7 @@ export const job = mutation({
 export const open = query({
   args: {},
   handler: async (ctx) => {
-    await requireAdmin(ctx);
+    await requireStaff(ctx, "moderator");
     const reports = await ctx.db
       .query("reports")
       .withIndex("by_status", (q) => q.eq("status", "open"))
@@ -143,7 +144,7 @@ async function closeJobsOf(ctx: MutationCtx, company: Doc<"companies">): Promise
 export const resolve = mutation({
   args: { reportId: v.id("reports"), action: v.union(v.literal("dismiss"), v.literal("remove")) },
   handler: async (ctx, args) => {
-    await requireAdmin(ctx);
+    const staff = await requireStaff(ctx, "moderator");
     const report = await ctx.db.get(args.reportId);
     if (!report || report.status !== "open") throw new ConvexError({ code: "not_found" });
     const now = Date.now();
@@ -154,6 +155,7 @@ export const resolve = mutation({
       const target = await ctx.db.get(report.targetId as Id<"jobs">);
       if (args.action === "dismiss") {
         await settle(report._id);
+        await logStaffAction(ctx, staff, "dismiss_report", "report", report._id, target?.title ?? "");
         const left = await openReportsOn(ctx, "job", report.targetId);
         if (target?.hidden && left.length < HIDE_AFTER_REPORTS) {
           await ctx.db.patch(target._id, { hidden: false });
@@ -174,6 +176,7 @@ export const resolve = mutation({
       if (target) {
         await ctx.db.patch(target._id, { status: "closed", closedAt: now, hidden: true });
         await unindexJob(ctx, target._id);
+        await logStaffAction(ctx, staff, "remove_job", "job", target._id, target.title);
       }
       return;
     }
@@ -181,6 +184,7 @@ export const resolve = mutation({
     if (report.targetType === "user") {
       if (args.action === "dismiss") {
         await settle(report._id);
+        await logStaffAction(ctx, staff, "dismiss_report", "report", report._id, "");
         return;
       }
       for (const other of await openReportsOn(ctx, "user", report.targetId)) await settle(other._id);
@@ -194,6 +198,7 @@ export const resolve = mutation({
           .withIndex("by_owner", (q) => q.eq("ownerId", target._id))
           .unique();
         if (company) await closeJobsOf(ctx, company);
+        await logStaffAction(ctx, staff, "ban", "user", target._id, target.name ?? "");
       }
       return;
     }

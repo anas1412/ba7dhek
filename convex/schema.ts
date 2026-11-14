@@ -80,6 +80,8 @@ export default defineSchema({
     radiusM: v.optional(v.number()),
     notifyNewJobs: v.optional(notifyNewJobs),
 
+    // Staff of the back office. `isAdmin` is the older flag and still counts as "admin".
+    staffRole: v.optional(v.union(v.literal("admin"), v.literal("moderator"))),
     isAdmin: v.optional(v.boolean()),
     banned: v.optional(v.boolean()),
     onboardedAt: v.optional(v.number()),
@@ -190,6 +192,16 @@ export default defineSchema({
   })
     .index("by_status", ["status"])
     .index("by_target", ["targetType", "targetId"]),
+
+  // What staff did in the back office: who, what, to what. Never edited, never deleted by the app.
+  staffActions: defineTable({
+    staffId: v.id("users"),
+    action: v.string(),
+    targetType: v.union(v.literal("job"), v.literal("user"), v.literal("company"), v.literal("report")),
+    targetId: v.string(),
+    // The target's name when the action was taken.
+    label: v.string(),
+  }),
 
   pushCounters: defineTable({
     userId: v.id("users"),

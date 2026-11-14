@@ -21,7 +21,7 @@ export const setAdmin = internalMutation({
       .withIndex("email", (q) => q.eq("email", args.email))
       .unique();
     if (!user) throw new ConvexError({ code: "no_such_user" });
-    await ctx.db.patch(user._id, { isAdmin: args.admin });
+    await ctx.db.patch(user._id, { isAdmin: args.admin, staffRole: args.admin ? "admin" : undefined });
     return { userId: user._id, name: user.name ?? "", isAdmin: args.admin };
   },
 });

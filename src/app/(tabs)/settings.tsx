@@ -147,7 +147,7 @@ export default function Settings() {
         ) : null}
       </View>
 
-      {me?.isAdmin ? <Button label={t('admin.title')} variant="neutral" onPress={() => router.push('/admin')} /> : null}
+      {me?.staffRole ? <Button label={t('admin.title')} variant="neutral" onPress={() => router.push('/admin')} /> : null}
 
       {me?.role ? <NotificationSettings role={me.role} newJobs={me.notifyNewJobs ?? 'all'} /> : null}
 

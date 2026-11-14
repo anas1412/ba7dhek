@@ -86,6 +86,7 @@ To reconnect on another machine, run `npx convex dev` and pick the existing `ba7
 ### 04 Launch
 - [cold-start.md](docs/04-launch/cold-start.md): getting both sides of the marketplace
 - [trust-safety.md](docs/04-launch/trust-safety.md): approval, reports, blocking
+- [back-office.md](docs/04-launch/back-office.md): the admin and moderator screens, who can do what, and how an admin is made
 - [privacy.md](docs/04-launch/privacy.md): what is collected and who sees it
 - [data-protection.md](docs/04-launch/data-protection.md): Tunisian law article by article, and what to file
 - [tunisia-constraints.md](docs/04-launch/tunisia-constraints.md): payments, stores, maps and labour law from Tunisia

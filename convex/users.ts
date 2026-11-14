@@ -1,6 +1,6 @@
 import { ConvexError, v } from "convex/values";
 import { mutation, query } from "./_generated/server";
-import { getUserOrNull, requireConsentedUser, requireRole, requireUser } from "./lib/auth";
+import { getUserOrNull, requireConsentedUser, requireRole, requireUser, staffRoleOf } from "./lib/auth";
 import { indexCandidate } from "./lib/geo";
 import { checkUpload, userPhotoUrl } from "./lib/images";
 import { clampRadiusM } from "./lib/geoMath";
@@ -30,7 +30,8 @@ export const me = query({
       home: user.home ?? null,
       radiusM: user.radiusM ?? null,
       notifyNewJobs: user.notifyNewJobs ?? null,
-      isAdmin: Boolean(user.isAdmin),
+      // "admin", "moderator", or null for everyone else.
+      staffRole: staffRoleOf(user),
     };
   },
 });

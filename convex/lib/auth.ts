@@ -41,8 +41,22 @@ export async function requireRole(
   return user;
 }
 
-export async function requireAdmin(ctx: Ctx): Promise<Doc<"users">> {
+export type StaffRole = "admin" | "moderator";
+
+/** The person's place in the back office, or null for everyone else. */
+export function staffRoleOf(user: Doc<"users">): StaffRole | null {
+  return user.staffRole ?? (user.isAdmin ? "admin" : null);
+}
+
+/**
+ * Guards a back-office function. "moderator" lets moderators and admins in;
+ * "admin" lets admins in only.
+ */
+export async function requireStaff(ctx: Ctx, atLeast: StaffRole): Promise<Doc<"users">> {
   const user = await requireUser(ctx);
-  if (!user.isAdmin) throw new ConvexError({ code: "forbidden" });
+  const role = staffRoleOf(user);
+  if (role === null || (atLeast === "admin" && role !== "admin")) {
+    throw new ConvexError({ code: "forbidden" });
+  }
   return user;
 }
