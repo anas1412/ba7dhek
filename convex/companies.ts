@@ -2,8 +2,9 @@ import { ConvexError, v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import { requireAdmin, requireRole } from "./lib/auth";
 import { unindexJob } from "./lib/geo";
+import { normaliseTaxId, taxIdBase } from "./lib/taxId";
 import { cleanText, requireCategory, requireTunisianPoint } from "./lib/validate";
-import { point } from "./schema";
+import { employerKind, point } from "./schema";
 
 /** The signed-in employer's company, or null before they have created one. */
 export const mine = query({
@@ -17,9 +18,20 @@ export const mine = query({
   },
 });
 
-/** One company per employer. It starts pending and is approved by hand. */
+/**
+ * One company per employer. It starts pending and is approved by hand.
+ * A registered business must give its tax ID, which is what the approval
+ * checks; a person hiring for themselves has none.
+ */
 export const create = mutation({
-  args: { name: v.string(), category: v.string(), address: v.string(), location: point },
+  args: {
+    name: v.string(),
+    category: v.string(),
+    address: v.string(),
+    location: point,
+    kind: employerKind,
+    taxId: v.optional(v.string()),
+  },
   handler: async (ctx, args) => {
     const user = await requireRole(ctx, "employer");
     const existing = await ctx.db
@@ -28,12 +40,28 @@ export const create = mutation({
       .unique();
     if (existing) throw new ConvexError({ code: "company_exists" });
 
+    let taxId: string | undefined;
+    if (args.kind === "business") {
+      const canonical = normaliseTaxId(args.taxId ?? "");
+      if (!canonical) throw new ConvexError({ code: "invalid_tax_id", field: "taxId" });
+      // One account per establishment: the same tax ID cannot be registered twice.
+      const taken = await ctx.db
+        .query("companies")
+        .withIndex("by_tax_id", (q) => q.eq("taxId", canonical))
+        .first();
+      if (taken) throw new ConvexError({ code: "tax_id_taken", field: "taxId" });
+      taxId = canonical;
+    }
+
     const id = await ctx.db.insert("companies", {
       ownerId: user._id,
       name: cleanText(args.name, "name", { min: 2, max: 80 }),
       category: requireCategory(args.category),
       address: cleanText(args.address, "address", { min: 3, max: 200 }),
       location: requireTunisianPoint(args.location, "location"),
+      kind: args.kind,
+      taxId,
+      taxIdBase: taxId ? taxIdBase(taxId) : undefined,
       approval: "pending",
     });
     await ctx.db.patch(user._id, { onboardedAt: Date.now() });
@@ -43,14 +71,21 @@ export const create = mutation({
 
 // Admin functions: run from the Convex dashboard by a user with `isAdmin`.
 
+/** Companies waiting for a decision, with what is needed to check them. */
 export const pending = query({
   args: {},
   handler: async (ctx) => {
     await requireAdmin(ctx);
-    return await ctx.db
+    const companies = await ctx.db
       .query("companies")
       .withIndex("by_approval", (q) => q.eq("approval", "pending"))
       .collect();
+    return await Promise.all(
+      companies.map(async (company) => {
+        const owner = await ctx.db.get(company.ownerId);
+        return { ...company, ownerName: owner?.name ?? "", ownerEmail: owner?.email ?? null };
+      }),
+    );
   },
 });
 

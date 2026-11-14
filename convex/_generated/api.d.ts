@@ -16,6 +16,7 @@ import type * as lib_auth from "../lib/auth.js";
 import type * as lib_geo from "../lib/geo.js";
 import type * as lib_geoMath from "../lib/geoMath.js";
 import type * as lib_redirect from "../lib/redirect.js";
+import type * as lib_taxId from "../lib/taxId.js";
 import type * as lib_validate from "../lib/validate.js";
 import type * as lib_wordFilter from "../lib/wordFilter.js";
 import type * as swipes from "../swipes.js";
@@ -36,6 +37,7 @@ declare const fullApi: ApiFromModules<{
   "lib/geo": typeof lib_geo;
   "lib/geoMath": typeof lib_geoMath;
   "lib/redirect": typeof lib_redirect;
+  "lib/taxId": typeof lib_taxId;
   "lib/validate": typeof lib_validate;
   "lib/wordFilter": typeof lib_wordFilter;
   swipes: typeof swipes;

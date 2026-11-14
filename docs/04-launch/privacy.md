@@ -13,6 +13,7 @@ The app's core data is where people live. That makes privacy a design constraint
 | Home point (coordinates) | Candidate: GPS once, or a map pin | Feed and notifications |
 | Search radius | Candidate | Feed and notifications |
 | Company details and location | Employer | Shown on job posts |
+| Tax ID (matricule fiscal) | Employer, when a registered business | Checking the business before approval. Never shown to candidates. For a sole trader this identifies a person, so it belongs in the data protection declaration |
 | Job posts | Employer | The product |
 | Swipes and decisions | Both | Applications and matching |
 | Chat messages | Both | Communication |

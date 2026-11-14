@@ -17,6 +17,10 @@ export function formErrorMessage(error: unknown, t: TFunction, fallbackKey: stri
         return t('location.outsideTunisia');
       case 'invalid_pay':
         return t('job.needPay');
+      case 'invalid_tax_id':
+        return t('company.taxIdInvalid');
+      case 'tax_id_taken':
+        return t('company.taxIdTaken');
     }
   }
   return t(fallbackKey);

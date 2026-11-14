@@ -10,6 +10,9 @@ Every decision taken so far, with who took it and why. Decisions marked "Anas" w
 | Arabic, French and English from the first screen | Anas | |
 | Arabic copy in Tunisian dialect, Arabic script | Anas | Legal text is the exception: standard Arabic and French |
 | No payments in the app; local methods later if businesses are charged | Anas | |
+| A registered business must give its tax ID (matricule fiscal) for verification | Anas | |
+| Language follows place: Tunisian Darija by default in Tunisia, changeable | Anas | |
+| Onboarding is swiped through, with a practice card that teaches the gesture | Anas | |
 | Free for candidates, always | delegated | Product principle, and it keeps the app clear of placement rules |
 | Adults only, 18 and over | delegated | Tunisian law requires a family judge's authorisation to process a minor's data |
 | The app is an advertising medium, not a placement service | delegated | Code du travail art. 282 permits job advertisements; art. 285 abolishes private placement offices |

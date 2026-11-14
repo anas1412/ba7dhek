@@ -15,6 +15,14 @@ Job platforms attract fraud aimed at people who need money. A single fake job th
 ## Employer approval
 Every company is approved by hand before its first job goes live.
 
+**The tax ID (matricule fiscal)**
+- A registered business must give its tax ID when it adds itself. Without a well-formed one the form does not submit.
+- The app checks the shape only: seven digits, a key letter that is never I, O or U, then optionally the VAT code, a category letter and a three-digit establishment number, as in `1234567A/A/M/000`. Punctuation and case are ignored and leading zeros are restored.
+- **A well-formed number can still be invented.** The key letter's formula is not published, so the app cannot tell a real number from a made-up one. The person approving the business checks it against the business's tax card or a public record. Whether Tunisia's business register can be searched online by tax ID is unverified.
+- The same tax ID cannot be registered twice.
+- It is shown to the business's owner and to admins. Candidates never receive it.
+- A person hiring for themselves, with no registered business, picks "A person, for myself" and gives none. These get a closer look before approval.
+
 **What is checked**
 - The business hires for itself. Staffing and labour-hire intermediaries are refused: Law n° 2025-9 bans labour subcontracting, and the app must not become a channel for it.
 - The business exists at the pinned address. For the pilot, this is known first-hand, because employers are recruited in person.

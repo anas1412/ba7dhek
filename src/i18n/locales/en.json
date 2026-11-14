@@ -188,7 +188,16 @@
     "rule4": "Candidates are never asked to pay anything.",
     "submit": "Add my business",
     "needLocation": "Set where the business is first.",
-    "failed": "Your business was not saved. Check the fields and try again."
+    "failed": "Your business was not saved. Check the fields and try again.",
+    "kind": "Who is hiring?",
+    "kindBusiness": "A registered business",
+    "kindIndividual": "A person, for myself",
+    "taxId": "Tax ID (matricule fiscal)",
+    "taxIdHint": "As printed on your tax card. We use it to check the business before your first job goes live. Candidates never see it.",
+    "taxIdRead": "Read as {{taxId}}",
+    "taxIdInvalid": "This does not look like a matricule fiscal. It is seven digits and a letter, for example 1234567A/A/M/000.",
+    "taxIdTaken": "A business with this tax ID is already registered.",
+    "individualNote": "For someone hiring for their own home or their own work, with no registered business. We may contact you before your first job goes live."
   },
   "job": {
     "title": "Post a job",

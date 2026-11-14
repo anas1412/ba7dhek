@@ -190,7 +190,16 @@
     "rule4": "On ne demande jamais d'argent aux candidats.",
     "submit": "Ajouter mon établissement",
     "needLocation": "Indiquez d'abord où se trouve l'établissement.",
-    "failed": "Votre établissement n'a pas été enregistré. Vérifiez les champs et réessayez."
+    "failed": "Votre établissement n'a pas été enregistré. Vérifiez les champs et réessayez.",
+    "kind": "Qui recrute ?",
+    "kindBusiness": "Une entreprise enregistrée",
+    "kindIndividual": "Un particulier, pour moi-même",
+    "taxId": "Matricule fiscal",
+    "taxIdHint": "Tel qu'il figure sur votre carte d'identification fiscale. Il sert à vérifier l'entreprise avant la mise en ligne de votre première offre. Les candidats ne le voient jamais.",
+    "taxIdRead": "Lu comme {{taxId}}",
+    "taxIdInvalid": "Cela ne ressemble pas à un matricule fiscal. Il comporte sept chiffres et une lettre, par exemple 1234567A/A/M/000.",
+    "taxIdTaken": "Une entreprise avec ce matricule fiscal est déjà enregistrée.",
+    "individualNote": "Pour une personne qui recrute pour son foyer ou son propre travail, sans entreprise enregistrée. Nous pourrons vous contacter avant la mise en ligne de votre première offre."
   },
   "job": {
     "title": "Publier une offre",

@@ -18,7 +18,8 @@ export const contractType = v.union(
   v.literal("temporary"),
   v.literal("internship"),
 );
-export const payPeriod = v.union(v.literal("hour"), v.literal("day"), v.literal("month"));
+export const employerKind = v.union(v.literal("business"), v.literal("individual"));
+export const payPeriod =v.union(v.literal("hour"), v.literal("day"), v.literal("month"));
 
 export default defineSchema({
   // Sessions, accounts and tokens for Convex Auth.
@@ -68,11 +69,18 @@ export default defineSchema({
     address: v.string(),
     location: point,
     logoId: v.optional(v.id("_storage")),
+    // A registered business gives its tax ID; a person hiring for themselves has none.
+    kind: v.optional(employerKind),
+    // Canonical matricule fiscal. Shown to its owner and to admins only, never to candidates.
+    taxId: v.optional(v.string()),
+    // Its first eight characters, shared by all establishments of one taxpayer.
+    taxIdBase: v.optional(v.string()),
     approval: v.union(v.literal("pending"), v.literal("approved"), v.literal("rejected")),
     rejectionReason: v.optional(v.string()),
   })
     .index("by_owner", ["ownerId"])
-    .index("by_approval", ["approval"]),
+    .index("by_approval", ["approval"])
+    .index("by_tax_id", ["taxId"]),
 
   jobs: defineTable({
     companyId: v.id("companies"),

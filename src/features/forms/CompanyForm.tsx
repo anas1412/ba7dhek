@@ -1,3 +1,4 @@
+import { normaliseTaxId } from '@convex/lib/taxId';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
@@ -13,17 +14,33 @@ import { useTheme } from '@/theme';
 
 import { CATEGORIES, type Category } from './options';
 
-export type CompanyValues = { name: string; category: Category; address: string; location: Point };
+export type EmployerKind = 'business' | 'individual';
+
+export type CompanyValues = {
+  name: string;
+  category: Category;
+  address: string;
+  location: Point;
+  kind: EmployerKind;
+  /** Present for a registered business only. */
+  taxId?: string;
+};
 
 type Props = {
   onSubmit: (values: CompanyValues) => Promise<void>;
   errorMessage: (error: unknown) => string;
 };
 
-/** An employer adds their business once. It is checked by hand before the first job goes live. */
+/**
+ * An employer adds their business once. A registered business gives its tax ID
+ * (matricule fiscal), which is what gets checked before the first job goes live.
+ */
 export function CompanyForm({ onSubmit, errorMessage }: Props) {
   const { t } = useTranslation();
   const theme = useTheme();
+  const [kind, setKind] = useState<EmployerKind>('business');
+  const [taxId, setTaxId] = useState('');
+  const [taxIdTouched, setTaxIdTouched] = useState(false);
   const [name, setName] = useState('');
   const [category, setCategory] = useState<Category | null>(null);
   const [address, setAddress] = useState('');
@@ -31,7 +48,10 @@ export function CompanyForm({ onSubmit, errorMessage }: Props) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const complete = name.trim().length >= 2 && category !== null && address.trim().length >= 3;
+  const business = kind === 'business';
+  const canonicalTaxId = normaliseTaxId(taxId);
+  const taxIdOk = !business || canonicalTaxId !== null;
+  const complete = name.trim().length >= 2 && category !== null && address.trim().length >= 3 && taxIdOk;
 
   async function submit() {
     if (!category) return;
@@ -42,7 +62,14 @@ export function CompanyForm({ onSubmit, errorMessage }: Props) {
     setBusy(true);
     setError(null);
     try {
-      await onSubmit({ name, category, address, location });
+      await onSubmit({
+        name,
+        category,
+        address,
+        location,
+        kind,
+        taxId: business ? (canonicalTaxId ?? undefined) : undefined,
+      });
     } catch (caught) {
       setError(errorMessage(caught));
     } finally {
@@ -66,6 +93,36 @@ export function CompanyForm({ onSubmit, errorMessage }: Props) {
         </>
       }>
       <AppText variant="display">{t('company.title')}</AppText>
+
+      <ChoiceChips
+        label={t('company.kind')}
+        options={[
+          { value: 'business', label: t('company.kindBusiness') },
+          { value: 'individual', label: t('company.kindIndividual') },
+        ]}
+        value={kind}
+        onChange={setKind}
+      />
+
+      {business ? (
+        <TextField
+          label={t('company.taxId')}
+          hint={canonicalTaxId ? t('company.taxIdRead', { taxId: canonicalTaxId }) : t('company.taxIdHint')}
+          // Shown once the person has left the field, not while they are still typing.
+          error={taxIdTouched && taxId.trim() !== '' && !canonicalTaxId ? t('company.taxIdInvalid') : undefined}
+          placeholder="1234567A/A/M/000"
+          value={taxId}
+          onChangeText={setTaxId}
+          onBlur={() => setTaxIdTouched(true)}
+          autoCapitalize="characters"
+          autoCorrect={false}
+          maxLength={24}
+        />
+      ) : (
+        <AppText variant="caption" color="inkMuted">
+          {t('company.individualNote')}
+        </AppText>
+      )}
 
       <TextField label={t('company.name')} value={name} onChangeText={setName} maxLength={80} />
 

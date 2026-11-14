@@ -33,6 +33,7 @@ async function approvedEmployer(t: Backend, name: string, meters = 0) {
     name: `Hotel ${name}`,
     category: "hospitality",
     address: "Avenue des Nations Unies, Hammamet",
+    kind: "individual",
     location: northOf(meters),
   });
   await (await admin(t)).mutation(api.companies.approve, { companyId });
@@ -151,6 +152,7 @@ describe("rules", () => {
       name: "Hotel Sindbad",
       category: "hospitality",
       address: "Hammamet",
+      kind: "individual",
       location: HAMMAMET,
     });
     const jobId = await employer.mutation(api.jobs.create, JOB);
@@ -165,6 +167,7 @@ describe("rules", () => {
         name: "Hotel Paris",
         category: "hospitality",
         address: "Paris",
+        kind: "individual",
         location: PARIS,
       }),
     ).rejects.toThrow();
@@ -237,9 +240,79 @@ describe("rules", () => {
       name: "Hotel Sindbad",
       category: "hospitality",
       address: "Hammamet",
+      kind: "individual",
       location: HAMMAMET,
     });
     await expect(employer.mutation(api.companies.approve, { companyId })).rejects.toThrow();
+  });
+});
+
+describe("business verification", () => {
+  const BUSINESS = {
+    name: "Hôtel Les Orangers",
+    category: "hospitality",
+    address: "Avenue des Nations Unies, Hammamet",
+    location: HAMMAMET,
+    kind: "business" as const,
+  };
+
+  test("a registered business must give a well-formed tax ID", async () => {
+    const t = setupBackend();
+    const employer = await person(t, "orangers", "employer");
+    await expect(employer.mutation(api.companies.create, BUSINESS)).rejects.toThrow();
+    await expect(
+      employer.mutation(api.companies.create, { ...BUSINESS, taxId: "not a tax id" }),
+    ).rejects.toThrow();
+
+    await employer.mutation(api.companies.create, { ...BUSINESS, taxId: "120 h / p / m / 000" });
+    const company = await employer.query(api.companies.mine, {});
+    expect(company).toMatchObject({ kind: "business", taxId: "0000120H/P/M/000", approval: "pending" });
+  });
+
+  test("the same tax ID cannot be registered twice", async () => {
+    const t = setupBackend();
+    const first = await person(t, "first", "employer");
+    const second = await person(t, "second", "employer");
+    await first.mutation(api.companies.create, { ...BUSINESS, taxId: "1234567A/A/M/000" });
+    await expect(
+      second.mutation(api.companies.create, { ...BUSINESS, name: "Copy", taxId: "1234567a-a-m-000" }),
+    ).rejects.toThrow();
+  });
+
+  test("a person hiring for themselves needs no tax ID, and any they send is ignored", async () => {
+    const t = setupBackend();
+    const employer = await person(t, "household", "employer");
+    await employer.mutation(api.companies.create, { ...BUSINESS, kind: "individual", taxId: "1234567A" });
+    const company = await employer.query(api.companies.mine, {});
+    expect(company?.kind).toBe("individual");
+    expect(company?.taxId).toBeUndefined();
+  });
+
+  test("candidates never receive a business's tax ID", async () => {
+    const t = setupBackend();
+    const employer = await person(t, "orangers", "employer");
+    const companyId = await employer.mutation(api.companies.create, { ...BUSINESS, taxId: "1234567A/A/M/000" });
+    await (await admin(t)).mutation(api.companies.approve, { companyId });
+    const jobId = await employer.mutation(api.jobs.create, JOB);
+    await employer.mutation(api.jobs.publish, { jobId });
+
+    const candidate = await person(t, "amine", "candidate");
+    await candidate.mutation(api.users.setHome, { home: HAMMAMET, radiusM: 5_000 });
+    const feed = await candidate.query(api.jobs.feed, {});
+    expect(feed.jobs).toHaveLength(1);
+    expect(JSON.stringify(feed)).not.toContain("1234567A");
+    await candidate.mutation(api.swipes.record, { jobId, direction: "right" });
+    expect(JSON.stringify(await candidate.query(api.swipes.mine, {}))).not.toContain("1234567A");
+  });
+
+  test("the admin's pending list shows the tax ID to check", async () => {
+    const t = setupBackend();
+    const employer = await person(t, "orangers", "employer");
+    await employer.mutation(api.companies.create, { ...BUSINESS, taxId: "1234567A/A/M/000" });
+    const pending = await (await admin(t)).query(api.companies.pending, {});
+    expect(pending).toHaveLength(1);
+    expect(pending[0]).toMatchObject({ taxId: "1234567A/A/M/000", ownerName: "orangers" });
+    await expect(employer.query(api.companies.pending, {})).rejects.toThrow();
   });
 });
 

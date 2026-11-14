@@ -40,9 +40,12 @@ Indexes: `email` and `phone`, which Convex Auth requires. Users are looked up by
 | `address` | string | Free text, as written |
 | `location` | `{ latitude, longitude }` | |
 | `logoId` | storage id, optional | Convex file storage |
+| `kind` | `"business"` \| `"individual"`, optional | A registered business, or a person hiring for themselves |
+| `taxId` | string, optional | The matricule fiscal in canonical form. Required for a business. Owner and admins only |
+| `taxIdBase` | string, optional | Its first eight characters, shared by all establishments of one taxpayer |
 | `approval` | `"pending"` \| `"approved"` \| `"rejected"` | |
 
-Indexes: `by_owner` on `ownerId`; `by_approval` on `approval`.
+Indexes: `by_owner` on `ownerId`; `by_approval` on `approval`; `by_tax_id` on `taxId`, used to refuse a duplicate.
 
 One company per employer in the MVP.
 
