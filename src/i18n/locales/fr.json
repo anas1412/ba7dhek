@@ -95,7 +95,6 @@
     "emptyBody": "Vous avez vu toutes les offres de votre zone. Les nouvelles apparaîtront ici dès leur publication.",
     "noHomeTitle": "D'où partez-vous ?",
     "noHomeBody": "Choisissez un point de départ pour voir les offres autour. Ce peut être chez vous ou un lieu proche.",
-    "devHome": "Utiliser le centre de Hammamet (test uniquement)",
     "swipeFailed": "Votre choix n'a pas été enregistré. Vérifiez votre connexion."
   },
   "distance": {
@@ -175,12 +174,17 @@
   "location": {
     "useCurrent": "Utiliser ma position actuelle",
     "locating": "Recherche de votre position",
-    "set": "Point de départ enregistré",
-    "change": "Le modifier",
+    "set": "Endroit enregistré",
+    "change": "Changer l'endroit",
     "denied": "L'accès à la position a été refusé. Vous pouvez l'autoriser dans les réglages du téléphone.",
     "failed": "Votre position n'a pas pu être lue. Réessayez dehors ou près d'une fenêtre.",
     "outsideTunisia": "Ce point est hors de Tunisie. Ba7dhek ne couvre que la Tunisie.",
-    "privacy": "Lue une seule fois, quand vous appuyez. Personne d'autre ne voit jamais ce point."
+    "privacy": "Lue une seule fois, quand vous appuyez. Personne d'autre ne voit jamais ce point.",
+    "chooseOnMap": "Choisir sur la carte",
+    "pickerHint": "Déplacez la carte jusqu'à ce que le point soit sur l'endroit exact.",
+    "usePlace": "Utiliser cet endroit",
+    "publicNote": "Les personnes qui voient vos offres voient cet endroit.",
+    "mapOf": "Carte de l'endroit"
   },
   "company": {
     "title": "Votre établissement",
@@ -240,7 +244,11 @@
     "daysPerWeek": "Jours par semaine",
     "benefits": "Ce qui est inclus",
     "experience": "Expérience",
-    "languages": "Langues demandées"
+    "languages": "Langues demandées",
+    "place": "Où se trouve le travail ?",
+    "placeBusiness": "Dans l'établissement",
+    "placeElsewhere": "Ailleurs",
+    "needPlace": "Choisissez où se trouve le travail."
   },
   "applicants": {
     "title": "Candidats",
@@ -392,7 +400,8 @@
     "ownerNote": "Voici comment les gens à proximité voient votre offre.",
     "preview": "Voir comme un candidat",
     "goneTitle": "Cette offre n'est plus disponible",
-    "goneBody": "Elle a été clôturée ou retirée."
+    "goneBody": "Elle a été clôturée ou retirée.",
+    "otherPlace": "Pas dans l'établissement. Voir la carte."
   },
   "filters": {
     "button": "Filtres",

@@ -1,6 +1,7 @@
 import { ActivityIndicator, Pressable, StyleSheet, type PressableProps } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
 
+import { haptic } from '@/lib/haptics';
 import { useTheme } from '@/theme';
 
 import { AppText } from './AppText';
@@ -38,6 +39,7 @@ export function Button({ label, variant = 'primary', loading, disabled, onPressI
       {...rest}
       onPressIn={(event) => {
         pressed.set(withTiming(1, { duration: 80 }));
+        haptic.tap();
         onPressIn?.(event);
       }}
       onPressOut={(event) => {

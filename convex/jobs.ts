@@ -358,6 +358,11 @@ export const detail = query({
       experience: job.experience ?? null,
       languages: job.languages ?? [],
       location: job.location,
+      // False when the employer placed this job somewhere other than the business itself;
+      // the business address would then describe the wrong place.
+      atBusiness:
+        job.location.latitude === company.location.latitude &&
+        job.location.longitude === company.location.longitude,
       imageUrls: (await jobImages(ctx, job)).map((image) => image.url),
       companyName: company.name,
       companyAddress: company.address,

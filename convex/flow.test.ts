@@ -500,3 +500,36 @@ describe("filters on the stack", () => {
     expect(await ids({ categories: ["retail"], contractTypes: ["seasonal"], startsNow: true })).toEqual([]);
   });
 });
+
+describe("a job with its own place", () => {
+  test("a job can be placed away from the business, and the stack measures to the job", async () => {
+    const t = setupBackend();
+    // The business is 4 km out; the job itself is 300 m from the candidate.
+    const { employer } = await approvedEmployer(t, "sindbad", 4_000);
+    const site = { latitude: HAMMAMET.latitude + 300 / 111_320, longitude: HAMMAMET.longitude };
+    const away = await employer.mutation(api.jobs.create, { ...JOB, location: site });
+    const atHome = await employer.mutation(api.jobs.create, JOB);
+    await employer.mutation(api.jobs.publish, { jobId: away });
+    await employer.mutation(api.jobs.publish, { jobId: atHome });
+
+    expect(await employer.query(api.jobs.detail, { jobId: away })).toMatchObject({ atBusiness: false, location: site });
+    expect((await employer.query(api.jobs.detail, { jobId: atHome })).atBusiness).toBe(true);
+
+    const candidate = await person(t, "amine", "candidate");
+    await candidate.mutation(api.users.setHome, { home: HAMMAMET, radiusM: 1_000 });
+    const { jobs } = await candidate.query(api.jobs.feed, {});
+    // Only the nearby site is inside 1 km; the business's own address is not.
+    expect(jobs.map((job) => job._id)).toEqual([away]);
+    expect(jobs[0].distanceM).toBeGreaterThan(250);
+    expect(jobs[0].distanceM).toBeLessThan(350);
+  });
+
+  test("a job cannot be placed outside Tunisia", async () => {
+    const t = setupBackend();
+    const { employer } = await approvedEmployer(t, "sindbad");
+    await expect(
+      employer.mutation(api.jobs.create, { ...JOB, location: { latitude: 48.85, longitude: 2.35 } }),
+    ).rejects.toThrow();
+  });
+});
+

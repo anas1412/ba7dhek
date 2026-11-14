@@ -1,4 +1,3 @@
-import * as Location from 'expo-location';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
@@ -8,84 +7,79 @@ import { Button } from '@/components/Button';
 import { Icon } from '@/components/Icon';
 import { useTheme } from '@/theme';
 
-export type Point = { latitude: number; longitude: number };
+import type { Point } from './geo';
+import { MapPicker } from './MapPicker';
+import { MapPreview } from './MapPreview';
+import { useCurrentLocation } from './useCurrentLocation';
 
-// The same rough box the backend uses to keep points inside Tunisia.
-const TUNISIA = { west: 7.4, south: 30.1, east: 11.7, north: 37.7 };
-const inTunisia = (p: Point) =>
-  p.latitude >= TUNISIA.south && p.latitude <= TUNISIA.north && p.longitude >= TUNISIA.west && p.longitude <= TUNISIA.east;
-
-// Central Hammamet, for the development shortcut only.
-const HAMMAMET: Point = { latitude: 36.4, longitude: 10.6167 };
+export type { Point } from './geo';
 
 type Props = {
   value: Point | null;
   onChange: (point: Point | null) => void;
+  /** The heading of the map screen, which says what is being placed. */
+  pickerTitle: string;
+  /**
+   * private: a candidate's starting point, which nobody else ever sees.
+   * public: a business or a job, whose place is shown to candidates.
+   */
+  visibility: 'private' | 'public';
 };
 
 /**
- * Sets one point from the phone's location, read once when the person taps.
- * The app never tracks movement and never asks for background location.
- * A map to place the point by hand comes with the native map library.
+ * Sets one exact point, on a map or from the phone's position read once.
+ * Once set, the point is shown on a small map so a mistake is seen at a glance.
  */
-export function LocationField({ value, onChange }: Props) {
+export function LocationField({ value, onChange, pickerTitle, visibility }: Props) {
   const { t } = useTranslation();
   const theme = useTheme();
-  const [busy, setBusy] = useState(false);
-  const [problem, setProblem] = useState<'denied' | 'failed' | 'outsideTunisia' | null>(null);
+  const [picking, setPicking] = useState(false);
+  const { busy, problem, locate } = useCurrentLocation();
 
-  async function useCurrent() {
-    setBusy(true);
-    setProblem(null);
-    try {
-      const permission = await Location.requestForegroundPermissionsAsync();
-      if (!permission.granted) {
-        setProblem('denied');
-        return;
-      }
-      const position = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced });
-      const point = { latitude: position.coords.latitude, longitude: position.coords.longitude };
-      if (!inTunisia(point)) {
-        setProblem('outsideTunisia');
-        return;
-      }
-      onChange(point);
-    } catch {
-      setProblem('failed');
-    } finally {
-      setBusy(false);
-    }
-  }
+  const picker = (
+    <MapPicker
+      visible={picking}
+      value={value}
+      title={pickerTitle}
+      onClose={() => setPicking(false)}
+      onConfirm={(point) => {
+        onChange(point);
+        setPicking(false);
+      }}
+    />
+  );
+  const note = t(visibility === 'private' ? 'location.privacy' : 'location.publicNote');
 
   if (value) {
     return (
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          gap: theme.space[2],
-          padding: theme.space[4],
-          borderRadius: theme.radius.sm,
-          backgroundColor: theme.colors.brandSoft,
-        }}>
-        <Icon name="check" size={20} color="success" />
-        <AppText variant="bodyStrong" style={{ flex: 1 }}>
-          {t('location.set')}
+      <View style={{ gap: theme.space[2] }}>
+        <MapPreview point={value} />
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: theme.space[2] }}>
+          <Icon name="check" size={20} color="success" />
+          <AppText variant="bodyStrong" style={{ flex: 1 }}>
+            {t('location.set')}
+          </AppText>
+        </View>
+        <Button label={t('location.change')} variant="neutral" onPress={() => setPicking(true)} />
+        <AppText variant="caption" color="inkMuted">
+          {note}
         </AppText>
-        <AppText variant="bodyStrong" color="brand" accessibilityRole="button" onPress={() => onChange(null)}>
-          {t('location.change')}
-        </AppText>
+        {picker}
       </View>
     );
   }
 
   return (
     <View style={{ gap: theme.space[2] }}>
+      <Button label={t('location.chooseOnMap')} variant="neutral" onPress={() => setPicking(true)} />
       <Button
         label={busy ? t('location.locating') : t('location.useCurrent')}
         variant="neutral"
         loading={busy}
-        onPress={useCurrent}
+        onPress={async () => {
+          const point = await locate();
+          if (point) onChange(point);
+        }}
       />
       {problem ? (
         <AppText variant="caption" color="danger">
@@ -93,10 +87,10 @@ export function LocationField({ value, onChange }: Props) {
         </AppText>
       ) : (
         <AppText variant="caption" color="inkMuted">
-          {t('location.privacy')}
+          {note}
         </AppText>
       )}
-      {__DEV__ ? <Button label={t('jobs.devHome')} variant="neutral" onPress={() => onChange(HAMMAMET)} /> : null}
+      {picker}
     </View>
   );
 }

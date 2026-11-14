@@ -70,7 +70,7 @@ export function CandidateSetupForm({ onSubmit, errorMessage }: Props) {
       <View style={{ gap: theme.space[2] }}>
         <AppText variant="heading">{t('setup.locationTitle')}</AppText>
         <AppText color="inkMuted">{t('setup.locationBody')}</AppText>
-        <LocationField value={home} onChange={setHome} />
+        <LocationField value={home} onChange={setHome} pickerTitle={t('setup.locationTitle')} visibility="private" />
       </View>
 
       <ChoiceChips

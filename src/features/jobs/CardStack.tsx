@@ -15,6 +15,7 @@ import { scheduleOnRN } from 'react-native-worklets';
 
 import { AppText } from '@/components/AppText';
 import { Icon } from '@/components/Icon';
+import { haptic } from '@/lib/haptics';
 import { useTheme } from '@/theme';
 
 import { JobCard, type JobCardData } from './JobCard';
@@ -117,6 +118,8 @@ function TopCard({
   const offscreen = width * 1.4;
 
   function finish(direction: SwipeDirection) {
+    // Applying is felt through its confirmation message; a pass gets a light tap of its own.
+    if (direction === 'left') haptic.tap();
     onSwiped(job, direction);
   }
 

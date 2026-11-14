@@ -94,7 +94,6 @@
     "emptyBody": "You have seen every job in your area. New ones will show up here as they are posted.",
     "noHomeTitle": "Where do you start from?",
     "noHomeBody": "Choose a starting point to see the jobs near it. It can be your home or any place nearby.",
-    "devHome": "Use central Hammamet (testing only)",
     "swipeFailed": "Your choice was not saved. Check your connection."
   },
   "distance": {
@@ -173,12 +172,17 @@
   "location": {
     "useCurrent": "Use my current location",
     "locating": "Finding your location",
-    "set": "Starting point saved",
-    "change": "Change it",
+    "set": "Place saved",
+    "change": "Change the place",
     "denied": "Location access was refused. You can allow it in your phone settings.",
     "failed": "Your location could not be read. Try again outside or near a window.",
     "outsideTunisia": "That point is outside Tunisia. Ba7dhek only covers Tunisia.",
-    "privacy": "Read once, when you tap. Nobody else ever sees this point."
+    "privacy": "Read once, when you tap. Nobody else ever sees this point.",
+    "chooseOnMap": "Choose on the map",
+    "pickerHint": "Move the map until the dot sits on the exact place.",
+    "usePlace": "Use this place",
+    "publicNote": "People who see your jobs see this place.",
+    "mapOf": "Map of the place"
   },
   "company": {
     "title": "Your business",
@@ -238,7 +242,11 @@
     "daysPerWeek": "Days per week",
     "benefits": "What comes with the job",
     "experience": "Experience",
-    "languages": "Languages needed"
+    "languages": "Languages needed",
+    "place": "Where is the work?",
+    "placeBusiness": "At the business",
+    "placeElsewhere": "Somewhere else",
+    "needPlace": "Choose where the work is."
   },
   "applicants": {
     "title": "Applicants",
@@ -386,7 +394,8 @@
     "ownerNote": "This is how people nearby see your job.",
     "preview": "See it as a candidate",
     "goneTitle": "This job is no longer available",
-    "goneBody": "It was closed or removed."
+    "goneBody": "It was closed or removed.",
+    "otherPlace": "Not at the business. See the map."
   },
   "filters": {
     "button": "Filters",

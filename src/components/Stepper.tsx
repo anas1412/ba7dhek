@@ -2,6 +2,7 @@ import { Pressable, View } from 'react-native';
 
 import { currentLanguage } from '@/i18n';
 import { formatNumber } from '@/lib/format';
+import { haptic } from '@/lib/haptics';
 import { useTheme } from '@/theme';
 
 import { AppText } from './AppText';
@@ -37,7 +38,10 @@ function StepButton({
       accessibilityState={{ disabled }}
       disabled={disabled}
       hitSlop={4}
-      onPress={onPress}
+      onPress={() => {
+        haptic.select();
+        onPress();
+      }}
       style={({ pressed }) => ({
         width: 48,
         height: 48,

@@ -180,6 +180,8 @@ Source: Code du travail, 2010 consolidated edition (https://a-mla.org/sites/defa
 ## Maps
 - `react-native-maps`: Android "has to use Google Maps, which in turn requires you to obtain an API key"; iOS Apple Maps works without a key (https://github.com/react-native-maps/react-native-maps/blob/master/docs/installation.md).
 - MapLibre React Native installs in Expo through a config plugin and cannot be used with Expo Go (https://maplibre.org/maplibre-react-native/docs/setup/expo/).
+- Installed 2026-11-14: `@maplibre/maplibre-react-native` 11.5.1 (asks for Expo 54 or later and React Native 0.80 or later; it has no browser version) and `expo-haptics` at the version Expo SDK 58 resolves. `maplibre-gl` 6.18.0 draws the map in the browser preview only.
+- The OpenFreeMap style address `https://tiles.openfreemap.org/styles/liberty` answered a GET with 200 on 2026-11-14.
 - OpenFreeMap: free public instance, no key, no registration, no request limit, commercial use allowed, attribution required, no service guarantee (https://openfreemap.org/).
 - MapTiler free: 5,000 sessions a month, described as for non-commercial use (https://www.maptiler.com/cloud/pricing/). Stadia free: commercial use not allowed (https://stadiamaps.com/pricing/).
 

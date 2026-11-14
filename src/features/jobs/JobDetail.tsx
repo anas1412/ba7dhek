@@ -8,6 +8,7 @@ import { Button } from '@/components/Button';
 import { Chip } from '@/components/Chip';
 import { Icon, type IconName } from '@/components/Icon';
 import { currentLanguage } from '@/i18n';
+import { MapPreview } from '@/features/location/MapPreview';
 import { formatDistance, formatPay, formatRelativeTime, type PayPeriod } from '@/lib/format';
 import { useTheme } from '@/theme';
 
@@ -29,6 +30,8 @@ export type JobDetailData = {
   languages: string[];
   /** Where the work is. Public by nature: it is the employer's place. */
   location: { latitude: number; longitude: number };
+  /** False when the work is somewhere other than the business's own address. */
+  atBusiness: boolean;
   imageUrls: string[];
   companyName: string;
   companyAddress: string;
@@ -154,8 +157,10 @@ export function JobDetail({ job, now }: { job: JobDetailData; now: number }) {
           </AppText>
         </View>
         <Fact icon="map-pin" label={t('detail.place')}>
-          <AppText>{job.companyAddress}</AppText>
+          {/* The address is the business's. For work somewhere else, the map alone says where. */}
+          <AppText>{job.atBusiness ? job.companyAddress : t('detail.otherPlace')}</AppText>
         </Fact>
+        <MapPreview point={job.location} height={180} />
         <Button
           label={t('detail.showOnMap')}
           variant="neutral"

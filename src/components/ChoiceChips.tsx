@@ -1,5 +1,6 @@
 import { Pressable, View } from 'react-native';
 
+import { haptic } from '@/lib/haptics';
 import { useTheme } from '@/theme';
 
 import { AppText } from './AppText';
@@ -22,7 +23,10 @@ function ChoiceChip({ label, selected, role, flagged, onPress }: ChipProps) {
     <Pressable
       accessibilityRole={role}
       accessibilityState={role === 'radio' ? { selected } : { checked: selected }}
-      onPress={onPress}
+      onPress={() => {
+        haptic.select();
+        onPress();
+      }}
       style={({ pressed }) => ({
         minHeight: 44,
         flexDirection: 'row',

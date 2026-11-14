@@ -3,6 +3,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import Animated, { FadeInDown, FadeOutDown } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { haptic } from '@/lib/haptics';
 import { useTheme } from '@/theme';
 
 import { AppText } from './AppText';
@@ -40,6 +41,9 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const show = useCallback((message: string, kind: ToastKind = 'success') => {
+    // Felt as well as seen: one vibration for done, another for a problem, none for plain information.
+    if (kind === 'success') haptic.success();
+    else if (kind === 'error') haptic.error();
     if (timer.current) clearTimeout(timer.current);
     // A new id restarts the entrance, so a second message is noticed.
     setToast({ id: nextId.current++, message, kind });

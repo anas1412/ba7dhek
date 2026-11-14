@@ -24,6 +24,7 @@ export function sampleDetail(now: number): JobDetailData {
     experience: 'some',
     languages: ['fr', 'en'],
     location: { latitude: 36.4, longitude: 10.6167 },
+    atBusiness: true,
     imageUrls: first.imageUrls ?? [],
     companyAddress: 'Avenue des Nations Unies, Hammamet',
     companyLogoUrl: first.companyLogoUrl ?? null,

@@ -167,7 +167,12 @@ export function CompanyForm({ onSubmit, errorMessage }: Props) {
       <View style={{ gap: theme.space[2] }}>
         <AppText variant="heading">{t('company.locationTitle')}</AppText>
         <AppText color="inkMuted">{t('company.locationBody')}</AppText>
-        <LocationField value={location} onChange={setLocation} />
+        <LocationField
+          value={location}
+          onChange={setLocation}
+          pickerTitle={t('company.locationTitle')}
+          visibility="public"
+        />
         {attempted && errors.location ? (
           <AppText variant="caption" color="danger">
             {errors.location}

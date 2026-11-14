@@ -14,6 +14,7 @@ import { TextField } from '@/components/TextField';
 import { useToast } from '@/components/Toast';
 import { currentLanguage } from '@/i18n';
 import { formatNumber } from '@/lib/format';
+import { LocationField, type Point } from '@/features/location/LocationField';
 import { useTheme } from '@/theme';
 
 import {
@@ -50,6 +51,8 @@ export type JobValues = {
   benefits: Benefit[];
   experience?: Experience;
   languages: SpokenLanguage[];
+  /** Left out when the work is at the business itself. */
+  location?: Point;
 };
 
 type Props = {
@@ -95,6 +98,8 @@ export function JobForm({ onSubmit, errorMessage }: Props) {
   const [experience, setExperience] = useState<Experience | null>(null);
   const [languages, setLanguages] = useState<SpokenLanguage[]>([]);
   const [description, setDescription] = useState('');
+  const [elsewhere, setElsewhere] = useState(false);
+  const [location, setLocation] = useState<Point | null>(null);
 
   const [busy, setBusy] = useState(false);
   // A step's errors stay hidden until the person has tried to leave it once.
@@ -108,7 +113,9 @@ export function JobForm({ onSubmit, errorMessage }: Props) {
     contract: contractType === null ? t('errors.choose') : undefined,
     pay: payAmount === null ? t('job.needPay') : undefined,
   };
-  const stepValid = [!errors.title && !errors.category && !errors.contract, !errors.pay, true];
+  // Choosing "somewhere else" without saying where is the one way the last step can be wrong.
+  const placeError = elsewhere && location === null ? t('job.needPlace') : undefined;
+  const stepValid = [!errors.title && !errors.category && !errors.contract, !errors.pay, !placeError];
   const tried = attempted.has(step);
 
   function goTo(next: number) {
@@ -129,6 +136,7 @@ export function JobForm({ onSubmit, errorMessage }: Props) {
 
   async function submit() {
     setError(null);
+    setAttempted((current) => new Set(current).add(LAST_STEP));
     const firstBad = stepValid.findIndex((ok) => !ok);
     if (firstBad !== -1 || !category || !contractType || payAmount === null) {
       // Cannot happen through the buttons, but a step is never skipped silently.
@@ -153,6 +161,7 @@ export function JobForm({ onSubmit, errorMessage }: Props) {
         benefits,
         experience: experience ?? undefined,
         languages,
+        location: elsewhere && location ? location : undefined,
       });
     } catch (caught) {
       const message = errorMessage(caught);
@@ -311,12 +320,32 @@ export function JobForm({ onSubmit, errorMessage }: Props) {
             maxLength={2000}
             multiline
           />
-          <View style={{ flexDirection: 'row', alignItems: 'center', gap: theme.space[2] }}>
-            <Icon name="map-pin" size={20} color="inkMuted" />
-            <AppText variant="caption" color="inkMuted" style={{ flex: 1 }}>
-              {t('job.locationNote')}
-            </AppText>
-          </View>
+          <ChoiceChips
+            label={t('job.place')}
+            options={[
+              { value: 'business', label: t('job.placeBusiness') },
+              { value: 'elsewhere', label: t('job.placeElsewhere') },
+            ]}
+            value={elsewhere ? 'elsewhere' : 'business'}
+            onChange={(value) => setElsewhere(value === 'elsewhere')}
+          />
+          {elsewhere ? (
+            <>
+              <LocationField value={location} onChange={setLocation} pickerTitle={t('job.place')} visibility="public" />
+              {tried && placeError ? (
+                <AppText variant="caption" color="danger">
+                  {placeError}
+                </AppText>
+              ) : null}
+            </>
+          ) : (
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: theme.space[2] }}>
+              <Icon name="map-pin" size={20} color="inkMuted" />
+              <AppText variant="caption" color="inkMuted" style={{ flex: 1 }}>
+                {t('job.locationNote')}
+              </AppText>
+            </View>
+          )}
         </Swap>
       ) : null}
     </Screen>
