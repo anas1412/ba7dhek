@@ -7,7 +7,9 @@
     "continue": "Continuer",
     "save": "Enregistrer",
     "back": "Retour",
-    "optional": "Facultatif"
+    "optional": "Facultatif",
+    "next": "Suivant",
+    "skip": "Passer"
   },
   "welcome": {
     "tagline": "Des emplois près de chez vous.",
@@ -235,5 +237,16 @@
     "rejected": "Non retenue",
     "closed": "Poste clôturé",
     "applied": "Envoyée {{time}}"
+  },
+  "intro": {
+    "nearTitle": "Des emplois près de chez vous",
+    "nearBody": "Ba7dhek montre les offres les plus proches de votre point de départ, la plus proche d'abord. Fini les offres à l'autre bout du pays.",
+    "nearExample": "Un hôtel près de vous recrute",
+    "swipeTitle": "Balayez à droite pour postuler",
+    "swipeBody": "Essayez sur cette carte. À droite on postule, à gauche on passe.",
+    "swipeApplied": "C'est tout. L'employeur voit votre profil et répond dans l'application.",
+    "swipePassed": "Vous avez passé. Essayez maintenant vers la droite.",
+    "startTitle": "Quand vous voulez",
+    "page": "Page {{current}} sur {{total}}"
   }
 }

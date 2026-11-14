@@ -1,12 +1,13 @@
 import './polyfills';
 
-import { getLocales } from 'expo-localization';
-import * as SecureStore from 'expo-secure-store';
+import { getCalendars, getLocales } from 'expo-localization';
 import * as Updates from 'expo-updates';
 // `use` is renamed because the hooks lint rule treats any call named `use` as a React hook.
 import i18n, { changeLanguage, use as registerPlugin } from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import { DevSettings, I18nManager, Platform } from 'react-native';
+
+import { readPreference, writePreference } from '@/lib/storage';
 
 import { isLanguage, isRtl, pickLanguage, type Language } from './languages';
 import ar from './locales/ar.json';
@@ -16,30 +17,25 @@ import fr from './locales/fr.json';
 const STORAGE_KEY = 'ba7dhek.language';
 const isWeb = Platform.OS === 'web';
 
-// The phone keeps the choice in its encrypted store; the browser build, used
-// in development, keeps it in the browser's own storage.
-async function readStoredLanguage(): Promise<Language | null> {
-  try {
-    const stored = isWeb ? globalThis.localStorage?.getItem(STORAGE_KEY) : await SecureStore.getItemAsync(STORAGE_KEY);
-    return isLanguage(stored) ? stored : null;
-  } catch {
-    return null;
-  }
-}
-
-async function storeLanguage(language: Language): Promise<void> {
-  if (isWeb) globalThis.localStorage?.setItem(STORAGE_KEY, language);
-  else await SecureStore.setItemAsync(STORAGE_KEY, language);
+/** The language this device would get with no saved choice. */
+function languageFromDevice(): Language {
+  const locales = getLocales();
+  return pickLanguage({
+    languageCodes: locales.map((locale) => locale.languageCode),
+    regionCodes: locales.map((locale) => locale.regionCode),
+    timeZone: getCalendars()[0]?.timeZone ?? null,
+  });
 }
 
 /**
- * Loads the saved language (or the device's), starts i18next, and makes sure
- * the layout direction matches. Resolves to `false` when the app is about to
- * reload to apply a direction change, in which case the caller renders nothing.
+ * Loads the saved language (or works one out from the device), starts i18next,
+ * and makes sure the layout direction matches. Resolves to `false` when the app
+ * is about to reload to apply a direction change, in which case the caller
+ * renders nothing.
  */
 export async function initI18n(): Promise<boolean> {
-  const stored = await readStoredLanguage();
-  const language = stored ?? pickLanguage(getLocales().map((locale) => locale.languageCode));
+  const stored = await readPreference(STORAGE_KEY);
+  const language = isLanguage(stored) ? stored : languageFromDevice();
 
   await registerPlugin(initReactI18next).init({
     resources: {
@@ -90,15 +86,20 @@ export function currentLanguage(): Language {
   return isLanguage(i18n.language) ? i18n.language : 'en';
 }
 
+/** Whether the layout currently runs right to left. */
+export function isLayoutRtl(): boolean {
+  return isWeb ? isRtl(currentLanguage()) : I18nManager.isRTL;
+}
+
 /** Whether switching to this language restarts the app. Only the phone needs to. */
 export function willReload(next: Language): boolean {
   if (isWeb) return false;
   return isRtl(next) !== I18nManager.isRTL;
 }
 
-/** Switches language and remembers the choice. */
+/** Switches language and remembers the choice, which then overrides the device rule. */
 export async function setLanguage(next: Language): Promise<void> {
-  await storeLanguage(next);
+  await writePreference(STORAGE_KEY, next);
   await changeLanguage(next);
   await applyDirection(next);
 }

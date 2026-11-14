@@ -1,7 +1,7 @@
 export const LANGUAGES = ['ar', 'fr', 'en'] as const;
 export type Language = (typeof LANGUAGES)[number];
 
-/** Used when the device language is none of the three. */
+/** Used when nothing about the device points to one of the three languages. */
 export const FALLBACK_LANGUAGE: Language = 'fr';
 
 export function isLanguage(value: unknown): value is Language {
@@ -27,9 +27,29 @@ export function formatLocale(language: Language): string {
   }
 }
 
-/** Picks the first device language that the app supports. */
-export function pickLanguage(deviceLanguageCodes: readonly (string | null)[]): Language {
-  for (const code of deviceLanguageCodes) {
+export type DeviceHints = {
+  /** The device's languages, most preferred first: "fr", "en". */
+  languageCodes: readonly (string | null)[];
+  /** The device's regions: "TN", "FR". */
+  regionCodes: readonly (string | null)[];
+  /** The device's time zone: "Africa/Tunis". */
+  timeZone: string | null;
+};
+
+/** Tunisia by region setting or by clock. Needs no location permission. */
+export function isInTunisia(hints: DeviceHints): boolean {
+  return hints.regionCodes.includes('TN') || hints.timeZone === 'Africa/Tunis';
+}
+
+/**
+ * The language for a first launch. Language follows place: someone in Tunisia
+ * gets Arabic (Tunisian dialect) even when the phone is set to French or
+ * English, which is common there. Elsewhere the device language decides.
+ * A person's own choice, once made, overrides all of this.
+ */
+export function pickLanguage(hints: DeviceHints): Language {
+  if (isInTunisia(hints)) return 'ar';
+  for (const code of hints.languageCodes) {
     if (isLanguage(code)) return code;
   }
   return FALLBACK_LANGUAGE;

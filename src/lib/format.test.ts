@@ -77,13 +77,26 @@ describe('formatRelativeTime', () => {
 });
 
 describe('pickLanguage', () => {
-  test('takes the first supported device language', () => {
-    expect(pickLanguage(['de', 'ar', 'fr'])).toBe('ar');
-    expect(pickLanguage(['en'])).toBe('en');
+  const abroad = { regionCodes: ['FR'], timeZone: 'Europe/Paris' };
+
+  test('in Tunisia, Arabic wins over the device language', () => {
+    expect(pickLanguage({ languageCodes: ['fr'], regionCodes: ['TN'], timeZone: 'Africa/Tunis' })).toBe('ar');
+    expect(pickLanguage({ languageCodes: ['en'], regionCodes: ['TN'], timeZone: null })).toBe('ar');
   });
 
-  test('falls back to French', () => {
-    expect(pickLanguage(['de', null])).toBe('fr');
-    expect(pickLanguage([])).toBe('fr');
+  test('a phone set to a foreign region but on Tunisian time still gets Arabic', () => {
+    expect(pickLanguage({ languageCodes: ['en'], regionCodes: ['US'], timeZone: 'Africa/Tunis' })).toBe('ar');
+    expect(pickLanguage({ languageCodes: ['fr'], regionCodes: ['FR'], timeZone: 'Africa/Tunis' })).toBe('ar');
+  });
+
+  test('outside Tunisia, the first supported device language is used', () => {
+    expect(pickLanguage({ languageCodes: ['de', 'ar', 'fr'], ...abroad })).toBe('ar');
+    expect(pickLanguage({ languageCodes: ['en'], ...abroad })).toBe('en');
+    expect(pickLanguage({ languageCodes: ['fr'], ...abroad })).toBe('fr');
+  });
+
+  test('outside Tunisia with no supported language, it falls back to French', () => {
+    expect(pickLanguage({ languageCodes: ['de', null], ...abroad })).toBe('fr');
+    expect(pickLanguage({ languageCodes: [], regionCodes: [], timeZone: null })).toBe('fr');
   });
 });

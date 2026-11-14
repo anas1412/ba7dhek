@@ -7,7 +7,9 @@
     "continue": "Continue",
     "save": "Save",
     "back": "Back",
-    "optional": "Optional"
+    "optional": "Optional",
+    "next": "Next",
+    "skip": "Skip"
   },
   "welcome": {
     "tagline": "Jobs next to you.",
@@ -233,5 +235,16 @@
     "rejected": "Not selected",
     "closed": "Position closed",
     "applied": "Applied {{time}}"
+  },
+  "intro": {
+    "nearTitle": "Jobs next to you",
+    "nearBody": "Ba7dhek shows the jobs closest to where you start from, nearest first. No more scrolling past jobs across the country.",
+    "nearExample": "A hotel near you is hiring",
+    "swipeTitle": "Swipe right to apply",
+    "swipeBody": "Try it on this card. Right applies, left passes.",
+    "swipeApplied": "That is all it takes. The employer sees your profile and answers in the app.",
+    "swipePassed": "That was a pass. Now try swiping right.",
+    "startTitle": "Ready when you are",
+    "page": "Page {{current}} of {{total}}"
   }
 }

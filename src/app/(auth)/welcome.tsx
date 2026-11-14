@@ -3,28 +3,36 @@ import { useConvexAuth } from 'convex/react';
 import * as Linking from 'expo-linking';
 import { Redirect } from 'expo-router';
 import { openAuthSessionAsync } from 'expo-web-browser';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Platform, View } from 'react-native';
+import { Platform } from 'react-native';
 
 import { AppText } from '@/components/AppText';
 import { Button } from '@/components/Button';
-import { Screen } from '@/components/Screen';
-import { useTheme } from '@/theme';
+import { LoadingScreen } from '@/components/Screen';
+import { Intro } from '@/features/onboarding/Intro';
+import { readPreference, writePreference } from '@/lib/storage';
 
 // Where Google's sign-in hands control back to the app: "ba7dhek://".
-// convex/auth.ts only accepts addresses that start with the app's scheme.
+// convex/lib/redirect.ts decides which addresses may receive the result.
 const redirectTo = Linking.createURL('/');
+const INTRO_SEEN_KEY = 'ba7dhek.introSeen';
 
 export default function Welcome() {
   const { t } = useTranslation();
-  const theme = useTheme();
   const { isAuthenticated } = useConvexAuth();
   const { signIn } = useAuthActions();
   const [busy, setBusy] = useState(false);
   const [failed, setFailed] = useState(false);
+  // null while the saved preference is being read.
+  const [introSeen, setIntroSeen] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    readPreference(INTRO_SEEN_KEY).then((value) => setIntroSeen(value === 'yes'));
+  }, []);
 
   if (isAuthenticated) return <Redirect href="/" />;
+  if (introSeen === null) return <LoadingScreen />;
 
   async function signInWithGoogle() {
     setBusy(true);
@@ -61,8 +69,10 @@ export default function Welcome() {
   // iOS will also need "Continue with Apple" here before it can ship:
   // see docs/02-architecture/auth.md.
   return (
-    <Screen
-      footer={
+    <Intro
+      startAtEnd={introSeen}
+      onSeen={() => void writePreference(INTRO_SEEN_KEY, 'yes')}
+      signIn={
         <>
           {failed ? (
             <AppText variant="caption" color="danger" center>
@@ -71,14 +81,7 @@ export default function Welcome() {
           ) : null}
           <Button label={t('welcome.google')} loading={busy} onPress={signInWithGoogle} />
         </>
-      }>
-      <View style={{ flex: 1, justifyContent: 'center', gap: theme.space[2] }}>
-        <AppText variant="display">{t('common.appName')}</AppText>
-        <AppText variant="title" color="brand">
-          {t('welcome.tagline')}
-        </AppText>
-        <AppText color="inkMuted">{t('welcome.pitch')}</AppText>
-      </View>
-    </Screen>
+      }
+    />
   );
 }
